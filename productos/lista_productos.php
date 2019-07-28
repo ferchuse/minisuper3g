@@ -12,7 +12,7 @@ if($_GET["existencia"] != '') {
 } 
 //comentario X
 
-$consulta.= " ORDER BY descripcion_productos";
+$consulta.= "  ORDER BY descripcion_productos LIMIT 1000";
 $result = mysqli_query($link,$consulta);
 if(!$result){
         die("Error en $consulta" . mysqli_error($link) );

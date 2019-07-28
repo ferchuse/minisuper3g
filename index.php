@@ -37,9 +37,9 @@
     <?php include("styles.php");?>
 	</head>
   <body>
-		<div class="container-fluid hidden-print">
-			<?php include("menu.php");?>
-		</div>
+		
+		<?php include("menu.php");?>
+		
 		<div class="container-fluid hidden-print">
 			<form id="form_agregar_producto" class="form-inline" autocomplete="off">
 				<div class="row">
@@ -55,11 +55,7 @@
 							<input id="buscar_producto"   type="text" class="form-control" size="50">
 						</div>
 					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<button class="btn btn-default" id="btn_mayoreo">F11 Mayoreo</button>
-						</div>
-					</div>
+				
 				</div>
 			</form>
 			
@@ -91,7 +87,7 @@
 				<div class="row">
 					<div class="col-sm-9 text-right">
 						<button class="btn btn-info btn-lg"  id="nueva_venta" onclick="window.location.reload(true);">
-								Nueva Venta
+							Nueva Venta
 						</button>
 						<button class="btn btn-success btn-lg" FORM="" id="cerrar_venta">F12 - Cobrar</button>
 					</div>
@@ -114,18 +110,6 @@
 		<?php include('forms/modal_venta.php'); ?>
 		<?php include('forms/modal_granel.php'); ?>
 		<script src="js/nueva_venta.js"></script>
-		<!--Start of Tawk.to Script-->
-		<script type="text/javascript">
-			var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-			(function(){
-				var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-				s1.async=true;
-				s1.src='https://embed.tawk.to/5d02e5b053d10a56bd79ff1f/default';
-				s1.charset='UTF-8';
-				s1.setAttribute('crossorigin','*');
-				s0.parentNode.insertBefore(s1,s0);
-			})();
-		</script>
-		<!--End of Tawk.to Script-->
+		
 	</body>
 </html>				

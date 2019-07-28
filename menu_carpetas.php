@@ -48,10 +48,23 @@
 						</ul>
 					</li>
 					
-					<li class=" <?php echo $menu_activo == "producto" ? "active" : ''; ?>">
-						<a href="../productos.php">
-							<i class="fa fa-list"></i> Productos
+					<li class="dropdown <?php echo $menu_activo == "productos" ? "active" : ''; ?>">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="fas fa-list"></i> Productos <strong class="caret"></strong>
 						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="../productos/editar.php?accion=nuevo">
+										<i class="fas fa-plus"></i> Nuevo</a>
+							</li>
+							<li>
+								<a href="../productos/editar.php?accion=editar">
+										<i class="fas fa-edit"></i> Editar</a>
+							</li>
+							<li>
+								<a href="../productos/catalogo.php"><i class="fas fa-file-alt"></i> Catálogo</a>
+							</li>
+						</ul>
 					</li>
 					
 					<li class="dropdown <?php echo $menu_activo == "catalogos" ? "active" : ''; ?>">

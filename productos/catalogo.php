@@ -29,10 +29,27 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12">
-					<h2 class="text-center">Productos</h2>
-					<hr>
+					<h4 class="text-center">Productos</h4>
 				</div>
 			</div>
+			<form id="form_agregar_producto" class="form-inline" autocomplete="off">
+				<div class="row">
+					<div class="col-md-4">
+						<label for="">Código del Producto:</label>
+						
+						<input id="codigo_producto" autofocus  type="text" class="form-control" placeholder="Ingrese el codigo de barras" size="50">
+						
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label for="">Producto:</label>
+							<input id="buscar_producto"   type="text" class="form-control" size="50">
+						</div>
+					</div>
+					
+				</div>
+			</form>
+			<hr>
 			<div class="row">
 				<div class="col-md-12">
 					<form id="form_filtros" class="form-inline">
