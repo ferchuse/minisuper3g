@@ -35,7 +35,7 @@ while ($fila = mysqli_fetch_assoc($result)) {
             <div class="col-6">
                 <div class="row justify-content-between">
                     <div class="col-6 border border-right-0 border-danger pr-0 pl-0">
-                        <img src="../img/logo_mod.jpg" alt="">
+                        <img src="../img/logo.png" alt="">
                     </div>
 
                     <div class="col-6 border border-left-0 border-danger pr-4 pl-4 pt-2">
