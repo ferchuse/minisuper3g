@@ -70,7 +70,7 @@ function buscarCodigo(event){
 			data: {tabla:'productos', campo:'codigo_productos', id_campo: codigoProducto}
 			}).done(function (respuesta){
 			
-			if(respuesta.numero_filas == 1){
+			if(respuesta.numero_filas >= 1){
 				console.log("Producto Encontrado");
 				cargarProducto(respuesta.fila);
 				
