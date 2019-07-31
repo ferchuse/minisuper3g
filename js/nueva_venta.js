@@ -60,7 +60,7 @@ $(document).ready( function onLoad(){
 				data: {tabla:'productos', campo:'codigo_productos', id_campo: codigoProducto}
 				}).done(function terminabuscarCodigo(respuesta){
 				try{
-					if(respuesta.numero_filas == 1){
+					if(respuesta.numero_filas >= 1){
 						console.log("Producto Encontrado");
 						producto_elegido = respuesta.fila;
 						
