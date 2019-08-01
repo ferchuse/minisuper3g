@@ -15,6 +15,8 @@
 		$titulo = "Editar Producto";
 		$form = "hidden";
 	}
+
+	$consulta_codigo = "SELECT * FROM productos WHERE codigo_productos = $codigo"; 
 	
 ?>
 <!DOCTYPE html>

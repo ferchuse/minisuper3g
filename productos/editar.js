@@ -223,6 +223,13 @@ function disableFunctionKeys(e) {
 	
 };
 
+function verificarCodigo() {
+	$codigo = $("#codigo_productos").val();
+	$consulta = "EXISTENTE";
+	if ($codigo == $consulta) {
+		alert("¡Código Existe!");
+	}
+}
 
 
 
