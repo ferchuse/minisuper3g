@@ -16,10 +16,22 @@ $(document).ready( function onLoad(){
 	alertify.set('notifier','position', 'top-right');
 	
 	$('#buscar_codigo').keypress( buscarCodigo);
+	$('#codigo_productos').keypress( buscarCodigo);
 	
 	
 	//Autocomplete Productos https://github.com/devbridge/jQuery-Autocomplete
 	$("#buscar_producto").autocomplete({
+		serviceUrl: "productos_autocomplete.php",   
+		onSelect: function(eleccion){
+			console.log("Elegiste: ",eleccion);
+			cargarProducto(eleccion.data);
+		},
+		autoSelectFirst	:true , 
+		showNoSuggestionNotice	:true , 
+		noSuggestionNotice	: "Sin Resultados"
+	});
+	
+	$("#descripcion_productos").autocomplete({
 		serviceUrl: "productos_autocomplete.php",   
 		onSelect: function(eleccion){
 			console.log("Elegiste: ",eleccion);
