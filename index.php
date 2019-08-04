@@ -47,26 +47,37 @@
 		<?php include("menu.php");?>
 		
 		<div class="container-fluid hidden-print">
-			<form id="form_agregar_producto" class="form-inline" autocomplete="off">
-				<div class="row">
+			<div class="row">
+				<form id="form_agregar_producto" class="form-inline" autocomplete="off">
 					<div class="col-md-4">
 						<label for="">Código del Producto:</label>
+						
 						<input id="codigo_producto" autofocus  type="text" class="form-control" placeholder="ESC" size="50">
+						
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-4">
 						<div class="form-group">
 							<label for="">Producto:</label>
-							<input id="buscar_producto" placeholder="F10"  type="text" class="form-control" size="50">
+							<input id="buscar_producto"   type="text" class="form-control" size="50"  placeholder="F10">
 						</div>
 					</div>
+				</form>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label>
+							<input type="checkbox" id="mayoreo">
+							F11 Mayoreo
+						</label>
+					</div>
 				</div>
-			</form>
+			</div>
+			
 			<hr>
 			<ul class="nav nav-tabs" style="margin: 10px 0 10px 0; font-color: black !important">
 				<li class="active">
 					<a data-toggle="tab" href="#tab1">
 						<input class="cliente" value="Mostrador" >
-					
+						
 					</a>
 				</li>
 				<li>
