@@ -1,6 +1,6 @@
 
 <form id="form_pago">
-	<div id="modal_pago" class="modal fade" role="dialog">
+	<div id="modal_pago" class="modal " role="dialog">
 		<div class="modal-dialog modal-sm">
 			
 			<!-- Modal content-->
@@ -16,7 +16,7 @@
 							<label>Efectivo: </label>
 						</div>
 						<div class="col-sm-6">
-							<input  id="efectivo" type="number" class="form-control" name="efectivo" >
+							<input  id="efectivo"  step=".5" type="number" class="form-control" name="efectivo" >
 						</div>
 					</div>
 					<div class="row">

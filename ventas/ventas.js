@@ -302,14 +302,14 @@ function guardarVenta(event){
 event.preventDefault();
 console.log("guardarVenta");
 
-var boton = $(this);
+var boton = $(this).find(":submit");
 var icono = boton.find('.fa');
-boton.prop('disabled',true);
-icono.toggleClass('fa fa-usd fa fa-spinner fa-pulse fa-fw');
-
-let articulos = $("#tabla_venta tbody tr").size();
-
+var articulos = $("#tabla_venta tbody tr").size();
 var productos = [];
+
+
+boton.prop('disabled',true);
+icono.toggleClass('fa-check fa-spinner fa-spin');
 
 $(".tabla_venta:visible tbody tr").each(function(index, item){
 	productos.push({
@@ -325,7 +325,7 @@ $(".tabla_venta:visible tbody tr").each(function(index, item){
 });
 
 $.ajax({
-	url: 'control/guardar_ventas.php',
+	url: 'ventas/guardar.php',
 	method: 'POST',
 	dataType: 'JSON',
 	data:{
@@ -346,7 +346,7 @@ $.ajax({
 	alertify.error('Ocurrio un error' + error);
 	}).always(function(){
 	boton.prop('disabled',false);
-	icono.toggleClass('fa fa-usd fa fa-spinner fa-pulse fa-fw');
+	icono.toggleClass('fa-check fa-spinner fa-spin');
 });
 
 
