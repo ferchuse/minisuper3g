@@ -24,7 +24,7 @@
 	fecha_ventas = CURDATE(),
 	hora_ventas = CURTIME(),
 	total_ventas = '{$_POST["total_ventas"]}',
-	articulos_ventas = '$articulos_ventas',
+	articulos_ventas = '{$_POST["articulos"]}',
 	estatus_ventas = '$estatus',
 	efectivo_ventas = '{$_POST["total_ventas"]}'
 	");

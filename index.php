@@ -22,14 +22,20 @@
 		  	margin-bottom: 10px;
 				}
 				
-				.tab-pane {
+				.tab-pane .productos{
 				display: block;
 				overflow: auto;
 				overflow-x: hidden;
-				height: 350px;
+				height: 310px;
 				width: 100%;
 				padding: 10px;				
 				}			
+				
+				.sticky-footer{
+				position: fixed;
+				right: 0;
+				bottom: 0;
+				}
 			</style>  
 		</style>
 		
@@ -45,71 +51,123 @@
 				<div class="row">
 					<div class="col-md-4">
 						<label for="">Código del Producto:</label>
-						
-						<input id="codigo_producto" autofocus  type="text" class="form-control" placeholder="Ingrese el codigo de barras" size="50">
-						
+						<input id="codigo_producto" autofocus  type="text" class="form-control" placeholder="ESC" size="50">
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<div class="form-group">
 							<label for="">Producto:</label>
-							<input id="buscar_producto"   type="text" class="form-control" size="50">
+							<input id="buscar_producto" placeholder="F10"  type="text" class="form-control" size="50">
 						</div>
 					</div>
-				
 				</div>
 			</form>
+			<hr>
+			<ul class="nav nav-tabs" style="margin: 10px 0 10px 0; font-color: black !important"">
+			<li class="active">
+				<a data-toggle="tab" href="#home">
+					<input class="cliente" value="Mostrador" >
+				</a>
+			</li>
+			<li>
+				<a data-toggle="tab" href="#menu1">
+					<input class="cliente" value="Cliente 2">
+				</a>
+			</li>
 			
-			<div class="row">
-				<div class="col-md-12">
-					<div class="tab-pane">
-						<table id="tabla_venta" class="table table-bordered table-condensed">
-							<thead class="bg-success">
-								<tr>
-									<th class="text-center">Cantidad</th>
-									<th class="text-center">Unidad</th>
-									<th class="text-center">Descripcion del Producto</th>
-									<th class="text-center">Precio Unitario</th>
-									<th class="text-center">Importe</th>
-									<th class="text-center">Existencia</th>
-									<th class="text-center">Acciones</th>
-								</tr>
-							</thead>
-							<tbody >
-								
-							</tbody>
-						</table>
-					</div>
+		</ul>
+		
+		<div class="tab-content">
+			<div id="home" class="tab-pane fade in active">
+				<div class="productos">
+					<table id="tabla_venta" class="tabla_venta table table-bordered table-condensed">
+						<thead class="bg-success">
+							<tr>
+								<th class="text-center">Cantidad</th>
+								<th class="text-center">Unidad</th>
+								<th class="text-center">Descripcion del Producto</th>
+								<th class="text-center">Precio Unitario</th>
+								<th class="text-center">Importe</th>
+								<th class="text-center">Existencia</th>
+								<th class="text-center">Acciones</th>
+							</tr>
+						</thead>
+						<tbody >
+							
+						</tbody>
+					</table>
 				</div>
+				<section id="footer">
+					<div class="row">
+						<div class="col-sm-1 lead">
+							<label>Articulos	</label>
+							<input class="form-control" type="number" id="articulos" autocomplete="off" readonly>
+						</div>
+						<div class="col-sm-8 text-right">
+						</div>
+						<div class="col-sm-1 h2">
+							<strong>TOTAL:</strong>
+						</div>
+						<div class="col-sm-2 h1">
+							<input readonly id="total" type="text" class="form-control input-lg text-right " value="0" name="total">
+						</div>
+					</div>
+				</section>
 			</div>
-			
-			<br>
-			<section id="footer">
-				<div class="row">
-					<div class="col-sm-9 text-right">
-						<button class="btn btn-info btn-lg"  id="nueva_venta" onclick="window.location.reload(true);">
-							Nueva Venta
-						</button>
-						<button class="btn btn-success btn-lg" FORM="" id="cerrar_venta">F12 - Cobrar</button>
-					</div>
-					<div class="col-sm-1 h2">
-						<strong>TOTAL:</strong>
-					</div>
-					<div class="col-sm-2 h1">
-						<input readonly id="total" type="text" class="form-control input-lg text-right " value="0" name="total">
-					</div>
+			<div id="menu1" class="tab-pane fade">
+				<div class="productos">
+					<table  class="tabla_venta table table-bordered table-condensed">
+						<thead class="bg-success">
+							<tr>
+								<th class="text-center">Cantidad</th>
+								<th class="text-center">Unidad</th>
+								<th class="text-center">Descripcion del Producto</th>
+								<th class="text-center">Precio Unitario</th>
+								<th class="text-center">Importe</th>
+								<th class="text-center">Existencia</th>
+								<th class="text-center">Acciones</th>
+							</tr>
+						</thead>
+						<tbody >
+							
+						</tbody>
+					</table>
 				</div>
-				
-			</section>
-			
+				<section id="footer">
+					<div class="row">
+						<div class="col-sm-1 lead">
+							<label>Articulos	</label>
+							<input class="form-control" type="number" id="articulos" autocomplete="off" readonly>
+						</div>
+						<div class="col-sm-8 text-right">
+							
+						</div>
+						<div class="col-sm-1 h2">
+							<strong>TOTAL:</strong>
+						</div>
+						<div class="col-sm-2 h1">
+							<input readonly  type="text" class="total form-control input-lg text-right " value="0" name="total">
+						</div>
+					</div>
+				</section>
+			</div>
 		</div>
-		
-		<div id="ticket" class="visible-print">
-			
+		<div class="sticky-footer">
+			<button class="btn btn-info btn-lg"  id="nueva_venta" onclick="window.location.reload(true);">
+				Nueva Venta
+			</button>
+			<button class="btn btn-success btn-lg" FORM="" id="cerrar_venta">
+				F12 - Cobrar
+			</button>
 		</div>
-		<?php  include('scripts.php'); ?>
-		<?php include('forms/modal_venta.php'); ?>
-		<?php include('forms/modal_granel.php'); ?>
-		<script src="js/nueva_venta.js"></script>
+	</div>
+	
+	<div id="ticket" class="visible-print">
 		
-	</body>
+	</div>
+	<?php  include('scripts.php'); ?>
+	<?php include('ventas/forma_pago.php'); ?>
+	<?php include('forms/modal_granel.php'); ?>
+	<script src="js/nueva_venta.js"></script>
+	
+</body>
 </html>				

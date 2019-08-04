@@ -4,6 +4,11 @@ var producto_elegido ;
 $(document).ready( function onLoad(){
 	$('.bg-info').keydown(navegarFilas);
 	
+	$('#modal_pago').on('show.bs.modal', function (e) {
+		console.log("Mostrar Modal Pago")
+		$("#efectivo").focus();
+	});
+	
 	$('#form_granel').submit(agregarGranel);
 	$('#form_agregar_producto').submit(function(event){
 		
@@ -115,7 +120,15 @@ $(document).ready( function onLoad(){
 	});
 	
 	
-	$('#cerrar_venta').click( guardarVenta);
+	$('#cerrar_venta').click( function(){
+		if($(".tabla_venta:visible tbody tr").length == 0){
+			
+			alertify.error('No hay productos');
+			return false;
+		}
+		$("#efectivo").focus();
+		$("#modal_pago").modal("show");
+	});
 	
 	
 }); 
@@ -164,11 +177,11 @@ function buscarProducto(campobd,tablabd,id_campobd){
 function agregarProducto(producto){
 	console.log("agregarProducto()", producto);
 	
-	let articulos = $("#tabla_venta tbody tr").size();
+	let articulos = $(".tabla_venta:visible tbody tr").size();
 	
 	//Buscar por id_productos, si se encuentra agregar 1 unidad sino agregar nuevo producto
 	console.log("Buscando id_productos = ", producto.id_productos);
-	var $existe= $(".id_productos[value='"+producto.id_productos+"']");
+	var $existe= $(".id_productos:visible[value='"+producto.id_productos+"']");
 	console.log("existe", $existe);
 	
 	if($existe.length > 0){
@@ -212,7 +225,7 @@ function agregarProducto(producto){
 		
 		resetFondo();
 		
-		$("#tabla_venta tbody").append($fila_producto);
+		$(".tabla_venta:visible tbody").append($fila_producto);
 		
 		
 		
@@ -236,60 +249,84 @@ function agregarProducto(producto){
 	// $("#codigo_producto").focus();
 }
 
+
+
+function sumarImportes(){
+	console.log("sumarImportes");
+	let total = 0;
+	let articulos = 0;
+	$(".tabla_venta:visible tbody tr").each(function(indice, fila ){
+		console.log("indice",indice )
+		console.log("producto",fila )
+		let cantidad = Number($(this).find(".cantidad").val());
+		let precio = Number($(this).find(".precio").val());
+		
+		articulos+= Math.round(cantidad);
+		
+		importe= cantidad * precio;
+		total+= importe;
+		
+		$(this).find(".importe").val(importe.toFixed(2))
+	});
+	
+	$(".articulos:visible").val(articulos.toFixed(2));
+	$(".total:visible").val(total.toFixed(2));
+	$("#efectivo").val(total.toFixed(2));
+	$("#total_pago").val(total.toFixed(2));
+	
+}
+
 function guardarVenta(event){
 	event.preventDefault();
 	console.log("guardarVenta");
-	if($("#tabla_venta tbody tr").length != 0){
-		var boton = $(this);
-		var icono = boton.find('.fa');
-		boton.prop('disabled',true);
+	
+	var boton = $(this);
+	var icono = boton.find('.fa');
+	boton.prop('disabled',true);
+	icono.toggleClass('fa fa-usd fa fa-spinner fa-pulse fa-fw');
+	
+	let articulos = $("#tabla_venta tbody tr").size();
+	
+	var productos = [];
+	
+	$(".tabla_venta:visible tbody tr").each(function(index, item){
+		productos.push({
+			"id_productos": $(item).find(".id_productos").val(),
+			"cantidad": $(item).find(".cantidad").val(),
+			"precio": $(item).find(".precio").val(),
+			"descripcion": $(item).find(".descripcion").val(),
+			"importe": $(item).find(".importe").val(),
+			"existencia_anterior": $(item).find(".existencia_anterior").val(),
+			"costo_proveedor": $(item).find(".costo_proveedor").val()
+			
+		})
+	});
+	
+	$.ajax({
+		url: 'control/guardar_ventas.php',
+		method: 'POST',
+		dataType: 'JSON',
+		data:{
+			id_usuarios: $('#id_usuarios').val(),
+			id_turnos:$('#id_turnos').val(),
+			articulos: $(".articulos:visible").val(),
+			productos: productos, 
+			total_ventas: $(".total:visible").val()
+		}
+		}).done(function(respuesta){
+		if(respuesta.estatus_venta == "success"){
+			alertify.success('Venta Guardada');
+			window.location.reload(true);
+			// imprimirTicket( respuesta.id_ventas)
+			
+		}
+		}).fail(function(xhr, error, errnum){
+		alertify.error('Ocurrio un error' + error);
+		}).always(function(){
+		boton.prop('disabled',false);
 		icono.toggleClass('fa fa-usd fa fa-spinner fa-pulse fa-fw');
-		
-		let articulos = $("#tabla_venta tbody tr").size();
-		
-		var productos = [];
-		
-		$("#tabla_venta tbody tr").each(function(index, item){
-			productos.push({
-				"id_productos": $(item).find(".id_productos").val(),
-				"cantidad": $(item).find(".cantidad").val(),
-				"precio": $(item).find(".precio").val(),
-				"descripcion": $(item).find(".descripcion").val(),
-				"importe": $(item).find(".importe").val(),
-				"existencia_anterior": $(item).find(".existencia_anterior").val(),
-				"costo_proveedor": $(item).find(".costo_proveedor").val()
-				
-			})
-		});
-		
-		$.ajax({
-			url: 'control/guardar_ventas.php',
-			method: 'POST',
-			dataType: 'JSON',
-			data:{
-				id_usuarios: $('#id_usuarios').val(),
-				id_turnos:$('#id_turnos').val(),
-				articulos_ventas: articulos,
-				productos: productos, 
-				total_ventas: $("#total").val()
-			}
-			}).done(function(respuesta){
-			if(respuesta.estatus_venta == "success"){
-				alertify.success('Venta Guardada');
-				window.location.reload(true);
-				// imprimirTicket( respuesta.id_ventas)
-				
-			}
-			}).fail(function(xhr, error, errnum){
-			alertify.error('Ocurrio un error' + error);
-			}).always(function(){
-			boton.prop('disabled',false);
-			icono.toggleClass('fa fa-usd fa fa-spinner fa-pulse fa-fw');
-		});
-	}
-	else{
-		alertify.error('No hay productos');
-	}
+	});
+	
 	
 }
 
@@ -298,27 +335,13 @@ function eliminarProducto(){
 	$(this).closest("tr").remove();
 	sumarImportes();
 }
+
 $("input").focus(function(){
 	$(this).select();
 	
 });
 
 
-function sumarImportes(){
-	console.log("sumarImportes");
-	let total = 0;
-	$(".id_productos").each(function(indice, fila ){
-		let cantidad = Number($(this).closest("tr").find(".cantidad").val());
-		let precio = Number($(this).closest("tr").find(".precio").val());
-		
-		importe= cantidad * precio;
-		total+= importe;
-		$(this).closest("tr").find(".importe").val(importe.toFixed(2))
-	});
-	
-	$("#total").val(total.toFixed(2));
-	
-}
 
 
 
