@@ -25,8 +25,9 @@ $(document).ready( function onLoad(){
 		onSelect: function(eleccion){
 			console.log("Elegiste: ",eleccion);
 			cargarProducto(eleccion.data);
+			$("#form_agregar_producto")[0].reset();
 		},
-		autoSelectFirst	:true , 
+		autoSelectFirst	:false , 
 		showNoSuggestionNotice	:true , 
 		noSuggestionNotice	: "Sin Resultados"
 	});
@@ -37,7 +38,7 @@ $(document).ready( function onLoad(){
 			console.log("Elegiste: ",eleccion);
 			cargarProducto(eleccion.data);
 		},
-		autoSelectFirst	:true , 
+		autoSelectFirst	:false , 
 		showNoSuggestionNotice	:true , 
 		noSuggestionNotice	: "Sin Resultados"
 	});
@@ -74,7 +75,7 @@ function buscarCodigo(event){
 		var codigoProducto = $(this).val();
 		
 		input.prop('disabled',true);
-		input.toggleClass('ui-autocomplete-loading');
+		// input.toggleClass('ui-autocomplete-loading');
 		$.ajax({
 			url: "../control/buscar_normal.php",
 			dataType: "JSON",
@@ -86,7 +87,7 @@ function buscarCodigo(event){
 				console.log("Producto Encontrado");
 				cargarProducto(respuesta.fila);
 				
-				$('#form_agregar_producto')[0].reset();		
+				// $('#form_agregar_producto')[0].reset();		
 			}
 			else{
 				alertify.error('Código no Encontrado');
@@ -95,7 +96,7 @@ function buscarCodigo(event){
 			
 			}).always(function(){
 			
-			input.toggleClass('ui-autocomplete-loading');
+			// input.toggleClass('ui-autocomplete-loading');
 			input.prop('disabled',false);
 			input.focus();
 		});

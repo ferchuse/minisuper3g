@@ -16,31 +16,36 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 		
-		<style>
-			<style>
-				.tabla_totales .row{
-		  	margin-bottom: 10px;
-				}
-				
-				.tab-pane .productos{
-				display: block;
-				overflow: auto;
-				overflow-x: hidden;
-				height: 310px;
-				width: 100%;
-				padding: 10px;				
-				}			
-				
-				.sticky-footer{
-				position: fixed;
-				right: 0;
-				bottom: 0;
-				}
-			</style>  
-		</style>
+		
+		
 		
     <title>Nueva Venta</title>
     <?php include("styles.php");?>
+		
+		<style>
+			.tabla_totales .row{
+			margin-bottom: 10px;
+			}
+			
+			.tab-pane .productos{
+			display: block;
+			overflow: auto;
+			overflow-x: hidden;
+			height: 310px;
+			width: 100%;
+			padding: 10px;				
+			}			
+			
+			.sticky-footer{
+			position: fixed;
+			right: 0;
+			bottom: 0;
+			}
+			.nav-tabs>li.active>a{
+			
+			background-color: #46b8da !important;
+			}
+		</style> 
 	</head>
   <body>
 		
@@ -111,7 +116,7 @@
 					<section id="footer">
 						<div class="row">
 							<div class="col-sm-1 lead">
-								<label>Articulos	</label>
+								<label>Artículos	</label>
 								<input class="form-control articulos" type="number" autocomplete="off" readonly value="0">
 							</div>
 							<div class="col-sm-8 text-right">
@@ -147,8 +152,8 @@
 					<section id="footer">
 						<div class="row">
 							<div class="col-sm-1 lead">
-								<label>Articulos	</label>
-								<input class="form-control articulos" type="number"  autocomplete="off" readonly>
+								<label>Artículos	</label>
+								<input class="form-control articulos" type="number"  autocomplete="off" readonly value="0">
 							</div>
 							<div class="col-sm-8 text-right">
 								

@@ -352,8 +352,12 @@ function guardarVenta(event){
 			alertify.success('Venta Guardada');
 			//Resetea la venta
 			$(".tabla_venta:visible tbody tr").remove();
-			sumarImportes()
+			sumarImportes();
+			
+			$("#modal_pago").modal("hide");
 			//Resetear Nombre de Cliente
+			$(".nav-tabs>li.active input").val("Mostrador");
+			// console.log("Venta Activa", $(".nav-tabs>li.active input").val("Mostrador"));
 			// imprimirTicket( respuesta.id_ventas)
 			
 		}
@@ -568,4 +572,4 @@ function navegarFilas(e){
 	{        
 		$next.focus();
 	}
-}
+	}	

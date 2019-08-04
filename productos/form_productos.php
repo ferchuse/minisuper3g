@@ -6,7 +6,7 @@
 		<div class="col-sm-6">
 			<div class="form-group">
 				<label for="codigo_productos">Codigo de Barras:</label>
-				<input  type="text" class="form-control" name="codigo_productos" id="codigo_productos" placeholder="Opcional">
+				<input  type="text" autofocus class="form-control" name="codigo_productos" id="codigo_productos" placeholder="Opcional">
 			</div>
 			<div class="form-group">
 				<label for="">Descripción:</label>

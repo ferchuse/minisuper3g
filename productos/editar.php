@@ -5,16 +5,16 @@
 	$link = Conectarse();
 	$menu_activo = "productos";
 	
-	if($_GET["accion"] == "nuevo"){
-		$titulo = "Nuevo Producto";
-		$busqueda = "hidden";
-		$form = "";
-	}
-	else{
-		$busqueda = "";
-		$titulo = "Editar Producto";
-		$form = "hidden";
-	}
+	// if($_GET["accion"] == "nuevo"){
+		// $titulo = "Nuevo Producto";
+		// $busqueda = "hidden";
+		// $form = "";
+	// }
+	// else{
+		// $busqueda = "";
+		// $titulo = "Editar Producto";
+		// $form = "hidden";
+	// }
 	
 ?>
 <!DOCTYPE html>
@@ -46,25 +46,36 @@
 				</div>
 			</div>
 			<div class="">
+			<!--
 				<form id="form_agregar_producto" class="<?php echo $busqueda;?>" autocomplete="off">
 					<div class="row">
 						<div class="col-sm-4">
 							<label for="">Código de Barras:</label>
+							<div class="input-group">
+								<input id="buscar_codigo"   type="text" class="form-control" placeholder="ESC" >
+								
+								<span class="input-group-addon"><i class="fas fa-search "></i></span>
+							</div>
 							
-							<input id="buscar_codigo" autofocus  type="text" class="form-control" placeholder="ESC" >
 							
 						</div>
 						<div class="col-sm-6">
 							<div class="form-group">
 								<label for="">Descripción:</label>
-								<input id="buscar_producto"   type="text" class="form-control" placeholder="F10" >
+								<div class="input-group">
+									<input id="buscar_producto"   type="text" class="form-control" placeholder="F10" >
+									<span class="input-group-addon"><i class="fas fa-search "></i></span>
+								</div>
+								
 							</div>
 						</div>
 						
 					</div>
 				</form>
+				-->
+				<hr>
 			</div>
-			</hr>
+			
 			<div id="form" class="<?php echo $form;?>">
 				<?php include('form_productos.php'); ?>
 			</div>
@@ -74,7 +85,7 @@
 		
 		
 		<?php  include('../scripts_carpetas.php'); ?>
-	<script src="editar.js"></script>
-	
-</body>
+		<script src="editar.js"></script>
+		
+	</body>
 </html>
