@@ -16,7 +16,6 @@
 		$form = "hidden";
 	}
 
-	$consulta_codigo = "SELECT * FROM productos WHERE codigo_productos = $codigo"; 
 	
 ?>
 <!DOCTYPE html>
@@ -29,7 +28,7 @@
 			#respuesta_rep{
 			color: red;
 			}
-		</style>
+			</style>
     <title>Productos</title>
 		
 		<?php include("../styles_carpetas.php");?>

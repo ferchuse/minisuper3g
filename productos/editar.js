@@ -30,6 +30,17 @@ $(document).ready( function onLoad(){
 		noSuggestionNotice	: "Sin Resultados"
 	});
 	
+	$("#descripcion_productos").autocomplete({
+		serviceUrl: "productos_autocomplete.php",   
+		onSelect: function(eleccion){
+			console.log("Elegiste: ",eleccion);
+			cargarProducto(eleccion.data);
+		},
+		autoSelectFirst	:true , 
+		showNoSuggestionNotice	:true , 
+		noSuggestionNotice	: "Sin Resultados"
+	});
+	
 	
 	$('#costo_proveedor').keyup(modificarPrecio );
 	$('#ganancia_menudeo_porc').keyup(calculaPrecioVenta );
@@ -223,12 +234,15 @@ function disableFunctionKeys(e) {
 	
 };
 
-function verificarCodigo() {
+function buscarRepetido() {
 	$codigo = $("#codigo_productos").val();
-	$consulta = "EXISTENTE";
-	if ($codigo == $consulta) {
-		alert("¡Código Existe!");
-	}
+	
+	$.ajax({
+		url:"..buscar_normal.php",
+		data:"..buscar_normal.php",
+		
+		
+	}).done();
 }
 
 
