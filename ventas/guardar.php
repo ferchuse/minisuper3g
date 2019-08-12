@@ -7,24 +7,16 @@
 	$listaProductos = $_POST['productos'];
 	$articulos_ventas = $_POST['articulos_ventas'];
 	
-	if(isset($_POST['prestamo_ventas'])){
-		$prestamo_ventas = $_POST['prestamo_ventas'];
-		$estatus = 'PRESTAMO';
-		}else{
-		$prestamo_ventas = '';
-		$estatus = 'PAGADO';
-	}
-	// $tipo_productos = $_POST['tipo_productos'];
-	// $descripcion_productos = $_POST['descripcion_productos'];
-	$total = $_POST['total_ventas'];
+	
 	
 	$insertarVentas = ("INSERT INTO ventas SET
 	id_usuarios = '$id_usuarios',
 	id_turnos = '$id_turnos',
 	fecha_ventas = CURDATE(),
 	hora_ventas = CURTIME(),
+	efectivo = '{$_POST["efectivo"]}',
 	total_ventas = '{$_POST["total_ventas"]}',
-	articulos_ventas = '{$_POST["articulos"]}',
+	articulos = '{$_POST["articulos"]}',
 	estatus_ventas = '$estatus',
 	efectivo_ventas = '{$_POST["total_ventas"]}'
 	");

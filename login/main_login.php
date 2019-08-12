@@ -21,7 +21,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 		
-   
+		
 		
 		<link href="../css/bootstrap.min.css" rel="stylesheet" media="all">
 		<link href="../css/alertify.min.css" rel="stylesheet" media="all"/>
@@ -79,11 +79,18 @@
 									?>
 								</select>
 							</div>
-							<input type="password" name="password" class="form-control " id="password"
-							placeholder="Contraseña" required="" />
-							
-							
-							<div class="pwstrength_viewport_progress"></div>
+							<div class="form-group">
+								<input type="password" name="password" class="form-control " id="password"
+								placeholder="Contraseña" required="" />
+							</div>
+							<div class="form-group">
+								<label for="password">Turno:</label>
+								<input type="number" readonly name="turno" class="form-control " id="turno" placeholder="" required="" />
+							</div>
+							<div class="form-group">
+								<label for="password">Efectivo Inicial:</label>
+								<input type="number" value="0" step="0.01" name="efectivo_inicial" class="form-control " id="efectivo_inicial" placeholder="Efectivo inicial" required="" />
+							</div>
 							
 							
 							<button type="submit" id="btn_login" name="iniciar" class="btn btn-lg btn-primary btn-block">

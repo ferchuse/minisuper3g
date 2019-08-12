@@ -1,5 +1,5 @@
 <form id="form_granel" autocomplete="off">
-	<div id="modal_granel" class="modal fade" role="dialog">
+	<div id="modal_granel" class="modal " role="dialog">
 		<div class="modal-dialog modal-md">
 			
 			<!-- Modal content-->
