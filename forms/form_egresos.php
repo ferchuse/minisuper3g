@@ -7,17 +7,17 @@
 			<div class="modal-content"> 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Egresos</h4>
+					<h4 class="modal-title">Egreso</h4>
 				</div>
 				<div class="modal-body">
 					<form>
 						<div class="form-group">
-							<label for="id_proveedores">ID</label>
-							<input style="margin:10px 0;" readonly type="text" class="form-control" id="id_proveedores" name="id_proveedores" placeholder="">
+							<label for="id_catalogo_egresos">ID</label>
+							<input style="margin:10px 0;" readonly type="text" class="form-control" id="id_catalogo_egresos" name="id_catalogo_egresos" placeholder="">
 						</div>
 						<div class="form-group">
-							<label for="nombre_proveedor">Proveedor</label>
-							<input style="margin:10px 0;" required type="text" class="form-control" id="nombre_proveedor" name="nombre_proveedor" placeholder="">
+							<label for="tipo_egreso">Tipo de Egreso</label>
+							<input style="margin:10px 0;" required type="text" class="form-control" id="tipo_egreso" name="tipo_egreso" placeholder="">
 						</div>
 					</form> 
 				</div>
