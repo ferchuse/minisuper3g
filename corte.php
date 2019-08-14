@@ -4,7 +4,7 @@ include("conexi.php");
 $link = Conectarse();
 
 $consulta = "SELECT * FROM
-(SELECT SUM(total_ventas) AS ventas_totales, SUM(efectivo_ventas) AS ventas_efectivo FROM ventas WHERE estatus_ventas='PAGADO') AS tabla_ventas,
+(SELECT SUM(total_ventas) AS ventas_totales, SUM(efectivo_ventas) AS ventas_efectivo FROM ventas WHERE estatus_ventas='PAGADO' AND id_turnos = {$_COOKIE["turno"]} ) AS tabla_ventas,
 (SELECT SUM(cantidad_ingresos) AS entradas FROM ingresos WHERE estatus_ingresos='ACTIVO') AS tabla_entradas,
 (SELECT SUM(cantidad_egresos) AS salidas FROM egresos WHERE estatus_egresos='ACTIVO') AS tabla_salidas,
 (SELECT SUM(efectivo_ventas) AS devoluciones_efectivo FROM ventas WHERE estatus_ventas='CANCELADO') AS tabla_devoluciones_efectivo,
@@ -36,6 +36,9 @@ while ($fila = mysqli_fetch_assoc($result)) {
 </head>
 
 <body>
+	<pre>
+	<?php# echo $consulta;?>
+	</pre>
     <!-- "Contenedor Corte de Caja" -->
     <div class="container mt-3 mb-4">
         <!-- "Sección" -->

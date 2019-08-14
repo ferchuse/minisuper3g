@@ -1,5 +1,6 @@
 <?php
 	include("login/login_success.php");
+	include("funciones/generar_select.php");
 	include("conexi.php");
 	$link = Conectarse();
 	$menu_activo = "resumen";
@@ -26,7 +27,7 @@
 	
 	
 	$consultar = "SELECT * FROM egresos
-	WHERE fecha_egresos = '$fecha_ventas'
+	WHERE 
 	";
 	$resultados = mysqli_query($link,$consultar);
 	

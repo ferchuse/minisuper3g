@@ -13,7 +13,7 @@
 							
 							<div class="form-group">
 								<label  for="" >Categoria:</label>
-								<input required type="text" class="form-control" name="area_egresos" id="area_egresos">
+								<?php echo generar_select($link, "catalogo_egresos", "id_catalogo_egresos", "tipo_egreso", false, false, true)?>
 							</div>
 							<div class="form-group">
 								<label  for="descripcion_egresos" class="text-center">Descripcion:</label>

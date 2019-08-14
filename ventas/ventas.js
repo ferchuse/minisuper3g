@@ -24,38 +24,88 @@ function cargarPendientes(event){
 	
 }
 
+function cerrarTab(event){
+	
+	id_tab = $(this).closest("li").remove().find("a").attr("href");
+	console.log("borrar tab", id_tab);
+	$(id_tab).remove();
+	//borrar tab();
+}
 function renderPendientes(respuesta){
-	var index = $(".nav-tabs li").length;
+	var tab_index = $(".nav-tabs li").length + 1;
+	console.log("tab_index", tab_index);
 	//Borra contenido anterior
-	// $(".nav-tabs .cremeria").remove();
-	// $(".tab-content .cremeria").remove();
+	$(".nav-tabs .cremeria").remove();
+	$(".tab-content .cremeria").remove();
 	
-	//anexa Tab
-	$(".nav-tabs").append(
-		`<li class="cremeria">
-		<a data-toggle="tab" href="#tab${index + 1}">
-		<span class="close">&times</span>
-		<input class="cliente" value="${respuesta.ventas[0]["nombre_cliente"]}">
+	$.each(respuesta.ventas, function agregaTabs(i, venta){
+		console.log("tab_index", tab_index);
+		$(".nav-tabs").append(
+			`<li class="cremeria">
+			<a data-toggle="tab" href="#tab${tab_index}">
+			<span class="close">&times</span>
+			<input class="cliente" value="${venta["nombre_cliente"]}">
+			
+			</a>
+		</li>`);
 		
-		</a>
-	</li>`);
-	
-	$(".close").click( function cerrarTab(){
-		$(this).closest("li").remove();
+		renderProductos(tab_index, venta);
 		
-	})
-	
-	$("input").focus( function selecciona_input(){
+		tab_index++;
 		
-		$(this).select();
+		$(".nav-tabs .close").click(cerrarTab);
 	});
 	
-	return;
+	//anexa Tab
+	
+	
 	//Anexa contenido del tab
+	console.log("agregando productos");
+}
+
+function renderProductos(tab_index, venta){
+	console.log("venta", venta)
+	console.log("productos", venta.productos)
+	var productos = "";
+	
+	
+	$.each(venta.productos, function(i, producto){
+		productos+= `<tr class="bg-info">
+		<td class="col-sm-1">
+		<input hidden class="id_productos"  value="${producto['id_productos']}">
+		<input hidden class="unidad" value='${producto['unidad_productos']}'>
+		<input hidden class="descripcion" value='${producto['descripcion_productos']}'>
+		<input hidden class="precio_mayoreo" value='${producto['precio_mayoreo']}'>
+		<input hidden class="precio_menudeo" value='${producto['precio_menudeo']}'>
+		<input hidden class="ganancia_porc" value='${producto['ganancia_menudeo_porc']}'>
+		<input hidden class="costo_proveedor" value='${producto['costo_proveedor']}'>
+		<input type="number"  step="any" class="cantidad form-control text-right"  value='${producto['cantidad']}'>
+		</td>
+		<td class="text-center">${producto['unidad_productos']}</td>
+		<td class="text-center">${producto['descripcion_productos']}</td>
+		<td class="col-sm-1"><input readonly type="number" class='precio form-control' value='${producto.precio}'> </td>
+		<td class="col-sm-1">
+		<input readonly type="number" class='importe form-control text-right' value=${producto.importe}>
+		</td>
+		<td class="col-sm-1">	
+		<input class="existencia_anterior form-control" readonly  value='${producto['existencia_productos']}'> 
+		</td>
+		<td class="text-center">
+		<button title="Eliminar Producto" class="btn btn-danger btn_eliminar">
+		<i class="fa fa-trash"></i>
+		</button> 
+		</td>
+		</tr>`;
+		
+		
+	});
+	
+	console.log("productos_html", productos);
+	
 	$(".tab-content").append(
-		`<div id="tab${index + 1}" class="tab-pane cremeria">
+		`<div id="tab${tab_index}" class="tab-pane cremeria">
 		<div class="productos">
-		<table id="tabla_venta" class="tabla_venta table table-bordered table-condensed">
+		<table class="tabla_venta table table-bordered table-condensed">
 		<thead class="bg-success">
 		<tr>
 		<th class="text-center">Cantidad</th>
@@ -68,7 +118,7 @@ function renderPendientes(respuesta){
 		</tr>
 		</thead>
 		<tbody >
-		
+		${productos}
 		</tbody>
 		</table>
 		</div>
@@ -76,7 +126,7 @@ function renderPendientes(respuesta){
 		<div class="row">
 		<div class="col-sm-1 lead">
 		<label>Artículos	</label>
-		<input class="form-control articulos" type="number" autocomplete="off" readonly value="0">
+		<input class="form-control articulos" type="number" autocomplete="off" readonly value="${venta.articulos}">
 		</div>
 		<div class="col-sm-8 text-right">
 		</div>
@@ -84,27 +134,30 @@ function renderPendientes(respuesta){
 		<strong>TOTAL:</strong>
 		</div>
 		<div class="col-sm-2 h1">
-		<input readonly type="text" class="form-control input-lg text-right total" value="0" name="total">
+		<input readonly type="text" class="form-control input-lg text-right total" value="${venta.total_ventas}" name="total">
 		</div>
 		</div>
 		</section>
 		</div>
 	`);
 	
-	// al activar ultima tab agregar los productos
-	$('.nav-tabs a:last').not(".").tab('show').on('shown.bs.tab', function (e) {
-		e.target // newly activated tab
-		e.relatedTarget // previous active tab
-		$.each(respuesta.ventas, function(i, item){
-			agregarProducto(item);
-		});
-	});
-	return ;
-	$.each(respuesta.ventas, function(i, item){
-		agregarProducto(item);
+	
+	//Asigna Callbacks de eventos
+	$(".cantidad").keyup(sumarImportes);
+	$(".cantidad").change(sumarImportes);
+	$(".btn_eliminar").click(eliminarProducto);
+	$('.nav-tabs a').on('shown.bs.tab', function(event){
+		var active = $(event.target).text();         // active tab
+		var previous = $(event.relatedTarget).text();  // previous tab
+		console.log("active",active)
+		console.log("previous",previous)
+		sumarImportes();
 	});
 	
 	
+	$("input").focus( function selecciona_input(){
+		$(this).select();
+	});
 	
 }
 
@@ -125,11 +178,27 @@ $(document).ready( function onLoad(){
 	
 	$('#form_pago').submit(guardarVenta);
 	$('#form_granel').submit(agregarGranel);
-	$('#form_agregar_producto').submit(function(event){
+	$('#btn_pendiente').click( function pedirNombre(event){
 		
-		event.preventDefault();
+		if($(".tabla_venta:visible tbody tr").length == 0){
+			
+			alertify.error('No hay productos');
+			return false;
+		}
+		
+		alertify.prompt( 'Venta Pendiente', 'Nombre del Cliente', 'Mostrador'
+			, function onAccept(evt, value) { 
+				guardarVenta(value);
+				alertify.success('You entered: ' + value)
+				
+			}
+			, function onCancel() { 
+			alertify.error('Cancel') });
+			
 	});
-	
+	$('#form_agregar_producto').submit(function(event){
+		event.preventDefault();
+	})
 	$(document).on('keydown', disableFunctionKeys);
 	
 	alertify.set('notifier','position', 'top-right');
@@ -229,10 +298,10 @@ $(document).ready( function onLoad(){
 	});
 	
 	$("#modal_granel").on("shown.bs.modal", function alMostrarGranel() { 
-    $("#cantidad").focus();
+		$("#cantidad").focus();
 	});
 	$("#modal_pago").on("shown.bs.modal", function alMostrarPago() { 
-    $("#efectivo").focus();
+		$("#efectivo").focus();
 	});
 	
 	$("#cantidad").on("keyup", calcularGranel)
@@ -244,14 +313,14 @@ $(document).ready( function onLoad(){
 	});
 	
 	
-	$('#cerrar_venta').click( function (){
+	$('#cerrar_venta').click( function F12(){
 		if($(".tabla_venta:visible tbody tr").length == 0){
 			
 			alertify.error('No hay productos');
 			return false;
 		}
-		$("#efectivo").focus();
 		$("#modal_pago").modal("show");
+		$("#efectivo").focus();
 	});
 	
 	
@@ -359,8 +428,6 @@ function agregarProducto(producto){
 		
 		$(".tabla_venta:visible tbody").append($fila_producto);
 		
-		
-		
 		//Asigna Callbacks de eventos
 		$(".cantidad").keyup(sumarImportes);
 		$(".cantidad").change(sumarImportes);
@@ -369,8 +436,6 @@ function agregarProducto(producto){
 		});
 		$(".btn_eliminar").click(eliminarProducto);
 		$("#buscar_producto").val("");
-		
-		
 		
 	}
 	
@@ -414,14 +479,16 @@ function sumarImportes(){
 }
 
 function guardarVenta(event){
-	event.preventDefault();
-	console.log("guardarVenta");
+	// event.preventDefault();
+	console.log("guardarVenta", event.type);
+	console.log("event", event);
 	
 	var boton = $(this).find(":submit");
 	var icono = boton.find('.fa');
 	var articulos = $("#tabla_venta tbody tr").size();
 	var productos = [];
-	
+	var estatus_ventas = event.type == "submit" ? "PAGADO" : "PENDIENTE";
+	var nombre_cliente = event.type == "submit" ? "Mostrador" : event;
 	
 	boton.prop('disabled',true);
 	icono.toggleClass('fa-check fa-spinner fa-spin');
@@ -447,8 +514,10 @@ function guardarVenta(event){
 			id_usuarios: $('#id_usuarios').val(),
 			id_turnos:$('#id_turnos').val(),
 			articulos: $(".articulos:visible").val(),
-			productos: productos, 
-			efectivo: $("#efectivo").val(),
+			"productos": productos, 
+			"efectivo": $("#efectivo").val(),
+			"estatus_ventas": estatus_ventas,
+			"nombre_cliente": nombre_cliente.toUpperCase(),
 			total_ventas: $(".total:visible").val()
 		}
 		}).done(function(respuesta){
@@ -503,7 +572,7 @@ function buscar(filtro,table_id,indice) {
 		if (td) {
 			if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
 				tr[i].style.display = "";
-			  } else {
+				} else {
 				tr[i].style.display = "none";
 			}
 		} 
@@ -558,6 +627,8 @@ function disableFunctionKeys(e) {
 		e.preventDefault();
 		
 		console.log("key", e.which)
+		console.log("Tecla", e.key)
+		console.log("Codigo", e.keyCode)
 		
 	}
 	
@@ -571,6 +642,9 @@ function disableFunctionKeys(e) {
 	if(e.key == 'F10'){
 		console.log("F10");
 		$("#buscar_producto").focus()
+	}
+	if(e.key == 'F6'){
+		$("#btn_pendiente").click();
 	}
 	
 	if(e.key == 'F11'){
@@ -671,9 +745,9 @@ function navegarFilas(e){
 		.find(focusableQuery)
 		;
 		break;
-	}       
+	}    
 	if($next && $next.length)
 	{        
 		$next.focus();
 	}
-}	
+}									

@@ -217,8 +217,8 @@
 			</div>
 			<div class="sticky-footer">
 				
-				<button class="btn btn-warning btn-lg" FORM="" id="pendiente">
-					Pendiente
+				<button class="btn btn-warning btn-lg" FORM="" id="btn_pendiente">
+					F6 - Pendiente
 				</button>
 				<button class="btn btn-success btn-lg" FORM="" id="cerrar_venta">
 					F12 - Cobrar

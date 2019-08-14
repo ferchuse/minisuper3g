@@ -9,17 +9,19 @@
 	
 	
 	
-	$insertarVentas = ("INSERT INTO ventas SET
+	$insertarVentas = "INSERT INTO ventas SET
 	id_usuarios = '$id_usuarios',
 	id_turnos = '$id_turnos',
 	fecha_ventas = CURDATE(),
 	hora_ventas = CURTIME(),
-	efectivo = '{$_POST["efectivo"]}',
+	nombre_cliente = '{$_POST["nombre_cliente"]}',
 	total_ventas = '{$_POST["total_ventas"]}',
 	articulos = '{$_POST["articulos"]}',
-	estatus_ventas = '$estatus',
+	estatus_ventas = '{$_POST["estatus_ventas"]}',
 	efectivo_ventas = '{$_POST["total_ventas"]}'
-	");
+	";
+	
+	$respuesta["insertarVentas"] = $insertarVentas;
 	$exec_query = mysqli_query($link,$insertarVentas);
 	
 	if($exec_query){
