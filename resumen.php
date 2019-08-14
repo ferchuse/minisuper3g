@@ -18,6 +18,7 @@
 	while($row_turno = mysqli_fetch_assoc($result_turno)){
 		extract($row_turno);
 	}
+	
 	$consultaVentas = "SELECT * FROM ventas LEFT JOIN usuarios USING(id_usuarios) 
 	WHERE fecha_ventas = '$fecha_ventas' ORDER BY id_ventas DESC
 	";
@@ -59,9 +60,14 @@
 				<div class="col-md-6"> 
 					<?php 	if ($_COOKIE["permiso_usuarios"] == "administrador") {?>
 						<form class="form-inline" id="form_resumen">
+							
 							<div class="form-group">
 								<label>Fecha: </label>
 								<input type="date" class="form-control" value="<?php echo $fecha_ventas;?>" name="fecha_ventas" id="fecha_ventas">
+							</div>
+							<div class="form-group">
+								<label>Turno: </label>
+								<input type="number" class="form-control" value="<?php echo $_COOKIE["turno"];?>" name="id_turnos" id="id_turnos" <?php echo $_COOKIE["permiso_usuarios"] == "administrador" ? "": "readonly";?> >
 							</div>
 						</form>
 						<?php
@@ -238,92 +244,92 @@
 									}
 								?>
 								
-								</div>
-								<div class="panel-footer">
-									<h3>
-										<b>TOTAL:</b>
-										<?php 
-											echo "<strong>" . "$". number_format($egresos, 2) . "</strong>";
-										?>
-									</h3>
-								</div>
+							</div>
+							<div class="panel-footer">
+								<h3>
+									<b>TOTAL:</b>
+									<?php 
+										echo "<strong>" . "$". number_format($egresos, 2) . "</strong>";
+									?>
+								</h3>
 							</div>
 						</div>
-						
-						<div class="row">
-							<div class="col-md-12 text-center hidden-print lead">
-								
-								<b>BALANCE TOTAL:</b>
-								
-								<?php 
-									$balance = $ingresos -$egresos;
-									echo "$". number_format($balance,2);
-								?>
-								<input class="hidden" id="saldo_final" value="<?php echo $balance?>">
-								
-							</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-12 text-center hidden-print lead">
+							
+							<b>BALANCE TOTAL:</b>
+							
+							<?php 
+								$balance = $ingresos -$egresos;
+								echo "$". number_format($balance,2);
+							?>
+							<input class="hidden" id="saldo_final" value="<?php echo $balance?>">
+							
 						</div>
 					</div>
 				</div>
-			</form>
+			</div>
+		</form>
+		
+		
+		
+		<!-- Ticket Resumen -->
+		<div id="resumen" class="visible-print">
 			
-			
-			
-			<!-- Ticket Resumen -->
-			<div id="resumen" class="visible-print">
+			<div style="margin-top: 25px;" class="container-fluid">
 				
-				<div style="margin-top: 25px;" class="container-fluid">
-					
-					<div class="row">
-						<div class="col-xs-7"><strong>Resumen del Día:</strong></div>
-						<div class="col-xs-4 text-right"><?php echo date("d/m/Y")?></div>
-					</div>
-					<div class="row">
-						<div class="col-xs-7"><strong>Hora:</strong></div>
-						<div class="col-xs-4 text-right"><?php echo date("H:i:s")?></div>
-					</div>
-					<div class="row">
-						<div class="col-xs-7"><strong>Usuario:</strong></div>
-						<div class="col-xs-4 text-right"><?php echo $_COOKIE["nombre_usuarios"];?></div>
-					</div>
-					<div class="row">
-						<div class="col-xs-7"><strong>Número de Ventas:</strong></div>
-						<div class="col-xs-4 text-right"><?php echo $num_ventas;?></div>
-					</div>
-					<div class="row">
-						<div class="col-xs-7"><strong>Importe de Ventas:</strong></div>
-						<div class="col-xs-4 text-right"><?php echo "$". number_format($ingresos, 2);?></div>
-					</div>
-					<div class="row">
-						<div class="col-xs-7"><strong>Egresos:</strong></div>
-						<div class="col-xs-4 text-right"><?php echo "$". number_format($egresos, 2);?></div>
-					</div>
-					<div class="row">
-						<div class="col-xs-7"><strong>Total:</strong></div>
-						<div class="col-xs-4 text-right"><?php echo "$". number_format($balance, 2);?></div>
-					</div>
-					
+				<div class="row">
+					<div class="col-xs-7"><strong>Resumen del Día:</strong></div>
+					<div class="col-xs-4 text-right"><?php echo date("d/m/Y")?></div>
+				</div>
+				<div class="row">
+					<div class="col-xs-7"><strong>Hora:</strong></div>
+					<div class="col-xs-4 text-right"><?php echo date("H:i:s")?></div>
+				</div>
+				<div class="row">
+					<div class="col-xs-7"><strong>Usuario:</strong></div>
+					<div class="col-xs-4 text-right"><?php echo $_COOKIE["nombre_usuarios"];?></div>
+				</div>
+				<div class="row">
+					<div class="col-xs-7"><strong>Número de Ventas:</strong></div>
+					<div class="col-xs-4 text-right"><?php echo $num_ventas;?></div>
+				</div>
+				<div class="row">
+					<div class="col-xs-7"><strong>Importe de Ventas:</strong></div>
+					<div class="col-xs-4 text-right"><?php echo "$". number_format($ingresos, 2);?></div>
+				</div>
+				<div class="row">
+					<div class="col-xs-7"><strong>Egresos:</strong></div>
+					<div class="col-xs-4 text-right"><?php echo "$". number_format($egresos, 2);?></div>
+				</div>
+				<div class="row">
+					<div class="col-xs-7"><strong>Total:</strong></div>
+					<div class="col-xs-4 text-right"><?php echo "$". number_format($balance, 2);?></div>
 				</div>
 				
 			</div>
 			
-			<div id="Pago" class="visible-print">
-			</div>
-			
-			
-			<div id="ver_venta" >
-			</div>
-			
-			
-			<?php include('forms/modal_egresos.php');?>
-			
-			
-			<?php  include('scripts.php'); ?>
-			<script src="js/resumen.js"></script>
-			<script src="js/pagos.js"></script>
-			<script src="js/numerosLetras.js"></script>
-			<script src="js/modal_egresos.js"></script> 
-			
-			
-			</body>
-		</html>																																															
+		</div>
+		
+		<div id="Pago" class="visible-print">
+		</div>
+		
+		
+		<div id="ver_venta" >
+		</div>
+		
+		
+		<?php include('forms/modal_egresos.php');?>
+		
+		
+		<?php  include('scripts.php'); ?>
+		<script src="js/resumen.js"></script>
+		<script src="js/pagos.js"></script>
+		<script src="js/numerosLetras.js"></script>
+		<script src="js/modal_egresos.js"></script> 
+		
+		
+	</body>
+</html>																																															

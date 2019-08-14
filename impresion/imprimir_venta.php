@@ -2,6 +2,7 @@
 	
 	include('../conexi.php');
 	include('../funciones/numero_a_letras.php');
+	$nombre_empresa = "MINISUPER 3G";
 	
 	$link = Conectarse();
 	$consulta = "SELECT * FROM ventas
@@ -26,7 +27,7 @@
 		
 		<!-- Datos Empresa -->
 		<div class="row">
-			<p class="font-14-5 col-xs-12 text-center"><strong>DULCERÍA PINGOS</strong></p>
+			<p class="font-14-5 col-xs-12 text-center"><strong><?php echo $nombre_empresa;?></strong></p>
 		</div>
 		
 		<!-- Datos Venta -->

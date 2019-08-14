@@ -11,12 +11,116 @@ function DecimalRound(DValue, DPrecision){
 	return Math.round(DValue / DPrecision) * DPrecision;
 }
 
+function cargarPendientes(event){
+	console.log("cargarPendientes");
+	console.log("tabs", $(".nav-tabs .cremeria").length);
+	console.log("content", $(".tab-content .cremeria").length);
+	
+	$.ajax({
+		url: "funciones/ventas_pendientes.php",
+		dataType: "JSON"
+	})
+	.done(renderPendientes);
+	
+}
+
+function renderPendientes(respuesta){
+	var index = $(".nav-tabs li").length;
+	//Borra contenido anterior
+	// $(".nav-tabs .cremeria").remove();
+	// $(".tab-content .cremeria").remove();
+	
+	//anexa Tab
+	$(".nav-tabs").append(
+		`<li class="cremeria">
+		<a data-toggle="tab" href="#tab${index + 1}">
+		<span class="close">&times</span>
+		<input class="cliente" value="${respuesta.ventas[0]["nombre_cliente"]}">
+		
+		</a>
+	</li>`);
+	
+	$(".close").click( function cerrarTab(){
+		$(this).closest("li").remove();
+		
+	})
+	
+	$("input").focus( function selecciona_input(){
+		
+		$(this).select();
+	});
+	
+	return;
+	//Anexa contenido del tab
+	$(".tab-content").append(
+		`<div id="tab${index + 1}" class="tab-pane cremeria">
+		<div class="productos">
+		<table id="tabla_venta" class="tabla_venta table table-bordered table-condensed">
+		<thead class="bg-success">
+		<tr>
+		<th class="text-center">Cantidad</th>
+		<th class="text-center">Unidad</th>
+		<th class="text-center">Descripcion del Producto</th>
+		<th class="text-center">Precio Unitario</th>
+		<th class="text-center">Importe</th>
+		<th class="text-center">Existencia</th>
+		<th class="text-center">Acciones</th>
+		</tr>
+		</thead>
+		<tbody >
+		
+		</tbody>
+		</table>
+		</div>
+		<section id="footer">
+		<div class="row">
+		<div class="col-sm-1 lead">
+		<label>Artículos	</label>
+		<input class="form-control articulos" type="number" autocomplete="off" readonly value="0">
+		</div>
+		<div class="col-sm-8 text-right">
+		</div>
+		<div class="col-sm-1 h2">
+		<strong>TOTAL:</strong>
+		</div>
+		<div class="col-sm-2 h1">
+		<input readonly type="text" class="form-control input-lg text-right total" value="0" name="total">
+		</div>
+		</div>
+		</section>
+		</div>
+	`);
+	
+	// al activar ultima tab agregar los productos
+	$('.nav-tabs a:last').not(".").tab('show').on('shown.bs.tab', function (e) {
+		e.target // newly activated tab
+		e.relatedTarget // previous active tab
+		$.each(respuesta.ventas, function(i, item){
+			agregarProducto(item);
+		});
+	});
+	return ;
+	$.each(respuesta.ventas, function(i, item){
+		agregarProducto(item);
+	});
+	
+	
+	
+}
+
 console.log(DecimalRound(10.26, 2))
 console.log(DecimalRound(10.26, .5))
 
 $(document).ready( function onLoad(){
+	
+	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+		e.target // newly activated tab
+		e.relatedTarget // previous active tab
+	})
+	
 	$('#mayoreo').change(aplicarMayoreo);
 	$('.bg-info').keydown(navegarFilas);
+	$('#btn_refresh').click(cargarPendientes);
 	
 	
 	$('#form_pago').submit(guardarVenta);
@@ -572,4 +676,4 @@ function navegarFilas(e){
 	{        
 		$next.focus();
 	}
-	}	
+}	
