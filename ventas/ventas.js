@@ -32,6 +32,12 @@ function cerrarTab(event){
 	//borrar tab();
 }
 function renderPendientes(respuesta){
+	if(respuesta.num_filas == 0){
+		alertify.warning("No hay Ventas Pendientes");
+		return ;
+		
+	}
+	
 	var tab_index = $(".nav-tabs li").length + 1;
 	console.log("tab_index", tab_index);
 	//Borra contenido anterior
@@ -45,7 +51,7 @@ function renderPendientes(respuesta){
 			<a data-toggle="tab" href="#tab${tab_index}">
 			<span class="close">&times</span>
 			<input class="cliente" value="${venta["nombre_cliente"]}">
-			
+			<input type="hidden" class="id_ventas" value="${venta["id_ventas"]}">
 			</a>
 		</li>`);
 		
@@ -487,8 +493,17 @@ function guardarVenta(event){
 	var icono = boton.find('.fa');
 	var articulos = $("#tabla_venta tbody tr").size();
 	var productos = [];
-	var estatus_ventas = event.type == "submit" ? "PAGADO" : "PENDIENTE";
-	var nombre_cliente = event.type == "submit" ? "Mostrador" : event;
+	// Si el evento es por F12 cobrar o F4 Pendiente
+	if(event.type == "submit"){
+		var estatus_ventas ="PAGADO" ;
+		var nombre_cliente =  $(".nav-tabs input").val();
+		event.preventDefault();
+	}
+	else{
+		var estatus_ventas ="PENDIENTE" ;
+		var nombre_cliente =  event;
+		
+	}
 	
 	boton.prop('disabled',true);
 	icono.toggleClass('fa-check fa-spinner fa-spin');
@@ -511,6 +526,7 @@ function guardarVenta(event){
 		method: 'POST',
 		dataType: 'JSON',
 		data:{
+			id_ventas: $('.nav-tabs li.active').find(".id_ventas").val(),
 			id_usuarios: $('#id_usuarios').val(),
 			id_turnos:$('#id_turnos').val(),
 			articulos: $(".articulos:visible").val(),
@@ -622,7 +638,7 @@ function afterPrint() {
 
 
 function disableFunctionKeys(e) {
-	var functionKeys = new Array(112, 113, 114, 115, 117, 118, 119, 120, 121, 122, 123);
+	var functionKeys = new Array(112, 113, 114, 115,117, 118, 119, 120, 121, 122, 123);
 	if (functionKeys.indexOf(e.keyCode) > -1 || functionKeys.indexOf(e.which) > -1) {
 		e.preventDefault();
 		
@@ -645,6 +661,9 @@ function disableFunctionKeys(e) {
 	}
 	if(e.key == 'F6'){
 		$("#btn_pendiente").click();
+	}
+	if(e.key == 'F4'){
+		$("#btn_refresh").click();
 	}
 	
 	if(e.key == 'F11'){

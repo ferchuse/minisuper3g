@@ -67,18 +67,23 @@
 						</div>
 					</div>
 				</form>
-				<div class="col-md-4">
-					<div class="form-group">
-						<label>
-							<input type="checkbox" id="mayoreo">
-							F11 Mayoreo
-							</>
-						</label>
+				<?php if($_COOKIE["permiso_usuarios"] != "mostrador"){?>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>
+								<input type="checkbox" id="mayoreo">
+								F11 Mayoreo
+								
+							</label>
+							<button class="btn btn-info pull-right" id="btn_refresh">
+								<i class="fa fa-sync"></i> F4 - Cremeria
+							</button>
+						</div>
+						
 					</div>
-					<button class="btn btn-info pull-right" id="btn_refresh">
-						<i class="fa fa-sync"></i>
-					</button>
-				</div>
+					<?php
+					}
+				?>
 			</div>
 			
 			<hr>
@@ -86,20 +91,23 @@
 				<li class="active">
 					<a data-toggle="tab" href="#tab1">
 						<input class="cliente" value="Mostrador" >
+						<input type="hidden" class="id_ventas" value="">
 					</a>
 				</li>
 				<li>
 					<a data-toggle="tab" href="#tab2">
 						<input class="cliente" value="Cliente 2">
+						<input type="hidden" class="id_ventas" value="">
 					</a>
 				</li>
-			
+				
 				<li>
 					<a data-toggle="tab" href="#tab3">
 						<input class="cliente" value="Cliente 3">
+						<input type="hidden" class="id_ventas" value="">
 					</a>
 				</li>
-			
+				
 			</ul>
 			
 			<div class="tab-content">
@@ -220,9 +228,14 @@
 				<button class="btn btn-warning btn-lg" FORM="" id="btn_pendiente">
 					F6 - Pendiente
 				</button>
-				<button class="btn btn-success btn-lg" FORM="" id="cerrar_venta">
-					F12 - Cobrar
-				</button>
+				<?php if ($_COOKIE["permiso_usuarios"] != "mostrador" ){?>
+					<button class="btn btn-success btn-lg" FORM="" id="cerrar_venta">
+						F12 - Cobrar
+					</button>
+					<?php
+						
+					}
+				?>
 			</div>
 		</div>
 		
@@ -239,4 +252,4 @@
 		<script src="ventas/ventas.js"></script>
 		
 	</body>
-</html>				
+</html>					

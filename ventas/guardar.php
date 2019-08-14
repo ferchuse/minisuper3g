@@ -10,6 +10,7 @@
 	
 	
 	$insertarVentas = "INSERT INTO ventas SET
+	id_ventas = '{$_POST["id_ventas"]}',
 	id_usuarios = '$id_usuarios',
 	id_turnos = '$id_turnos',
 	fecha_ventas = CURDATE(),
@@ -19,6 +20,19 @@
 	articulos = '{$_POST["articulos"]}',
 	estatus_ventas = '{$_POST["estatus_ventas"]}',
 	efectivo_ventas = '{$_POST["total_ventas"]}'
+	
+	ON DUPLICATE KEY UPDATE
+	
+	id_usuarios = '$id_usuarios',
+	id_turnos = '$id_turnos',
+	fecha_ventas = CURDATE(),
+	hora_ventas = CURTIME(),
+	nombre_cliente = '{$_POST["nombre_cliente"]}',
+	total_ventas = '{$_POST["total_ventas"]}',
+	articulos = '{$_POST["articulos"]}',
+	estatus_ventas = '{$_POST["estatus_ventas"]}',
+	efectivo_ventas = '{$_POST["total_ventas"]}'
+	
 	";
 	
 	$respuesta["insertarVentas"] = $insertarVentas;
@@ -36,6 +50,9 @@
 		$respuesta["mensaje_venta"] = "Error en Insertar: $insertarVentas  ".mysqli_error($link);	
 		$respuesta["insertarVentas"] = $insertarVentas;
 	}
+	
+	
+	//borrar productos de la venta si ya existe
 	
 	foreach($listaProductos as $indice => $producto){
 		 
