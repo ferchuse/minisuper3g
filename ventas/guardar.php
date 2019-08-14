@@ -53,6 +53,10 @@
 	
 	
 	//borrar productos de la venta si ya existe
+	$borra_productos ="DELETE FROM ventas_detalle WHERE id_ventas = '{$_POST["id_ventas"]}'";
+	$exec_query = mysqli_query($link,$borra_productos);
+	
+	
 	
 	foreach($listaProductos as $indice => $producto){
 		 

@@ -195,7 +195,7 @@ $(document).ready( function onLoad(){
 		alertify.prompt( 'Venta Pendiente', 'Nombre del Cliente', 'Mostrador'
 			, function onAccept(evt, value) { 
 				guardarVenta(value);
-				alertify.success('You entered: ' + value)
+				// alertify.success('You entered: ' + value)
 				
 			}
 			, function onCancel() { 
@@ -500,6 +500,7 @@ function guardarVenta(event){
 		event.preventDefault();
 	}
 	else{
+		console.log("Pendiente");
 		var estatus_ventas ="PENDIENTE" ;
 		var nombre_cliente =  event;
 		
