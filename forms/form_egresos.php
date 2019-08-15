@@ -7,7 +7,7 @@
 			<div class="modal-content"> 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Egreso</h4>
+					<h4 class="modal-title">Nuevo Egreso</h4>
 				</div>
 				<div class="modal-body">
 					<form>
@@ -16,7 +16,7 @@
 							<input style="margin:10px 0;" readonly type="text" class="form-control" id="id_catalogo_egresos" name="id_catalogo_egresos" placeholder="">
 						</div>
 						<div class="form-group">
-							<label for="tipo_egreso">Tipo de Egreso</label>
+							<label for="tipo_egreso">Egreso</label>
 							<input style="margin:10px 0;" required type="text" class="form-control" id="tipo_egreso" name="tipo_egreso" placeholder="">
 						</div>
 					</form> 

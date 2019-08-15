@@ -1,4 +1,4 @@
-.container {
+.encabezado {
     margin-top: 25px;
 }
 
@@ -11,7 +11,7 @@
     padding-top: 3px;
     border-left-style: solid;
     border-left-color: green;
-    border-left-width: 6px;
+    border-left-width: 5px;
 }
 
 .encabezados, .contenido {
