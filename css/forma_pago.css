@@ -1,0 +1,9 @@
+
+.total .valor {
+    height: 43px;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    color:green;
+    border-color: green;
+}
