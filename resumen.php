@@ -377,7 +377,7 @@
 			
 		</div>
 		
-		<div id="ticket" class="visible-print">
+		<div id="Pago" class="visible-print">
 		</div>
 		
 		

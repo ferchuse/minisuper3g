@@ -18,9 +18,10 @@
 	
 ?>
 
+<?php include("../styles.php"); ?>
 
 <!-- Ticket -->
-<section style="margin-top: 25px; margin-bottom: 3px;" class="container ticket">
+<section style="margin-top: 15px; margin-bottom: 3px;" class="container ticket">
 	
 	<!-- Encabezado Ticket-->
 	<section>
