@@ -181,7 +181,7 @@
 											case 'PAGADO':
 											$fondo = "bg-success";
 											$total_efectivo+= $efectivo;
-											$tarjeta+= $tarjeta;	
+											$total_tarjeta+= $tarjeta;	
 											$total+= $total_ventas;
 											break;
 										}
