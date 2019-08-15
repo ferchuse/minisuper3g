@@ -249,9 +249,13 @@ $(document).ready( function onLoad(){
 	
 	$('#codigo_producto').keypress( function buscarCodigo(event){
 		if(event.which == 13){
+			if($(this).val() == ""){
+				alertify.error("Escribe un Código");
+				return;
+			}
 			console.log("buscarCodigo()");
 			var input = $(this);
-			input.prop('disabled',true);
+			// input.prop('disabled',true);
 			input.toggleClass('ui-autocomplete-loading');
 			var codigoProducto = $(this).val();
 			$.ajax({
@@ -260,40 +264,33 @@ $(document).ready( function onLoad(){
 				method: 'POST',
 				data: {tabla:'productos', campo:'codigo_productos', id_campo: codigoProducto}
 				}).done(function terminabuscarCodigo(respuesta){
-				try{
-					if(respuesta.numero_filas >= 1){
-						console.log("Producto Encontrado");
-						producto_elegido = respuesta.fila;
+				
+				if(respuesta.numero_filas >= 1){
+					console.log("Producto Encontrado");
+					producto_elegido = respuesta.fila;
+					
+					if(producto_elegido.unidad_productos == 'PZA'){//Si el producto se vende por pieza
 						
-						if(producto_elegido.unidad_productos == 'PZA'){//Si el producto se vende por pieza
-							
-							producto_elegido.importe= producto_elegido.precioventa_menudeo_productos;
-							producto_elegido.cantidad=1 ;
-							agregarProducto(producto_elegido);
-							$("#codigo_producto").focus();
-							
-						}
-						else if(producto_elegido.unidad_productos == 'KG'){ //Si el producto se vende a granel
-							$('#modal_granel').modal('show');
-							
-							$('#unidad_granel').val(1);
-							$('#costo_granel').val(producto_elegido.precio_menudeo);
-							$('#costoventa_granel').text('$ '+ producto_elegido.precioventa_menudeo_productos);
-							
-							
-							
-						}
-						$('#form_agregar_producto')[0].reset();		
+						producto_elegido.importe= producto_elegido.precioventa_menudeo_productos;
+						producto_elegido.cantidad=1 ;
+						agregarProducto(producto_elegido);
+						$("#codigo_producto").focus();
+						
 					}
-					else{
-						alertify.error('Código no Encontrado');
+					else if(producto_elegido.unidad_productos == 'KG'){ //Si el producto se vende a granel
+						$('#modal_granel').modal('show');
+						
+						$('#unidad_granel').val(1);
+						$('#costo_granel').val(producto_elegido.precio_menudeo);
+						$('#costoventa_granel').text('$ '+ producto_elegido.precioventa_menudeo_productos);
+						
 					}
+					$('#form_agregar_producto')[0].reset();		
 				}
-				catch(error){
-					alertify.error("Error" + error);
-					
-					
+				else{
+					alertify.error('Código no Encontrado');
 				}
+				
 				}).always(function(){
 				
 				input.toggleClass('ui-autocomplete-loading');
@@ -575,35 +572,6 @@ $("input").focus(function(){
 
 
 
-
-function buscar(filtro,table_id,indice) {
-	// Declare variables 
-	var  filter, table, tr, td, i;
-	filter = filtro.toUpperCase();
-	table = document.getElementById(table_id);
-	tr = table.getElementsByTagName("tr");
-	
-	// Loop through all table rows, and hide those who don't match the search query
-	for (i = 0; i < tr.length; i++) {
-		td = tr[i].getElementsByTagName("td")[indice];
-		if (td) {
-			if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-				tr[i].style.display = "";
-				} else {
-				tr[i].style.display = "none";
-			}
-		} 
-	}
-	var num_rows = $(table).find('tbody tr:visible').length; 
-	return num_rows;
-}
-
-// $("#buscar").on("keyup", function buscarProducto(event) {
-// var value = $(this).val().toLowerCase();
-// $(".buscar").filter(function() {
-// $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-// });
-// });
 
 
 

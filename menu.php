@@ -48,22 +48,22 @@
 						</ul>
 					</li>
 					
-				<li class="dropdown <?php echo $menu_activo == "productos" ? "active" : ''; ?>">
+					<li class="dropdown <?php echo $menu_activo == "productos" ? "active" : ''; ?>">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							<i class="fas fa-list"></i> Productos <strong class="caret"></strong>
 						</a>
 						<ul class="dropdown-menu">
 							<li>
 								<a href="productos/editar.php?accion=nuevo">
-										<i class="fas fa-plus"></i> Nuevo</a>
+								<i class="fas fa-plus"></i> Nuevo</a>
 							</li>
 							<li>
 								<a href="productos/editar.php?accion=editar">
-										<i class="fas fa-edit"></i> Editar</a>
+								<i class="fas fa-edit"></i> Editar</a>
 							</li>
 							<li>
 								<a href="productos/catalogo.php">
-										<i class="fas fa-file-alt"></i> Catálogo</a>
+								<i class="fas fa-file-alt"></i> Catálogo</a>
 							</li>
 						</ul>
 					</li>
@@ -82,7 +82,7 @@
 								<a href="egresos.php"><i class="fas fa-file-alt"></i> Egresos</a>
 							</li>
 						</ul>
-						</li>
+					</li>
 					
 					<?php
 					}
@@ -119,13 +119,8 @@
 					<?php
 					}
 				?>
-				<li hidden class="hidden">
-					<a href="#">
-						<i class="fas fa-clock"></i> Turno:
-						<span id="turno_span"></span>
-						<input type="hidden" id="id_turnos">
-					</a>
-				</li>
+				
+				
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<i class="fa fa-user"></i>
@@ -134,6 +129,7 @@
 						</span>
 						<strong class="caret"></strong>
 						<input type="hidden" id="id_usuarios" value="<?php echo isset($_COOKIE["id_usuarios"]) ? $_COOKIE["id_usuarios"] : ""; ?>">
+						
 					</a>
 					<ul class="dropdown-menu">
 						<li>

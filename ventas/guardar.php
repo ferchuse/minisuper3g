@@ -19,7 +19,7 @@
 	total_ventas = '{$_POST["total_ventas"]}',
 	articulos = '{$_POST["articulos"]}',
 	estatus_ventas = '{$_POST["estatus_ventas"]}',
-	efectivo_ventas = '{$_POST["total_ventas"]}'
+	efectivo = '{$_POST["efectivo"]}'
 	
 	ON DUPLICATE KEY UPDATE
 	
@@ -31,7 +31,7 @@
 	total_ventas = '{$_POST["total_ventas"]}',
 	articulos = '{$_POST["articulos"]}',
 	estatus_ventas = '{$_POST["estatus_ventas"]}',
-	efectivo_ventas = '{$_POST["total_ventas"]}'
+	efectivo = '{$_POST["efectivo"]}'
 	
 	";
 	
@@ -45,7 +45,8 @@
 		
 		$id_ventas = mysqli_insert_id($link);
 		$respuesta["id_ventas"] = $id_ventas;
-		}else{
+		}
+	else{
 		$respuesta["estatus_venta"] = "error";
 		$respuesta["mensaje_venta"] = "Error en Insertar: $insertarVentas  ".mysqli_error($link);	
 		$respuesta["insertarVentas"] = $insertarVentas;

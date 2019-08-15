@@ -248,6 +248,17 @@
 		<?php include('forms/modal_granel.php'); ?>
 		
 		<?php  include('scripts.php'); ?>
+			<script>
+			$.getScript('https://luke-chang.github.io/js-spatial-navigation/spatial_navigation.js', function() {
+				$('.cliente')
+				.SpatialNavigation()
+				.focus(function() { $(this).addClass("bg-info"); })
+				.blur(function() { $(this).removeClass('bg-info'); })
+				.first()
+				.focus();
+			});
+		</script>
+		
 		
 		<script src="ventas/ventas.js"></script>
 		
