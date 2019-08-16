@@ -45,6 +45,8 @@ $num_rows = mysqli_num_rows($result);
 		}
 	</style>
 	<link rel="stylesheet" href="css/forma_pago.css">
+	<link rel="stylesheet" href="css/b4-margin-padding.css">
+	<link rel="stylesheet" href="css/b4-radios.css">
 </head>
 
 <body>

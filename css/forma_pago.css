@@ -1,9 +1,27 @@
 
 .total .valor {
-    height: 43px;
-    font-size: 22px;
+    height: 45px;
+    font-size: 22.5px;
     font-weight: bold;
     text-align: center;
-    color:green;
+    color:black;
+    background-color: white;
+    border-color:grey;
+    border-style:solid;
+}
+
+.cambio .valor {
+    color: green;
+    font-weight: bold;
+    background-color: white;
     border-color: green;
 }
+
+.porcentaje .valor {
+    background-color: white;
+}
+
+.comision .valor {
+    background-color: white;
+}
+

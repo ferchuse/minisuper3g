@@ -739,3 +739,23 @@ function navegarFilas(e){
 		$next.focus();
 	}
 }									
+
+// Calcular Cambio Pestaña "Efectivo"
+$("#efectivo").keyup(function (){
+	let total = $("#total_pago").val();
+	let efectivo = $("#efectivo").val();
+	console.log(total);
+	console.log(efectivo);
+	let cambio = efectivo - total;
+	$("#cambio").val(cambio);
+});
+
+// Calcular Comisión Pestaña "Tarjeta" (PENDIENTE)
+function CalcularComision (){
+	// $("#total_pago").val();
+	let debito = $("#debito").val();
+	let credito = $("#credito").val();
+	alert(this.value);
+	// let cambio = efectivo - total;
+	// $("#cambio").val(cambio);
+};
