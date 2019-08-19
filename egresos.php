@@ -3,7 +3,7 @@
 include("login/login_success.php");
 include("conexi.php");
 $link = Conectarse();
-$menu_activo = "egresos";
+$menu_activo = "catalogos";
 $consulta = "SELECT * FROM catalogo_egresos";
 $result = mysqli_query($link, $consulta);
 
@@ -24,15 +24,16 @@ if ($result) {
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+
 	<title>Catálogo Egresos</title>
 
 	<!-- Fonts & Styles -->
 	<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 	<?php include("styles.php") ?>
-	<link rel="stylesheet" href="css/egresos.css">
+	<link rel="stylesheet" href="css/catalogos.css">
 </head>
 
-<body>
+<body class="egresos">
 	<!-- "Menú" -->
 	<div class="menu container-fluid">
 		<?php include("menu.php"); ?>
@@ -48,17 +49,17 @@ if ($result) {
 		<!-- Botón: Modal Egresos -->
 		<div class="col-md-12 text-right">
 			<button id="nuevo" type="button" class="btn btn-primary">
-				<i class="fa fa-plus"></i><span> Egreso</span>
+				<i class="fa fa-plus"></i><strong> Egreso</strong>
 			</button>
 		</div>
 	</section>
-
+	<br>
 	<!-- Tabla Egresos -->
 	<section class="container">
 		<table class="table table-hover table-bordered">
 			<tr class="encabezados success">
 				<td><strong>ID</strong></td>
-				<td><strong>Tipo de Egreso</strong></td>
+				<td><strong>Egreso</strong></td>
 				<td><strong>Acciones</strong></td>
 			</tr>
 
@@ -91,8 +92,9 @@ if ($result) {
 
 <script>
 	$("#nuevo").click(function() {
+		$("#id_catalogo_egresos").val("");
+		$("#tipo_egreso").val("");
 		$("#modal_edicion").modal("show")
-
 	});
 
 	$("#form_edicion").submit(guardarRegistro);
