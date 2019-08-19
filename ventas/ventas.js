@@ -172,6 +172,8 @@ console.log(DecimalRound(10.26, .5))
 
 $(document).ready( function onLoad(){
 	
+	$("btn_refresh").click();
+	
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 		e.target // newly activated tab
 		e.relatedTarget // previous active tab
