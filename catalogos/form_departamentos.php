@@ -14,7 +14,7 @@
 						</div>
 						<div class="form-group">
 							<label for="nombre_departamentos">Departamento</label>
-							<input style="margin:10px 0;" required type="text" class="form-control" id="nombre_departamentos" name="nombre_departamentos" placeholder="">
+							<input autofocus required type="text" class="form-control" id="nombre_departamentos" name="nombre_departamentos" placeholder="">
 						</div>
 					</form>
 				</div>

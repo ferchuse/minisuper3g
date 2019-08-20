@@ -1,6 +1,8 @@
 <?php
+		HEADER("Content-Type:: application/json");
     include ('../conexi.php');
     $link = Conectarse();
+    $respuesta = array();
     $tabla = $_POST["tabla"];
     $id_registro = $_POST["id_campo"];
     $name = $_POST["name"];
@@ -16,9 +18,15 @@
     $result = mysqli_query($link, $query);
    
     if($result){
-      echo "Se guardó correctamente";
+			
+       $respuesta["estatus"] = "success";
+       $respuesta["mensaje"] = "Se guardó correctamente";
     }
     else{ 
-      die("Error en la consulta $query". mysqli_error($link));		
+			$respuesta["estatus"] = "error";
+			$respuesta["consulta"] = $query;
+       $respuesta["mensaje"] = mysqli_error($link);
+      	
     }
+		echo json_encode($respuesta);
 ?>
