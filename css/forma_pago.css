@@ -4,9 +4,20 @@
     font-size: 22.5px;
     font-weight: bold;
     text-align: center;
-    color:black;
+    color:#007bff;
     background-color: white;
-    border-color:grey;
+    border-color:#007bff;
+    border-style:solid;
+}
+
+.efectivo .valor {
+    height: 45px;
+    font-size: 22.5px;
+    font-weight: bold;
+    text-align: center;
+    color:#007bff;
+    background-color: white;
+    border-color:#007bff;
     border-style:solid;
 }
 

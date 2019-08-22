@@ -23,19 +23,26 @@
 						<!-- "Ventana: Efectivo" -->
 						<div id="ventana_efectivo" class="tab-pane fade in active">
 							<!-- "Total" -->
-							<div class="total row">
+							<div hidden class="total row">
 								<div class="col-sm-12">
 									<input readonly id="total_pago" value="0" type="number" class="valor form-control" name="total_pago">
 								</div>
 							</div>
 
 							<!-- "Efectivo" -->
-							<div class="efectivo row mt-4">
+							<div class="efectivo row">
+								<div class="col-sm-12">
+									<input readonly id="efectivo" value="0" type="number" class="valor form-control" name="efectivo">
+								</div>
+							</div>
+
+							<!-- "Pago" -->
+							<div class="pago row mt-4">
 								<div class="col-sm-6">
 									<label>Se Recibe: </label>
 								</div>
 								<div class="col-sm-6">
-									<input id="efectivo" step=".5" type="number" class="valor form-control" name="efectivo">
+									<input id="pago" step=".5" type="number" class="valor form-control" name="pago">
 								</div>
 							</div>
 

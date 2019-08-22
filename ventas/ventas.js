@@ -325,7 +325,7 @@ $(document).ready( function onLoad(){
 			return false;
 		}
 		$("#modal_pago").modal("show");
-		$("#efectivo").focus();
+		$("#pago").focus();
 	});
 	
 	
@@ -743,12 +743,12 @@ function navegarFilas(e){
 }									
 
 // Calcular Cambio Pestaña "Efectivo"
-$("#efectivo").keyup(function (){
+$("#pago").keyup(function (){
 	let total = $("#total_pago").val();
-	let efectivo = $("#efectivo").val();
+	let pago = $("#pago").val();
 	console.log(total);
-	console.log(efectivo);
-	let cambio = efectivo - total;
+	console.log(pago);
+	let cambio = pago - total;
 	$("#cambio").val(cambio);
 });
 
