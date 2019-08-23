@@ -88,23 +88,23 @@ $num_rows = mysqli_num_rows($result);
 		</div>
 
 		<hr>
-		<ul class="nav nav-tabs" style="margin: 10px 0 10px 0; font-color: black !important">
+		<ul id="tabs_ventas" class="nav nav-tabs" style="margin: 10px 0 10px 0;">
 			<li class="active">
 				<a data-toggle="tab" href="#tab1">
-					Mostrador
+					<span>Mostrador<span>
 					<input type="hidden" class="id_ventas" value="">
 				</a>
 			</li>
 			<li>
 				<a data-toggle="tab" href="#tab2">
-					Cliente 2
+					<span>Cliente 2</span>
 					<input type="hidden" class="id_ventas" value="">
 				</a>
 			</li>
 
 			<li>
 				<a data-toggle="tab" href="#tab3">
-					Cliente 3
+					<span>Cliente 3</span>
 					<input type="hidden" class="id_ventas" value="">
 				</a>
 			</li>

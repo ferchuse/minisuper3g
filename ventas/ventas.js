@@ -13,7 +13,7 @@ function DecimalRound(DValue, DPrecision){
 
 function cargarPendientes(event){
 	console.log("cargarPendientes");
-	console.log("tabs", $(".nav-tabs .cremeria").length);
+	console.log("tabs", $("#tabs_ventas .cremeria").length);
 	console.log("content", $(".tab-content .cremeria").length);
 	
 	$.ajax({
@@ -38,15 +38,15 @@ function renderPendientes(respuesta){
 		
 	}
 	
-	var tab_index = $(".nav-tabs li").length + 1;
+	var tab_index = $("#tabs_ventas li").length + 1;
 	console.log("tab_index", tab_index);
 	//Borra contenido anterior
-	$(".nav-tabs .cremeria").remove();
+	$("#tabs_ventas .cremeria").remove();
 	$(".tab-content .cremeria").remove();
 	
 	$.each(respuesta.ventas, function agregaTabs(i, venta){
 		console.log("tab_index", tab_index);
-		$(".nav-tabs").append(
+		$("#tabs_ventas").append(
 			`<li class="cremeria">
 			<a data-toggle="tab" href="#tab${tab_index}">
 			
@@ -59,7 +59,7 @@ function renderPendientes(respuesta){
 		
 		tab_index++;
 		
-		$(".nav-tabs .close").click(cerrarTab);
+		$("#tabs_ventas .close").click(cerrarTab);
 	});
 	
 	//anexa Tab
@@ -154,7 +154,7 @@ function renderProductos(tab_index, venta){
 	$(".cantidad").keyup(sumarImportes);
 	$(".cantidad").change(sumarImportes);
 	$(".btn_eliminar").click(eliminarProducto);
-	$('.nav-tabs a').on('shown.bs.tab', function(event){
+	$('#tabs_ventas a').on('shown.bs.tab', function(event){
 		var active = $(event.target).text();         // active tab
 		var previous = $(event.relatedTarget).text();  // previous tab
 		console.log("active",active)
@@ -325,7 +325,7 @@ $(document).ready( function onLoad(){
 	$('#cerrar_venta').click( function F12(){
 		if($(".tabla_venta:visible tbody tr").length == 0){
 			
-			alertify.error('No hay productos');
+			alertify.errorr('No hay productos');
 			return false;
 		}
 		$("#modal_pago").modal("show");
@@ -494,7 +494,7 @@ function guardarVenta(event){
 	// Si el evento es por F12 cobrar o F4 Pendiente
 	if(event.type == "submit"){
 		var estatus_ventas ="PAGADO" ;
-		var nombre_cliente =  $(".nav-tabs input").val();
+		var nombre_cliente =  $("#tabs_ventas input").val();
 		event.preventDefault();
 	}
 	else{
@@ -525,7 +525,7 @@ function guardarVenta(event){
 		method: 'POST',
 		dataType: 'JSON',
 		data:{
-			id_ventas: $('.nav-tabs li.active').find(".id_ventas").val(),
+			id_ventas: $('#tabs_ventas li.active').find(".id_ventas").val(),
 			id_usuarios: $('#id_usuarios').val(),
 			id_turnos:$('#id_turnos').val(),
 			articulos: $(".articulos:visible").val(),
@@ -544,8 +544,8 @@ function guardarVenta(event){
 			
 			$("#modal_pago").modal("hide");
 			//Resetear Nombre de Cliente
-			$(".nav-tabs>li.active input").val("Mostrador");
-			// console.log("Venta Activa", $(".nav-tabs>li.active input").val("Mostrador"));
+			$("#tabs_ventas>li.active ").val("Mostrador");
+			// console.log("Venta Activa", $("#tabs_ventas>li.active input").val("Mostrador"));
 			// imprimirTicket( respuesta.id_ventas)
 			
 		}
