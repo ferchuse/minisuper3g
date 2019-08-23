@@ -62,18 +62,18 @@
 							<!-- "Total" -->
 							<div class="total row">
 								<div class="col-sm-12">
-									<input readonly id="total_pago" value="0" type="number" class="valor form-control" name="total_pago">
+									<input readonly id="tarjeta" value="0" type="number" class="valor form-control" name="tarjeta">
 								</div>
 							</div>
 
 							<!-- "Radios: Débito & Crédito" -->
 							<div class="radios_tarjeta mt-4">
 								<div class="form-check form-check-inline">
-									<input class="form-check-input" onchange="console.log($(this).prop('checked'))" value="1.02" type="radio" name="tarjeta" id="debito">
+									<input class="form-check-input" value="1.02" type="radio" name="tarjeta" id="debito">
 									<label class="form-check-label" for="debito">Débito</label>
 								</div>
 								<div class="form-check form-check-inline">
-									<input class="form-check-input" onchange="console.log($(this).prop('checked'))" value="1.03" type="radio" name="tarjeta" id="credito">
+									<input class="form-check-input"  value="1.03" type="radio" name="tarjeta" id="credito">
 									<label class="form-check-label" for="credito">Crédito</label>
 								</div>
 							</div>

@@ -322,21 +322,24 @@ $(document).ready( function onLoad(){
 	});
 	
 	
-	$('#cerrar_venta').click( function F12(){
-		if($(".tabla_venta:visible tbody tr").length == 0){
-			
-			alertify.error('No hay productos');
-			return false;
-		}
-		$("#modal_pago").modal("show");
-		$("#pago").val($("#efectivo").val());
-		$("#pago").val($("#efectivo").val());
-		$("#pago").focus();
-	});
+	$('#cerrar_venta').click( cobrar);
 	
 	$("#codigo_producto").focus();
 }); 
 
+function cobrar(){
+	if($(".tabla_venta:visible tbody tr").length == 0){
+		
+		alertify.error('No hay productos');
+		return false;
+	}
+	$("#modal_pago").modal("show");
+	
+	$("#efectivo").val($(".total:visible").val());
+	$("#tarjtea").val($(".total:visible").val());
+	$("#pago").val($("#efectivo").val());
+	$("#pago").focus();
+}
 
 function calcularGranel(event){
 	let precio = Number($("#precio").val());
@@ -479,7 +482,7 @@ function sumarImportes(){
 	$(".articulos:visible").val(articulos);
 	$(".total:visible").val(round(total, 0.5).toFixed(2));
 	$("#efectivo").val(round(total, 0.5).toFixed(2));
-	$("#total_pago").val(round(total, 0.5).toFixed(2));
+	// $("#total_pago").val(round(total, 0.5).toFixed(2));
 	
 }
 
@@ -762,11 +765,10 @@ function navegarFilas(e){
 
 // Calcular Cambio Pestaña "Efectivo"
 $("#pago").keyup( function calculaCambio(){
-	let total = $("#total_pago").val();
+	let efectivo = $("#efectivo").val();
 	let pago = $("#pago").val();
-	console.log(total);
-	console.log(pago);
-	let cambio = pago - total;
+	
+	let cambio = pago - efectivo;
 	$("#cambio").val(cambio);
 });
 
@@ -778,4 +780,4 @@ function CalcularComision (){
 	alert(this.value);
 	// let cambio = efectivo - total;
 	// $("#cambio").val(cambio);
-	};	
+};	
