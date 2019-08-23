@@ -72,10 +72,9 @@ $num_rows = mysqli_num_rows($result);
 			<?php if ($_COOKIE["permiso_usuarios"] != "mostrador") { ?>
 			<div class="col-md-4">
 				<div class="form-group">
-					<label>
+					<label class="hidden">
 						<input type="checkbox" id="mayoreo">
 						F11 Mayoreo
-
 					</label>
 					<button class="btn btn-info pull-right" id="btn_refresh">
 						<i class="fa fa-sync"></i> F4 - Cremeria
@@ -92,20 +91,20 @@ $num_rows = mysqli_num_rows($result);
 		<ul class="nav nav-tabs" style="margin: 10px 0 10px 0; font-color: black !important">
 			<li class="active">
 				<a data-toggle="tab" href="#tab1">
-					<input class="cliente" value="Mostrador">
+					Mostrador
 					<input type="hidden" class="id_ventas" value="">
 				</a>
 			</li>
 			<li>
 				<a data-toggle="tab" href="#tab2">
-					<input class="cliente" value="Cliente 2">
+					Cliente 2
 					<input type="hidden" class="id_ventas" value="">
 				</a>
 			</li>
 
 			<li>
 				<a data-toggle="tab" href="#tab3">
-					<input class="cliente" value="Cliente 3">
+					Cliente 3
 					<input type="hidden" class="id_ventas" value="">
 				</a>
 			</li>

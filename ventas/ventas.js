@@ -49,8 +49,8 @@ function renderPendientes(respuesta){
 		$(".nav-tabs").append(
 			`<li class="cremeria">
 			<a data-toggle="tab" href="#tab${tab_index}">
-			<span class="close">&times</span>
-			<input class="cliente" value="${venta["nombre_cliente"]}">
+			
+			${venta["nombre_cliente"]}
 			<input type="hidden" class="id_ventas" value="${venta["id_ventas"]}">
 			</a>
 		</li>`);
@@ -100,6 +100,7 @@ function renderProductos(tab_index, venta){
 		<button title="Eliminar Producto" class="btn btn-danger btn_eliminar">
 		<i class="fa fa-trash"></i>
 		</button> 
+		<label><input class="mayoreo" type="checkbox">Mayoreo</label>
 		</td>
 		</tr>`;
 		
@@ -149,6 +150,7 @@ function renderProductos(tab_index, venta){
 	
 	
 	//Asigna Callbacks de eventos
+	$(".mayoreo").change(aplicarMayoreoProducto);
 	$(".cantidad").keyup(sumarImportes);
 	$(".cantidad").change(sumarImportes);
 	$(".btn_eliminar").click(eliminarProducto);
@@ -172,16 +174,17 @@ console.log(DecimalRound(10.26, .5))
 
 $(document).ready( function onLoad(){
 	
-	$("#btn_refresh").click();
 	
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 		e.target // newly activated tab
 		e.relatedTarget // previous active tab
 	})
 	
-	$('#mayoreo').change(aplicarMayoreo);
+	// $('#mayoreo').change(aplicarMayoreo);
 	$('.bg-info').keydown(navegarFilas);
 	$('#btn_refresh').click(cargarPendientes);
+	
+	$("#btn_refresh").click();
 	
 	
 	$('#form_pago').submit(guardarVenta);
@@ -230,6 +233,7 @@ $(document).ready( function onLoad(){
 					
 				}
 				
+				$("#cantidad").val(1);
 				$("#precio").val(precio);
 				$("#importe").val(eleccion.data.precio_menudeo * 1);
 				producto_elegido = eleccion.data;
@@ -325,10 +329,11 @@ $(document).ready( function onLoad(){
 			return false;
 		}
 		$("#modal_pago").modal("show");
+		$("#pago").val($("#efectivo").val());
 		$("#pago").focus();
 	});
 	
-	
+	$("#codigo_producto").focus();
 }); 
 
 
@@ -363,14 +368,6 @@ function agregarGranel(event){
 	$("#buscar_producto").focus();
 }
 
-function buscarProducto(campobd,tablabd,id_campobd){
-	return $.ajax({
-		url: 'control/buscar_normal.php',
-		method: 'POST',
-		dataType: 'JSON',
-		data:{campo: campobd, tabla:tablabd, id_campo: id_campobd}
-	});
-}
 
 function agregarProducto(producto){
 	console.log("agregarProducto()", producto);
@@ -426,6 +423,7 @@ function agregarProducto(producto){
 		<button title="Eliminar Producto" class="btn btn-danger btn_eliminar">
 		<i class="fa fa-trash"></i>
 		</button> 
+		<label><input class="mayoreo" type="checkbox">Mayoreo</label>
 		</td>
 		</tr>`;
 		
@@ -434,6 +432,7 @@ function agregarProducto(producto){
 		$(".tabla_venta:visible tbody").append($fila_producto);
 		
 		//Asigna Callbacks de eventos
+		$(".mayoreo").change(aplicarMayoreoProducto);
 		$(".cantidad").keyup(sumarImportes);
 		$(".cantidad").change(sumarImportes);
 		$("input").focus(function(){
@@ -651,7 +650,7 @@ function disableFunctionKeys(e) {
 	// $input_activo = $(this);
 };
 
-function aplicarMayoreo(){
+function aplicarMayoreoGeneral(){
 	var $precio;
 	console.log("aplicarMayoreo");
 	
@@ -664,6 +663,23 @@ function aplicarMayoreo(){
 		}
 		$(item).find(".precio").val($precio);
 	});
+	
+	sumarImportes();
+}
+function aplicarMayoreoProducto(){
+	var $precio;
+	var fila =  $(this).closest("tr");
+	console.log("aplicarMayoreoProducto");
+	
+	
+	if($(this).prop("checked")){
+		$precio = fila.find(".precio_mayoreo").val();
+	}
+	else{
+		$precio =  fila.find(".precio_menudeo").val();
+	}
+	fila.find(".precio").val($precio);
+	
 	
 	sumarImportes();
 }
@@ -743,7 +759,7 @@ function navegarFilas(e){
 }									
 
 // Calcular Cambio Pestaña "Efectivo"
-$("#pago").keyup(function (){
+$("#pago").keyup( function calculaCambio(){
 	let total = $("#total_pago").val();
 	let pago = $("#pago").val();
 	console.log(total);
@@ -760,4 +776,4 @@ function CalcularComision (){
 	alert(this.value);
 	// let cambio = efectivo - total;
 	// $("#cambio").val(cambio);
-};
+	};	
