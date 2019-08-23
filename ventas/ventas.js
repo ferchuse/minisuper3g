@@ -328,6 +328,7 @@ $(document).ready( function onLoad(){
 }); 
 
 function cobrar(){
+	
 	if($(".tabla_venta:visible tbody tr").length == 0){
 		
 		alertify.error('No hay productos');
@@ -336,9 +337,10 @@ function cobrar(){
 	$("#modal_pago").modal("show");
 	
 	$("#efectivo").val($(".total:visible").val());
-	$("#tarjtea").val($(".total:visible").val());
+	$("#tarjeta").val($(".total:visible").val());
 	$("#pago").val($("#efectivo").val());
 	$("#pago").focus();
+	calculaCambio();
 }
 
 function calcularGranel(event){
@@ -561,7 +563,7 @@ function guardarVenta(event){
 		icono.toggleClass('fa-check fa-spinner fa-spin');
 	});
 	
-	
+	TotalTurno();
 }
 
 
@@ -763,21 +765,35 @@ function navegarFilas(e){
 	}
 }									
 
-// Calcular Cambio Pestaña "Efectivo"
-$("#pago").keyup( function calculaCambio(){
-	let efectivo = $("#efectivo").val();
-	let pago = $("#pago").val();
-	
-	let cambio = pago - efectivo;
-	$("#cambio").val(cambio);
-});
+//--- Calcular Cambio: Pestaña "Efectivo"
+$("#pago").keyup(calculaCambio);
 
-// Calcular Comisión Pestaña "Tarjeta" (PENDIENTE)
+//--- Calcular Comisión: Pestaña "Tarjeta" (PENDIENTE)
 function CalcularComision (){
-	// $("#total_pago").val();
+	// $("#tarjeta").val();
 	let debito = $("#debito").val();
 	let credito = $("#credito").val();
 	alert(this.value);
 	// let cambio = efectivo - total;
 	// $("#cambio").val(cambio);
-};	
+};
+
+function TotalTurno (){
+	console.log();
+	$.ajax({
+		url: "funciones/total_turno.php",
+		dataType: "JSON"
+		}).done(function (respuesta){
+			console.log(respuesta);
+			if (respuesta.total_turno > 3000){
+				alertify.warning("Límite $3000 Superado");
+			};
+		});
+}
+
+function calculaCambio(){
+	let efectivo = $("#efectivo").val();
+	let pago = $("#pago").val();
+	let cambio = pago - efectivo;
+	$("#cambio").val(cambio);
+}
