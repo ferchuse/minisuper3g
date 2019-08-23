@@ -53,7 +53,10 @@ while ($fila = mysqli_fetch_assoc($resultado_totales)) {
 	$totales = $fila;
 }
 
-
+$consulta_efectivo = "SELECT efectivo_inicial + ventas + entradas - salidas - devoluciones 
+		(SELECT efectivo_inicial FROM turnos WHERE id_turnos = '{$_COOKIE["id_turnos"]}'),
+		(SELECT SUM(efectivo_ventas) AS total_efectivo FROM egresos WHERE estatus_egresos='ACTIVO'  AND id_turnos = '{$_COOKIE["id_turnos"]}') AS tabla_salidas
+";
 
 ?>
 <!DOCTYPE html>
