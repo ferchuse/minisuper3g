@@ -50,7 +50,7 @@ function renderPendientes(respuesta){
 			`<li class="cremeria">
 			<a data-toggle="tab" href="#tab${tab_index}">
 			
-			${venta["nombre_cliente"]}
+			<span>${venta["nombre_cliente"]}</span>
 			<input type="hidden" class="id_ventas" value="${venta["id_ventas"]}">
 			</a>
 		</li>`);
@@ -325,10 +325,11 @@ $(document).ready( function onLoad(){
 	$('#cerrar_venta').click( function F12(){
 		if($(".tabla_venta:visible tbody tr").length == 0){
 			
-			alertify.errorr('No hay productos');
+			alertify.error('No hay productos');
 			return false;
 		}
 		$("#modal_pago").modal("show");
+		$("#pago").val($("#efectivo").val());
 		$("#pago").val($("#efectivo").val());
 		$("#pago").focus();
 	});
@@ -383,7 +384,7 @@ function agregarProducto(producto){
 	}
 	//Buscar por id_productos, si se encuentra agregar 1 unidad sino agregar nuevo producto
 	console.log("Buscando id_productos = ", producto.id_productos);
-	var $existe= $(".id_productos[value='"+producto.id_productos+"']");
+	var $existe= $(".tabla_venta:visible").find(".id_productos[value='"+producto.id_productos+"']");
 	console.log("existe", $existe);
 	
 	if($existe.length > 0){
@@ -493,8 +494,9 @@ function guardarVenta(event){
 	var productos = [];
 	// Si el evento es por F12 cobrar o F4 Pendiente
 	if(event.type == "submit"){
+		console.log("Cobrar");
 		var estatus_ventas ="PAGADO" ;
-		var nombre_cliente =  $("#tabs_ventas input").val();
+		var nombre_cliente =  $("#tabs_ventas li.active span").text();
 		event.preventDefault();
 	}
 	else{
@@ -544,7 +546,7 @@ function guardarVenta(event){
 			
 			$("#modal_pago").modal("hide");
 			//Resetear Nombre de Cliente
-			$("#tabs_ventas>li.active ").val("Mostrador");
+			$("#tabs_ventas>li.active span").text("Mostrador");
 			// console.log("Venta Activa", $("#tabs_ventas>li.active input").val("Mostrador"));
 			// imprimirTicket( respuesta.id_ventas)
 			

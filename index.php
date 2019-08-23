@@ -40,7 +40,7 @@ $num_rows = mysqli_num_rows($result);
 		}
 
 		.nav-tabs>li.active>a {
-
+			font-color: white !importnat;
 			background-color: #46b8da !important;
 		}
 	</style>
@@ -91,7 +91,7 @@ $num_rows = mysqli_num_rows($result);
 		<ul id="tabs_ventas" class="nav nav-tabs" style="margin: 10px 0 10px 0;">
 			<li class="active">
 				<a data-toggle="tab" href="#tab1">
-					<span>Mostrador<span>
+					<span>Mostrador</span>
 					<input type="hidden" class="id_ventas" value="">
 				</a>
 			</li>
