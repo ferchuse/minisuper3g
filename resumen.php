@@ -178,7 +178,7 @@ while ($fila = mysqli_fetch_assoc($resultado_totales)) {
 								?>
 							<div class="row <?php echo $fondo; ?> focusable" style="border-bottom: solid 1px; margin-bottom: 10px;">
 								<div class="col-xs-2"><?php echo $id_ventas; ?></div>
-								<div class="col-xs-2 text-center"><?php echo date("h:i", strtotime($hora_ventas)); ?></div>
+								<div class="col-xs-2 text-center"><?php echo date("H:i", strtotime($hora_ventas)); ?></div>
 								<div class="col-xs-2 text-right"><?php echo "$" . $total_ventas ?></div>
 								<div class="col-xs-2 text-center"><?php echo $estatus_ventas; ?></div>
 								<div class="col-xs-12 col-sm-4 text-right">
