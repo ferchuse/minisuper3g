@@ -17,108 +17,114 @@ while ($fila = mysqli_fetch_assoc($result)) {
 }
 
 ?>
-<!-- <link rel="stylesheet" href="css/imprimir_venta.css"> -->
-<!-- Ticket -->
+
+<!-- "Ticket" -->
 <section class="ticket container">
-
-	<!-- Encabezado Ticket-->
+	<!-- "Encabezado" Ticket -->
 	<section class="encabezado">
-
-		<!-- Nombre: "Empresa" -->
+		<!-- "Empresa" -->
 		<div class="empresa row">
-			<p class="nombre col-xs-12 text-center"><strong><?php echo $nombre_empresa; ?></strong></p>
+			<!-- "Nombre" -->
+			<p class="nombre col-xs-12"><?php echo $nombre_empresa; ?></p>
 		</div>
 
-		<!-- Datos: "Venta" -->
+		<!-- "Venta" -->
 		<div class="venta row">
 			<!-- "Datos" -->
 			<div class="datos col-xs-12">
-				<div class="row margin-none">
-					<span class="col-xs-5"><strong>Folio:</strong></span>
-					<div class="col-xs-6" class=""><?php echo $fila_venta[0]["id_ventas"] ?></div>
+				<!-- "Folio" -->
+				<div class="folio row margin-none">
+					<span class="etiquetas col-xs-4">Folio:</span>
+					<div class="valores col-xs-8">
+						<?php echo $fila_venta[0]["id_ventas"]; ?>
+					</div>
 				</div>
-				<div class="row margin-none">
-					<span class="col-xs-5"><strong>Fecha:</strong></span>
-					<div class="col-xs-7" class="" id="fecha" name="fecha">
+				<!-- "Fecha" -->
+				<div class="fecha row margin-none">
+					<span class="etiquetas col-xs-4">Fecha:</span>
+					<div class="valores col-xs-8" id="fecha" name="fecha">
 						<?php echo date("d/m/Y", strtotime($fila_venta[0]["fecha_ventas"])); ?>
 					</div>
 				</div>
-				<div class="row margin-none">
-					<span class=" col-xs-5"><strong>Hora:</strong></span>
-					<div class="col-xs-7" id="hora" name="hora">
-						<?php echo date("H:i", strtotime($fila_venta[0]["hora_ventas"])); ?>
+				<!-- "Hora" -->
+				<div class="hora row margin-none">
+					<span class="etiquetas col-xs-4">Hora:</span>
+					<div class="valores col-xs-8" id="hora" name="hora">
+						<?php echo date("h:i A", strtotime($fila_venta[0]["hora_ventas"])); ?>
 					</div>
 				</div>
-				<div class="row margin-none">
-					<span class="col-xs-5"><strong>Usuario:</strong></span>
-					<div class="col-xs-7" id="usuario" name="usuario">
+				<!-- "Usuario" -->
+				<div class="usuario row margin-none">
+					<span class="etiquetas col-xs-4">Usuario:</span>
+					<div class="valores col-xs-8" id="usuario" name="usuario">
 						<?php echo $fila_venta[0]["nombre_usuarios"]; ?>
 					</div>
 				</div>
-				<div hidden class="row margin-none">
-					<span class=" col-xs-5">Cliente:</span>
-					<div class="col-xs-7" class="">
-						<?php echo $fila_venta[0]["nombre_cliente"] ?>
+				<!-- "Cliente" -->
+				<div hidden class="cliente row margin-none">
+					<span class="etiquetas col-xs-4">Cliente:</span>
+					<div class="valores col-xs-8" id="cliente" name="cliente">
+						<?php echo $fila_venta[0]["nombre_cliente"]; ?>
 					</div>
 				</div>
 			</div>
 		</div>
-
 	</section>
 
-	<!-- Cuerpo Ticket -->
-	<table class="cuerpo table">
+	<!-- "Cuerpo" Ticket -->
+	<section class="cuerpo">
+		<!-- "Lista" -->
+		<table class="lista table">
+			<!-- "Encabezados" -->
+			<thead class="encabezados">
+				<tr class="etiquetas uno">
+					<td class="empty"></td>
+					<td class="descripcion text-left" colspan="3">DESCRIPCIÓN DEL PRODUCTO</td>
+				</tr>
+				<tr class="etiquetas dos">
+					<td class="cantidad text-left">Cant.</td>
+					<td class="unitario text-left" colspan="2">Precio Unitario</td>
+					<td class="importe text-right">Importe</td>
+				</tr>
+			</thead>
 
-		<!-- Encabezados -->
-		<thead class="encabezados">
-			<tr class="fila border-none">
-				<td class="text-center border-none"></td>
-				<td style="margin: 0px; padding:0px;" class="descripcion text-left border-none" colspan="3">DESCRIPCIÓN DEL PRODUCTO</td>
-			</tr>
-			<tr class="fila font-13">
-				<td class="cantidad border-none text-center c-wid-50"><strong>Cant.</strong></td>
-				<td class="border-none text-center c-wid-5"></td>
-				<td class="unitario border-none text-left"><strong>Precio Unitario</strong></td>
-				<td class="importe border-none text-right"><strong>Importe</strong></td>
-			</tr>
-		</thead>
+			<!-- Productos -->
+			<tbody class="productos">
+				<?php foreach ($fila_venta as $i => $producto) { ?>
 
-		<!-- Productos -->
-		<tbody class="productos" style="border:none; line-height: 12px; padding:0px">
-			<?php foreach ($fila_venta as $i => $producto) { ?>
+				<tr class="valores uno">
+					<td class="cantidad text-left"><?php echo $producto["cantidad"]; ?></td>
+					<td class="descripcion" colspan="3"><?php echo $producto["descripcion"]; ?></td>
+				</tr>
+				<tr class="valores dos">
+					<td class="empty"></td>
+					<td class="precio" colspan="2"><?php echo "$" . $producto["precio"]; ?></td>
+					<td class="importe text-right"><?php echo "$" . $producto["importe"]; ?></td>
+				</tr>
 
-			<tr style="margin: 0px; padding:0px;" class="">
-				<td style="border:none; line-height: 12px; margin: 0px; padding:0px;" class="text-center"><?php echo $producto["cantidad"]; ?></td>
-				<td style="border:none; line-height: 12px; margin: 0px; padding:0px;" class="" colspan="2"><?php echo $producto["descripcion"]; ?></td>
-				<td style="border:none; line-height: 12px;"></td>
-				<td style="border:none; line-height: 12px;"></td>
-			</tr>
-			<tr style="margin: 0px; padding:0px;" class="">
-				<td style="border:none; line-height: 12px;"></td>
-				<td style="border:none; line-height: 12px;"></td>
-				<td style="border:none; line-height: 12px;"><?php echo "$" . $producto["precio"]; ?></td>
-				<td style="border:none; line-height: 12px;" class="text-right"><?php echo "$" . $producto["importe"]; ?></td>
-			</tr>
+				<?php } ?>
+			</tbody>
 
-			<?php } ?>
-		</tbody>
+			<!-- Total -->
+			<tfoot class="total">
+				<tr>
+					<td class="etiqueta text-right" colspan="3"><strong>TOTAL:</strong></td>
+					<td class="valor text-right"><?php echo "$" . $producto["total_ventas"] ?></td>
+				</tr>
+			</tfoot>
+		</table>
+	</section>
 
-		<!-- Total -->
-		<tfoot class="total font-13" style="margin-bottom: 3px;">
-			<tr>
-				<td class=" text-right" colspan="3"><strong>TOTAL:</strong></td>
-				<td class=" text-right"><?php echo "$" . $producto["total_ventas"] ?></td>
-			</tr>
-		</tfoot>
-
-	</table>
-
-	<!-- Pie Ticket -->
-	<section class="pie" style="margin-top: 3px;">
-		<p class="font-12-5 text-center">
+	<!-- "Pie" Ticket -->
+	<section class="pie">
+		<!-- Total En "Letras" -->
+		<div class="letras text-center">
 			<?php echo NumeroALetras::convertir($producto["total_ventas"], "pesos", "centavos") ?>
-		</p>
-		<p class="font-14 text-center"><strong>GRACIAS POR SU COMPRA</strong></p>
+		</div>
+		
+		<!-- "Mensaje" -->
+		<div class="mensaje text-center">
+			GRACIAS POR SU COMPRA
+		</div>
 	</section>
-
 </section>
