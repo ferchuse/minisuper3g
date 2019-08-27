@@ -27,13 +27,13 @@ function imprimirCorte(event){
 }
 function nuevoIngreso(){
 	alertify.prompt("Nuevo Ingreso", "Cantidad" , 0, guardarIngreso, function(){});
-
+	
 }
 
 function guardarIngreso(event, value){
 	var fecha_ingresos = new Date().toString('yyyy-MM-dd');
 	var fecha_ingresos = new Date().toString('HH:mm:ss');
-
+	
 	$.ajax({
 		url: 'funciones/fila_insert.php',
 		method: 'POST',
@@ -41,9 +41,9 @@ function guardarIngreso(event, value){
 		data:  {
 			"tabla": "ingresos",
 			"valores": [
-					{"name": "cantidad_ingresos", "value": value },
-					{"name": "fecha_ingresos", "value":  fecha_ingresos},
-					{"name": "id_turnos", "value":  $("#id_turnos").val()}
+				{"name": "cantidad_ingresos", "value": value },
+				{"name": "fecha_ingresos", "value":  fecha_ingresos},
+				{"name": "id_turnos", "value":  $("#id_turnos").val()}
 			]
 		}
 		}).done( function(respuesta){
@@ -92,6 +92,9 @@ function imprimirTicket(){
 	});
 	// console.log("pago");
 }
+
+
+
 function confirmaCancelarVenta(event) {
 	event.preventDefault();
 	var boton = $(this);
@@ -100,7 +103,23 @@ function confirmaCancelarVenta(event) {
 	
 	var id_registro = boton.data('id_ventas');
 	var fila = boton.closest('tr');
-	function cancelar(evet,value) {
+	
+	// alertify.prompt('Confirma', '¿Deseas cancelar esta venta?','Escribe el motivo', cancelarVenta, function () {
+		
+		// boton.prop('disabled', false);
+	// });
+	
+	alertify.confirm()
+  .setting({
+    'reverseButtons': true,
+		'labels' :{ok:"SI", cancel:'NO'},
+    'title': "Confirmar" ,
+    'message': "¿Deseas cancelar esta venta?" ,
+    'onok':cancelarVenta
+	}).show();
+	
+	
+	function cancelarVenta(evnt,value) {
 		$.ajax({
 			url: 'control/cancelar_ventas.php',
 			method: 'POST',
@@ -116,11 +135,6 @@ function confirmaCancelarVenta(event) {
 			boton.prop('disabled', false);
 		});
 	}
-	alertify.prompt('Confirmacion', '¿Deseas cancelarlo?','Escribe el motivo', cancelar, function () {
-		
-		boton.prop('disabled', false);
-	});
-	
 }
 function verTicket(){
 	
@@ -150,11 +164,14 @@ function verTicket(){
 function confirmaCerrarTurno(){
 	
 	
-	//(Titulo, Mensaje, func_ok, Func_cancelar)
-	alertify.confirm('Confirmacion', 'Esta seguro de cerrar su turno?', cerrarTurno , function(){
-		
-	});
-	
+	alertify.confirm()
+  .setting({
+    'reverseButtons': true,
+		'labels' :{ok:"SI", cancel:'NO'},
+    'title': "Confirmar" ,
+    'message': "¿Desea cerrar el turno?" ,
+    'onok':cerrarTurno
+	}).show();
 }
 
 
