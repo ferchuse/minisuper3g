@@ -57,14 +57,14 @@ $num_rows = mysqli_num_rows($result);
 		<div class="row">
 			<form id="form_agregar_producto" class="form-inline" autocomplete="off">
 				<div class="col-md-4">
-					<label for="">Código del Producto:</label>
+					<label for="">Código:</label>
 
 					<input id="codigo_producto" autofocus type="text" class="form-control" placeholder="ESC" size="50">
 
 				</div>
 				<div class="col-md-4">
 					<div class="form-group">
-						<label for="">Producto:</label>
+						<label for="">Descripción:</label>
 						<input id="buscar_producto" type="text" class="form-control" size="50" placeholder="F10">
 					</div>
 				</div>
