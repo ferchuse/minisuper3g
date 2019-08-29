@@ -98,16 +98,12 @@ function imprimirTicket(){
 function confirmaCancelarVenta(event) {
 	event.preventDefault();
 	var boton = $(this);
-	boton.prop('disabled', true);
-	icono = boton.find(".fa");
-	
 	var id_registro = boton.data('id_ventas');
 	var fila = boton.closest('tr');
 	
-	// alertify.prompt('Confirma', '¿Deseas cancelar esta venta?','Escribe el motivo', cancelarVenta, function () {
-		
-		// boton.prop('disabled', false);
-	// });
+	boton.prop('disabled', true);
+	icono = boton.find(".fa");
+	
 	
 	alertify.confirm()
   .setting({

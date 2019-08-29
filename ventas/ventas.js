@@ -550,8 +550,9 @@ function guardarVenta(event){
 			sumarImportes();
 			
 			$("#modal_pago").modal("hide");
-			//Resetear Nombre de Cliente
-			$("#tabs_ventas>li.active span").text("Mostrador");
+			//Borrar Ticket 
+			$("li.cremeria.active").remove();
+			$(".tab-pane.cremeria:visible").remove();
 			// console.log("Venta Activa", $("#tabs_ventas>li.active input").val("Mostrador"));
 			// imprimirTicket( respuesta.id_ventas)
 			
