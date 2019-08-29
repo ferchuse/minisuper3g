@@ -552,7 +552,9 @@ function guardarVenta(event){
 			$("#modal_pago").modal("hide");
 			//Borrar Ticket 
 			$("li.cremeria.active").remove();
-			$(".tab-pane.cremeria:visible").remove();
+			$(".tab-pane.cremeria.active").remove();
+			$("#codigo_productos")
+			$("#tabs_ventas a").first().click();
 			// console.log("Venta Activa", $("#tabs_ventas>li.active input").val("Mostrador"));
 			// imprimirTicket( respuesta.id_ventas)
 			
