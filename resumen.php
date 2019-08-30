@@ -36,7 +36,7 @@
 		
 		$consulta_totales = "SELECT * FROM
 		
-		(SELECT SUM(cantidad_ingresos) AS entradas FROM ingresos WHERE estatus_ingresos='ACTIVO') AS tabla_entradas,
+		(SELECT SUM(cantidad_ingresos) AS entradas FROM ingresos WHERE estatus_ingresos='ACTIVO' AND fecha_ingresos = '$fecha_corte') AS tabla_entradas,
 		(SELECT SUM(cantidad_egresos) AS salidas FROM egresos WHERE estatus_egresos='ACTIVO' AND fecha_egresos = '$fecha_corte') AS tabla_salidas
 		";
 		

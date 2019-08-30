@@ -40,7 +40,7 @@
 						</a>
 						<ul class="dropdown-menu">
 							<li>
-								<a href="reportes.php"><i class="fas fa-chart-bar"></i> Ventas Por Día</a>
+								<a href="reportes"><i class="fas fa-chart-bar"></i> Ventas Por Día</a>
 							</li>
 							<li>
 								<a href="inventarios/movimientos.php"><i class="fas fa-chart-bar"></i> Movimientos</a>
@@ -111,7 +111,7 @@
 								<a href="usuarios.php"><i class="fa fa-user-plus "></i> Usuarios</a>
 							</li>
 							<li>
-								<a href="#">Versión 25-JUN-2019</a>
+								<a href="#">Versión 29-AGO-2019</a>
 							</li>
 						</ul>
 					</li>

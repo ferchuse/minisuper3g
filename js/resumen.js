@@ -32,7 +32,7 @@ function nuevoIngreso(){
 
 function guardarIngreso(event, value){
 	var fecha_ingresos = new Date().toString('yyyy-MM-dd');
-	var fecha_ingresos = new Date().toString('HH:mm:ss');
+	var hora_ingresos = new Date().toString('HH:mm:ss');
 	
 	$.ajax({
 		url: 'funciones/fila_insert.php',
@@ -43,6 +43,7 @@ function guardarIngreso(event, value){
 			"valores": [
 				{"name": "cantidad_ingresos", "value": value },
 				{"name": "fecha_ingresos", "value":  fecha_ingresos},
+				{"name": "hora_ingresos", "value":  hora_ingresos},
 				{"name": "id_turnos", "value":  $("#id_turnos").val()}
 			]
 		}

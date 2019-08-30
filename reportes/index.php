@@ -1,7 +1,6 @@
 <?php
-	include("login/login_success.php");
-	include("conexi.php");
-	$link = Conectarse();
+	include("../login/login_success.php");
+
 	$menu_activo = "reportes";
 	
 	$dt_fecha_inicial = new DateTime("first day of this month");
@@ -19,13 +18,13 @@
 		
     <title>Reportes</title>
 		
-		<?php include("styles.php");?>
+		<?php include("../styles_carpetas.php");?>
 		
 	</head>
   <body>
 		
+		<?php include("../menu_carpetas.php");?>
 		<div class="container-fluid">
-			<?php include("menu.php");?>
 			<div class="row">
 				<div class="col-md-12">
 					<h3 class="text-center">Reporte Ventas por Día</h3>
@@ -60,7 +59,7 @@
 		</div>
 		
 		
-		<?php  include('scripts.php'); ?>
-		<script src="js/reportes.js"></script>
+		<?php  include('../scripts_carpetas.php'); ?>
+		<script src="reportes.js"></script>
 	</body>
 </html>

@@ -6,8 +6,7 @@ $(document).ready(function(){
 		var icono = boton.find('.fa');
 		var formulario = $(this).serialize();
 		$.ajax({
-			url: 'control/reporte.php',
-			method: 'POST',
+			url: "tabla_reporte.php",
 			dataType: 'HTML',
 			data: formulario
 		}).done(function(respuesta){
@@ -15,15 +14,6 @@ $(document).ready(function(){
 		});
 	});
 	
-	// $('#btn_imprimirR').click(function(){
-		// $.ajax({
-			// url: 'imprimir_corte.php',
-			// method: 'POST',
-			// dataType: 'HTML',
-			// data:,
-		// });
-	// });
-	
-	
+
 	
 });

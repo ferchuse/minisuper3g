@@ -13,7 +13,6 @@
 	FROM
 	ventas
 	LEFT JOIN (
-	
 	SELECT
 	fecha_ventas,
 	SUM(ganancia) AS ganancia_dia
@@ -21,11 +20,13 @@
 	ventas_detalle
 	RIGHT JOIN ventas USING (id_ventas)
 	WHERE estatus_ventas <> 'CANCELADO'
+	AND fecha_ventas BETWEEN '{$_GET["fecha_inicio"]}' AND '{$_GET["fecha_fin"]}'
 	GROUP BY
 	fecha_ventas
 	) AS t_ganancia USING (fecha_ventas)
 	
 	WHERE estatus_ventas <> 'CANCELADO'
+	AND fecha_ventas BETWEEN '{$_GET["fecha_inicio"]}' AND '{$_GET["fecha_fin"]}'
 	GROUP BY
 	fecha_ventas
 	
@@ -37,6 +38,10 @@
 	
 	
 ?>
+<pre hidden>
+	<?php echo $consultaVentas?>
+</pre>
+
 <?php 
 	if($row_count < 1){
 	?>
@@ -78,7 +83,7 @@
 								<tr>
 									<td class="text-center">
 										<a href="resumen.php?fecha_ventas=<?php echo $fecha_ventas?>">
-												<?php echo date("d/m/Y", strtotime($fecha_ventas));?>
+											<?php echo date("d/m/Y", strtotime($fecha_ventas));?>
 										</a>
 									</td>
 									<td class="text-center">
@@ -185,4 +190,4 @@
 				</div>
 			</div>
 		</div>
-	</div>					
+	</div>						
