@@ -291,8 +291,8 @@
 								
 								<div class="row">
 									<div class="col-xs-2">Hora</div>
-									<div class="col-xs-2">Categoría</div>
-									<div class="col-xs-2">Descripción</div>
+									<div class="col-xs-4">Categoría</div>
+									<div class="col-xs-4">Descripción</div>
 									<div class="col-xs-2">Cantidad</div>
 								</div>
 								<?php
@@ -305,12 +305,12 @@
 										<?php
 											} else {
 											
-											$egresos += $cantidad_egresos;
+											$egresos += $fila_egreso["cantidad_egresos"];
 										?>
 										<div class="row text-center">
 											<div class="col-xs-2"><?php echo $fila_egreso["hora_egresos"]; ?></div>
-											<div class="col-xs-2"><?php echo $fila_egreso["tipo_egreso"]; ?></div>
-											<div class="col-xs-2"><?php echo $fila_egreso["descripcion_egresos"]; ?></div>
+											<div class="col-xs-4"><?php echo $fila_egreso["tipo_egreso"]; ?></div>
+											<div class="col-xs-4"><?php echo $fila_egreso["descripcion_egresos"]; ?></div>
 											<div class="col-xs-2"><?php echo number_format($fila_egreso["cantidad_egresos"], 2); ?></div>
 											<div class="col-xs-2" hidden>
 												<button class="btn btn-danger btn-cancela" data-id_egresos="<?php echo $id_egresos; ?>" title="Cancelar" type="button">
@@ -326,7 +326,7 @@
 							</div>
 							<div class="panel-footer">
 								<h3>
-									<b>TOTAL:</b>
+									<b>Egresos:</b>
 									<?php
 										echo "<strong>" . "$" . number_format($egresos, 2) . "</strong>";
 									?>
