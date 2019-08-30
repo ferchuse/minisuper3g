@@ -54,7 +54,7 @@
 		(SELECT SUM(cantidad_egresos) AS salidas FROM egresos WHERE estatus_egresos='ACTIVO'  AND id_turnos = '{$_COOKIE["id_turnos"]}') AS tabla_salidas
 		";
 		
-		$consulta_egresos= "SELECT * FROM egresos LEFT JOIN catalogo_egresos USING(id_catalogo_egresos)WHERE id_turnos = '{$_COOKIE["id_turnos"]}'";
+		$consulta_egresos= "SELECT * FROM egresos LEFT JOIN catalogo_egresos USING(id_catalogo_egresos)WHERE id_turnos = '{$_COOKIE["id_turnos"]}' ORDER BY hora_egresos";
 	}
 	
 	
