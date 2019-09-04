@@ -16,6 +16,7 @@ function onLoad(event){
 	$('.btn_ticketPago').click(imprimirTicket );
 	$('.btn_ver').click(verTicket);
 	$('.btn_cancelar').click( confirmaCancelarVenta);
+	$('.btn_cancelar_egreso').click( confirmaCancelarEgreso);
 	
 	
 }
@@ -133,6 +134,43 @@ function confirmaCancelarVenta(event) {
 		});
 	}
 }
+
+function confirmaCancelarEgreso(event) {
+	event.preventDefault();
+	var boton = $(this);
+	var id_registro = boton.data('id_egresos');
+	var fila = boton.closest('tr');
+
+	boton.prop('disabled', true);
+	icono = boton.find(".fa");
+
+	alertify.confirm()
+		.setting({
+			'reverseButtons': true,
+			'labels': { ok: "SI", cancel: 'NO' },
+			'title': "Confirmar",
+			'message': "¿Deseas Cancelar éste Egreso?",
+			'onok': cancelarEgreso
+		}).show();
+
+
+	function cancelarEgreso(evnt, value) {
+		$.ajax({
+			url: 'control/cancelar_egresos.php',
+			method: 'POST',
+			data: {
+				"estatus_egresos": 'CANCELADO',
+				"id_egresos": id_registro
+			}
+		}).done(function (respuesta) {
+			alertify.success("Se ha Cancelado el Egreso");
+			window.location.reload();
+			icono.toggleClass("fa-times fa-spinner fa-spin");
+			boton.prop('disabled', false);
+		});
+	}
+}
+
 function verTicket(){
 	
 	console.log("verTicket");
