@@ -50,7 +50,9 @@ if ($tipo_corte == "dia") {
 	$consulta_totales = "SELECT * FROM
 		
 		(SELECT SUM(cantidad_ingresos) AS entradas FROM ingresos WHERE estatus_ingresos='ACTIVO' AND id_turnos = '{$_COOKIE["id_turnos"]}') AS tabla_entradas,
-		(SELECT SUM(cantidad_egresos) AS salidas FROM egresos WHERE estatus_egresos='ACTIVO'  AND id_turnos = '{$_COOKIE["id_turnos"]}') AS tabla_salidas
+		(SELECT SUM(cantidad_egresos) AS salidas FROM egresos WHERE estatus_egresos='ACTIVO'  AND id_turnos = '{$_COOKIE["id_turnos"]}') AS tabla_salidas,
+		(SELECT COUNT(id_ventas) AS ventas_totales FROM ventas WHERE estatus_ventas='PAGADO' AND id_turnos = '{$_COOKIE["id_turnos"]}') AS tabla_ventas,
+		(SELECT SUM(total_ventas) AS importe_ventas FROM ventas WHERE estatus_ventas='PAGADO' AND id_turnos = '{$_COOKIE["id_turnos"]}') AS tabla_importe
 		";
 
 	$consulta_egresos = "SELECT * FROM egresos LEFT JOIN catalogo_egresos USING(id_catalogo_egresos)WHERE id_turnos = '{$_COOKIE["id_turnos"]}' ORDER BY hora_egresos";
@@ -305,8 +307,6 @@ while ($fila = mysqli_fetch_assoc($resultado_egresos)) {
 								}
 								if ($fila_egreso["estatus_egresos"] != "CANCELADO") {
 									$fondo_row = "bg-success";
-								}
-								if ($fila_egreso["estatus_egresos"] != "CANCELADO") {
 									$egresos += $fila_egreso["cantidad_egresos"];
 								}
 								?>
@@ -356,32 +356,44 @@ while ($fila = mysqli_fetch_assoc($resultado_egresos)) {
 		<div style="margin-top: 25px;" class="container-fluid">
 
 			<div class="row">
-				<div class="col-xs-7"><strong>Resumen del Día:</strong></div>
-				<div class="col-xs-4 text-right"><?php echo date("d/m/Y") ?></div>
+				<div class="col-xs-10"><strong>Resumen del Día:</strong></div>
+				<div class="col-xs-2 text-right"><?php echo date("d/m/Y") ?></div>
 			</div>
 			<div class="row">
-				<div class="col-xs-7"><strong>Hora:</strong></div>
-				<div class="col-xs-4 text-right"><?php echo date("H:i:s") ?></div>
+				<div class="col-xs-10"><strong>Hora:</strong></div>
+				<div class="col-xs-2 text-right"><?php echo date("H:i:s") ?></div>
 			</div>
 			<div class="row">
-				<div class="col-xs-7"><strong>Usuario:</strong></div>
-				<div class="col-xs-4 text-right"><?php echo $_COOKIE["nombre_usuarios"]; ?></div>
+				<div class="col-xs-10"><strong>Usuario:</strong></div>
+				<div class="col-xs-2 text-right"><?php echo $_COOKIE["nombre_usuarios"]; ?></div>
 			</div>
 			<div class="row">
-				<div class="col-xs-7"><strong>Número de Ventas:</strong></div>
-				<div class="col-xs-4 text-right"><?php echo $num_ventas; ?></div>
+				<div class="col-xs-10"><strong>Número de Ventas:</strong></div>
+				<div class="col-xs-2 text-right"><?php echo $totales["ventas_totales"]; ?></div>
 			</div>
 			<div class="row">
-				<div class="col-xs-7"><strong>Importe de Ventas:</strong></div>
-				<div class="col-xs-4 text-right"><?php echo "$" . number_format($ingresos, 2); ?></div>
+				<div class="col-xs-8"><strong>Importe de Ventas:</strong></div>
+				<div class="col-xs-1 text-center">+</div>
+				<div class="col-xs-1 text-right">$</div>
+				<div class="col-xs-2 text-right"><?php echo number_format($totales["importe_ventas"], 2); ?></div>
 			</div>
 			<div class="row">
-				<div class="col-xs-7"><strong>Egresos:</strong></div>
-				<div class="col-xs-4 text-right"><?php echo "$" . number_format($egresos, 2); ?></div>
+				<div class="col-xs-8"><strong>Ingresos en Efectivo:</strong></div>
+				<div class="text-danger col-xs-1 text-center">+</div>
+				<div class="text-danger col-xs-1 text-right">$</div>
+				<div class="col-xs-2 text-right"><?php echo number_format($total_efectivo, 2); ?></div>
 			</div>
 			<div class="row">
-				<div class="col-xs-7"><strong>Total:</strong></div>
-				<div class="col-xs-4 text-right"><?php echo "$" . number_format($balance, 2); ?></div>
+				<div class="col-xs-8"><strong>Egresos:</strong></div>
+				<div class="text-danger col-xs-1 text-center">-</div>
+				<div class="text-danger col-xs-1 text-right">$</div>
+				<div class="col-xs-2 text-right" style="border-bottom: solid 1px;"><?php echo number_format($egresos, 2); ?></div>
+			</div>
+			<div class="row" style="margin-top: 3px;">
+				<div class="col-xs-8"><strong>Total:</strong></div>
+				<div class="text-danger col-xs-1 text-right"></div>
+				<div class="text-danger col-xs-1 text-right">$</div>
+				<div class="col-xs-2 text-right"><?php echo number_format($totales["importe_ventas"] - $egresos, 2); ?></div>
 			</div>
 
 		</div>
