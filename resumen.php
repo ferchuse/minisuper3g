@@ -7,7 +7,9 @@ $menu_activo = "resumen";
 $egresos = 0;
 $totales = [];
 
-
+if (isset($_GET["id_turnos"])) {
+	$_COOKIE["id_turnos"] = $_GET["id_turnos"];
+}
 if (isset($_GET["fecha_ventas"])) {
 	$fecha_corte = $_GET["fecha_ventas"];
 } else {
@@ -37,7 +39,9 @@ if ($tipo_corte == "dia") {
 	$consulta_totales = "SELECT * FROM
 		
 		(SELECT SUM(cantidad_ingresos) AS entradas FROM ingresos WHERE estatus_ingresos='ACTIVO' AND fecha_ingresos = '$fecha_corte') AS tabla_entradas,
-		(SELECT SUM(cantidad_egresos) AS salidas FROM egresos WHERE estatus_egresos='ACTIVO' AND fecha_egresos = '$fecha_corte') AS tabla_salidas
+		(SELECT SUM(cantidad_egresos) AS salidas FROM egresos WHERE estatus_egresos='ACTIVO' AND fecha_egresos = '$fecha_corte') AS tabla_salidas,
+		(SELECT COUNT(id_ventas) AS ventas_totales FROM ventas WHERE estatus_ventas='PAGADO' AND fecha_ventas = '$fecha_corte') AS tabla_ventas,
+		(SELECT SUM(total_ventas) AS importe_ventas FROM ventas WHERE estatus_ventas='PAGADO' AND fecha_ventas = '$fecha_corte') AS tabla_importe
 		";
 
 	$consulta_egresos = "SELECT * FROM egresos LEFT JOIN catalogo_egresos USING(id_catalogo_egresos) WHERE fecha_egresos =  '$fecha_corte'";
@@ -69,6 +73,8 @@ while ($fila = mysqli_fetch_assoc($resultado_totales)) {
 while ($fila = mysqli_fetch_assoc($resultado_egresos)) {
 	$lista_egresos[] = $fila;
 }
+
+
 
 ?>
 <!DOCTYPE html>
@@ -103,12 +109,11 @@ while ($fila = mysqli_fetch_assoc($resultado_egresos)) {
 		<div class="row">
 
 			<h4 class="text-center">
-				Resumen del día <?php echo date("d/m/Y", strtotime($fecha_corte)); ?>
+				Resumen del Día <?php echo date("d/m/Y", strtotime($fecha_corte)); ?>
 			</h4>
 			<div class="col-md-6">
 				<?php if ($_COOKIE["permiso_usuarios"] == "administrador") { ?>
 					<form class="form-inline" id="form_resumen">
-
 						<div class="form-group">
 							<label>Fecha: </label>
 							<input type="date" class="form-control" value="<?php echo $fecha_corte; ?>" name="fecha_ventas" id="fecha_ventas">
@@ -116,6 +121,10 @@ while ($fila = mysqli_fetch_assoc($resultado_egresos)) {
 						<div class="form-group">
 							<label>Turno: </label>
 							<input type="number" class="form-control" value="<?php echo $_COOKIE["id_turnos"]; ?>" name="id_turnos" id="id_turnos" <?php echo $_COOKIE["permiso_usuarios"] == "administrador" ? "" : "readonly"; ?>>
+						</div>
+						<div class="form-group">
+							<label>Inicio Turno: </label>
+							<input readonly type="time" class="form-control" value="<?php echo $hora_inicios; ?>" id="inicio_turno">
 						</div>
 					</form>
 				<?php
@@ -140,7 +149,7 @@ while ($fila = mysqli_fetch_assoc($resultado_egresos)) {
 						<i class="fas fa-cut"></i> Corte de Cajero
 					</button>
 					<button class="btn btn-secondary hidden-print" type="submit" title="Corte del Dia" name="tipo_corte" value="dia">
-						<i class="fas fa-cut"></i> Corte del Dia
+						<i class="fas fa-cut"></i> Corte del Día
 					</button>
 					<button class="btn btn-success " type="button" title="Cerrar Turno" id="btn_cerrar_turno">
 						<i class="fa fa-history"> </i>
@@ -161,11 +170,12 @@ while ($fila = mysqli_fetch_assoc($resultado_egresos)) {
 						</div>
 						<div style="height: 350px; overflow: auto;" class="panel-body" id="panel_ingresos">
 							<div class="row text-center">
+								<div class="col-xs-1"> Turno</div>
 								<div class="col-xs-2"> Folio</div>
 								<div class="col-xs-2"> Hora</div>
 								<div class="col-xs-2"> Total</div>
 								<div class="col-xs-2"> Estatus</div>
-								<div class="col-xs-4 text-center hidden-xs"> Acciones</div>
+								<div class="col-xs-3 text-center hidden-xs"> Acciones</div>
 							</div>
 
 							<?php
@@ -195,11 +205,12 @@ while ($fila = mysqli_fetch_assoc($resultado_egresos)) {
 
 								?>
 									<div class="row <?php echo $fondo; ?> text-center focusable" style="border-bottom: solid 1px; margin-bottom: 10px;">
+										<div class="col-xs-1 text-center"><?php echo $id_turnos; ?></div>
 										<div class="col-xs-2"><?php echo $id_ventas; ?></div>
 										<div class="col-xs-2 text-center"><?php echo date("H:i", strtotime($hora_ventas)); ?></div>
 										<div class="col-xs-2"><?php echo "$" . $total_ventas ?></div>
 										<div class="col-xs-2 text-center"><?php echo $estatus_ventas; ?></div>
-										<div class="col-xs-12 col-sm-4 text-right">
+										<div class="col-xs-12 col-sm-3 text-right">
 
 											<?php
 												if ($estatus_ventas != "PENDIENTE") {
@@ -366,6 +377,14 @@ while ($fila = mysqli_fetch_assoc($resultado_egresos)) {
 			<div class="row">
 				<div class="col-xs-10"><strong>Usuario:</strong></div>
 				<div class="col-xs-2 text-right"><?php echo $_COOKIE["nombre_usuarios"]; ?></div>
+			</div>
+			<div class="row">
+				<div class="col-xs-10"><strong>Inicio Turno:</strong></div>
+				<div class="col-xs-2 text-right"><?php echo date("H:i:s", strtotime($hora_inicios)); ?></div>
+			</div>
+			<div class="row">
+				<div class="col-xs-10"><strong>Fin Turno:</strong></div>
+				<div class="col-xs-2 text-right"><?php echo date("H:i:s", strtotime($hora_fin)) ; ?></div>
 			</div>
 			<div class="row">
 				<div class="col-xs-10"><strong>Número de Ventas:</strong></div>
