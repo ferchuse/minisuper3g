@@ -40,7 +40,7 @@
 						</a>
 						<ul class="dropdown-menu">
 							<li>
-								<a href="../reportes.php"><i class="fas fa-chart-bar"></i> Ventas Por Día</a>
+								<a href="../reportes"><i class="fas fa-chart-bar"></i> Ventas Por Día</a>
 							</li>
 							<li>
 								<a href="../inventarios/movimientos.php"><i class="fas fa-chart-bar"></i> Movimientos</a>
