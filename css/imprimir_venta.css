@@ -1,7 +1,7 @@
 /* ----- Estilos: "Ticket" ----- */
 
 .ticket {
-	width: 10cm;
+	max-width: 8cm;
 	margin-top: 15px;
 	margin-bottom: 3px;
 	font-family: calibri, sans-serif, arial;
