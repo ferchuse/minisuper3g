@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default ">
+<nav class="menu navbar navbar-default ">
 	<div class="container-fluid">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -8,7 +8,7 @@
 				<span class="icon-bar"></span>
 			</button>
 			<a class="navbar-brand" href="index.php">
-				<img src="img/logo.png" class="img-responsive" width="45px">
+				<img src="img/logo_menu.png" class="logo">
 			</a>
 		</div>
 		

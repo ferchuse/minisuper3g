@@ -87,12 +87,12 @@
 		<link href="css/imprimir_pago.css" rel="stylesheet" media="all">
 		<title>Resumen</title>
 		
-		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
 		<link href="css/bootstrap_3.4.1.css" rel="stylesheet" media="all" />
 		<link href="css/alertify.min.css" rel="stylesheet" media="all" />
 		<link href="css/all.min.css" rel="stylesheet">
 		<link href="lib/autocomplete.css" rel="stylesheet">
-		<link rel="stylesheet" href="css/imprimir_venta.css">
+		<link href="css/imprimir_venta.css" rel="stylesheet" >
+		<link href="css/menu.css" rel="stylesheet" >
 		
 	</head>
 	
