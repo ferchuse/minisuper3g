@@ -51,9 +51,8 @@
     <?php include("../styles_carpetas.php");?>
 	</head>
   <body>
-		<div class="container-fluid hidden-print">
-			<?php include("../menu_carpetas.php");?>
-		</div>
+		
+		<?php include("../menu_carpetas.php");?>
 		
 		<div class="container-fluid hidden-print">
 			<form id="form_agregar_producto" class="form-inline" autocomplete="off">

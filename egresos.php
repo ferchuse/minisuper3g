@@ -35,10 +35,8 @@ if ($result) {
 
 <body class="egresos">
 	<!-- "Menú" -->
-	<div class="menu container-fluid">
-		<?php include("menu.php"); ?>
-	</div>
-
+	<?php include("menu.php"); ?>
+	
 	<!-- Encabezado -->
 	<section class="encabezado container">
 		<!-- Título -->

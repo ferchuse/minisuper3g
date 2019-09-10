@@ -36,9 +36,10 @@ if ($result) {
 </head>
 
 <body class="proveedores">
-	<div class="menu container-fluid">
-		<?php include("menu.php"); ?>
-	</div>
+	
+	<!-- "Menú" -->
+	<?php include("menu.php"); ?>
+	
 
 	<section class="encabezado container">
 		<div class="titulo">PROVEEDORES</div>
