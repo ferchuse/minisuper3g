@@ -382,7 +382,7 @@
 					<div class="col-xs-8"><strong>Inicio Turno:</strong></div>
 					<div class="col-xs-3 text-right"><?php echo date("H:i:s", strtotime($hora_inicios)); ?></div>
 				</div>
-				<div class="row">
+				<div hidden class="row">
 					<div class="col-xs-8"><strong>Fin Turno:</strong></div>
 					<div class="col-xs-3 text-right"><?php echo date("H:i:s", strtotime($hora_fin)) ; ?></div>
 				</div>
