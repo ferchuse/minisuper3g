@@ -93,6 +93,7 @@
 		<link href="lib/autocomplete.css" rel="stylesheet">
 		<link href="css/imprimir_venta.css" rel="stylesheet" >
 		<link href="css/menu.css" rel="stylesheet" >
+		<link href="css/b4-margin-padding.css" rel="stylesheet" >
 		
 	</head>
 	
@@ -101,7 +102,8 @@
 			<?php
 				echo $consulta_totales;
 				echo $consulta_ventas;
-			echo var_dump($totales); ?>	
+				echo var_dump($totales); 
+			?>	
 		</pre>
 		<?php include("menu.php"); ?>
 		
@@ -111,7 +113,7 @@
 				<h4 class="text-center">
 					Resumen del Día <?php echo date("d/m/Y", strtotime($fecha_corte)); ?>
 				</h4>
-				<div class="col-md-6">
+				<div class="col-md-6 mt-3">
 					<?php if ($_COOKIE["permiso_usuarios"] == "administrador") { ?>
 						<form class="form-inline" id="form_resumen">
 							<div class="form-group">
@@ -131,20 +133,20 @@
 						}
 					?>
 				</div>
-				<div class="col-md-6 text-right hidden-print">
+				<div class="col-md-6 text-right hidden-print mt-3">
 					<button class="btn btn-primary" id="btn_ingreso">
 						<i class="fa fa-arrow-right"></i> Entrada de Dinero
 					</button>
+
 					<button class="btn btn-warning" id="btn_egreso">
 						<i class="fa fa-arrow-left"></i> Egreso
 					</button>
 					
 					<button class="btn btn-info" type="button" title="Imprimir Corte" id="btn_resumen">
-						<i class="fa fa-print"></i>
-						Imprimir Corte
+						<i class="fa fa-print"></i> Imprimir Corte
 					</button>
 					
-					<form>
+					<form class="mt-3">
 						<button class="btn btn-default hidden-print" type="submit" title="Corte de Cajero" name="tipo_corte" value="cajero">
 							<i class="fas fa-cut"></i> Corte de Cajero
 						</button>
