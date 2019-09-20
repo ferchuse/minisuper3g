@@ -1,0 +1,103 @@
+$(document).ready(function(){
+	
+	$('#form_arqueo').on('submit', guardarArqueo);
+	
+	
+	$('.cantidad').on('keyup', sumarArqueo);
+	$('.cantidad').on('focus', function selectOnFocus(event) {$(this).select()});
+	
+});
+
+function guardarArqueo(event){
+	console.log("guardarRegistro")
+	event.preventDefault();
+	let form = $(this);
+	let boton = form.find(':submit');
+	let icono = boton.find('.fa');
+	let datos = form.serializeArray();
+	datos.push({"name": "id_usuarios", "value": $("#sesion_id_usuarios").val()})
+	datos.push({"name": "id_administrador", "value": $("#sesion_id_administrador").val()})
+	let importe_desglose = $('#importe_desglose').val();
+	console.log("importe_desglose", importe_desglose);
+	console.log("datos", datos);
+	if(importe_desglose != ""){
+		
+		boton.prop('disabled',true);
+		icono.toggleClass('fa-save fa-spinner fa-pulse ');
+		
+		$.ajax({
+			url: 'control/fila_insert.php',
+			method: 'POST',
+			dataType: 'JSON',
+			data:{
+				tabla: 'desglose_dinero',
+				valores: datos
+			}
+			}).done(function(respuesta){
+			if(respuesta.estatus == 'success'){
+				alertify.success('Se ha agregado correctamente');
+				$('#modal_modal').modal('hide');
+				listar();
+				}else{
+				alertify.error('Ocurrio un error');
+			}
+			}).always(function(){ 
+			boton.prop('disabled',false);
+			icono.toggleClass('fa-save fa-spinner fa-pulse');
+		});
+	}
+	else{
+		alertify.error("Ingrese alguna cantidad");
+		
+		
+	}
+}
+
+
+
+
+function sumarArqueo(){
+	console.log("sumarArqueo()");
+	let importe_total = 0;
+	let $fila = $(this).closest("tr");
+	let denominacion = Number($fila.find(".cantidad").data('denomi'));
+	let cantidad = Number($fila.find(".cantidad").val());
+	let importe = cantidad * denominacion;
+	$fila.find('.importe').val(importe);
+	console.log(importe);
+	
+	$(".importe").each( function sumarImportes(index, item){
+		importe_total += Number($(item).val());
+	});
+	let subtotal = importe_total.toFixed(2);
+	console.log(importe_total);
+	$("#importe_total").val(subtotal);
+}
+//============TOTAL DE DOCUMENTO DE BOLETOS=================
+
+
+
+function imprimirArqueo(event){
+	var id_registro = $(this).data("id_registro");
+	var boton = $(this);
+	var icono = boton.find("fas");
+	
+	boton.prop("disabled", true);
+	icono.toggleClass("fa-print fa-spinner fa-spin");
+	
+	$.ajax({
+		url: "impresion/imprimir_desglose.php",
+		data:{
+			id_registro : id_registro
+		}
+		}).done(function (respuesta){
+		
+		$("#ticket").html(respuesta);
+		window.print();
+		}).always(function(){
+		
+		boton.prop("disabled", false);
+		icono.toggleClass("fa-print fa-spinner fa-spin");
+		
+	});
+}	

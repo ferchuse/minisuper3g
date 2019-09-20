@@ -59,24 +59,21 @@ $num_rows = mysqli_num_rows($result);
 				<div class="col-md-4">
 					<label for="">Código:</label>
 
-					<input id="codigo_producto" autofocus type="text" class="form-control" placeholder="ESC" size="50">
+					<input tabindex="-1" id="codigo_producto" autofocus type="text" class="form-control" placeholder="ESC" size="50">
 
 				</div>
 				<div class="col-md-4">
 					<div class="form-group">
 						<label for="">Descripción:</label>
-						<input id="buscar_producto" type="text" class="form-control" size="50" placeholder="F10">
+						<input tabindex="-1" id="buscar_producto" type="text" class="form-control" size="50" placeholder="F10">
 					</div>
 				</div>
 			</form>
 			<?php if ($_COOKIE["permiso_usuarios"] != "mostrador") { ?>
 			<div class="col-md-4">
 				<div class="form-group">
-					<label class="hidden">
-						<input type="checkbox" id="mayoreo">
-						F11 Mayoreo
-					</label>
-					<button class="btn btn-info pull-right" id="btn_refresh">
+					
+					<button tabindex="-1" class="btn btn-info pull-right" id="btn_refresh">
 						<i class="fa fa-sync"></i> F4 - Cremeria
 					</button>
 				</div>

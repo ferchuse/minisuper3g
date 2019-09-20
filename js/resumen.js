@@ -7,6 +7,7 @@ function onLoad(event){
 	
 	
 	
+	$('#btn_arqueo').click(nuevoArqueo);
 	$('#btn_ingreso').click(nuevoIngreso);
 	$('#btn_egreso').click(nuevoEgreso);
 	$('#fecha_ventas').change(cambiarFecha);
@@ -21,6 +22,12 @@ function onLoad(event){
 	
 }
 
+function nuevoArqueo(event){
+	
+	$("#form_arqueo")[0].reset();
+	$("#modal_arqueo").modal("show");
+	
+}
 function imprimirCorte(event){
 	$("#ticket").hide();
 	$("#resumen").removeClass("hidden-print");

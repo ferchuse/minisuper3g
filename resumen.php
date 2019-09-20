@@ -23,8 +23,8 @@
 	
 	$consulta_turno = "SELECT * FROM turnos WHERE cerrado='0'";
 	$result_turno = mysqli_query($link, $consulta_turno);
-	while ($row_turno = mysqli_fetch_assoc($result_turno)) {
-		extract($row_turno);
+	while ($fila = mysqli_fetch_assoc($result_turno)) {
+		$fila_turno = $fila;
 	}
 	
 	
@@ -126,7 +126,7 @@
 							</div>
 							<div class="form-group">
 								<label>Inicio Turno: </label>
-								<input readonly type="time" class="form-control" value="<?php echo $hora_inicios; ?>" id="inicio_turno">
+								<input readonly type="time" class="form-control" value="<?php echo $fila_turno["hora_inicios"]; ?>" id="inicio_turno">
 							</div>
 						</form>
 						<?php
@@ -134,10 +134,13 @@
 					?>
 				</div>
 				<div class="col-md-6 text-right hidden-print mt-3">
-					<button class="btn btn-primary" id="btn_ingreso">
-						<i class="fa fa-arrow-right"></i> Entrada de Dinero
+					<button class="btn btn-secondary" id="btn_arqueo" >
+						<i class="fa fa-dollar-sign"></i> Arqueo
 					</button>
-
+					
+					<button class="btn btn-primary" id="btn_ingreso">
+						<i class="fa fa-arrow-right"></i> Ingreso de Efectivo
+					</button>
 					<button class="btn btn-warning" id="btn_egreso">
 						<i class="fa fa-arrow-left"></i> Egreso
 					</button>
@@ -289,10 +292,9 @@
 									<div class=" col-xs-1 text-center">$</div>
 									<div class="col-xs-3 text-right" style="border-top: solid 1px;">
 									<?php echo number_format($saldo_final, 2); ?></div>
-									<input class="hidden" id="saldo_final" value="<?php echo $saldo_final ?>">
-									
 								</div>
 								
+								<input class="hidden" id="saldo_final" value="<?php echo $saldo_final ?>">
 							</div>
 						</div>
 					</div>
@@ -392,23 +394,47 @@
 					<div class="col-xs-8"><strong>Número de Ventas:</strong></div>
 					<div class="col-xs-3 text-right"><?php echo $totales["ventas_totales"]; ?></div>
 				</div>
-				<div class="row">
-					<div class="col-xs-8"><strong>Importe de Ventas:</strong></div>
-					<div class="col-xs-3 text-right"><?php echo number_format($totales["importe_ventas"], 2); ?></div>
+				<div class="row no-gutters">
+					<div class="col-xs-6">Fondo de Caja</div>
+					<div class="col-xs-1 text-right"></div>
+					<div class="col-xs-1 text-center">$</div>
+					<div class="cantidad col-xs-3 text-right"><?php echo number_format($_COOKIE["efectivo_inicial"], 2) ?></div>
 				</div>
-				<div class="row " hidden> 
-					<div class="col-xs-8"><strong>Ingresos en Efectivo:</strong></div>
-					<div class="col-xs-3 text-right"><?php echo number_format($total_efectivo, 2); ?></div>
-				</div>
-				<div class="row">
-					<div class="col-xs-8"><strong>Egresos:</strong></div>
-					<div class="col-xs-3 text-right" style="border-bottom: solid 1px;"><?php echo number_format($egresos, 2); ?></div>
-				</div>
-				<div class="row" style="margin-top: 3px;">
-					<div class="col-xs-8"><strong>Total:</strong></div>
-					<div class="col-xs-3 text-right"><?php echo number_format($totales["importe_ventas"] - $egresos, 2); ?></div>
+				<div class="row no-gutters">
+					<div class="col-xs-6">Ventas en Efectivo</div>
+					<div class="text-success col-xs-1 text-center">+</div>
+					<div class="text-success col-xs-1 text-center">$</div>
+					<div class="cantidad text-success col-xs-3 text-right"><?php echo number_format($total_efectivo, 2) ?></div>
 				</div>
 				
+				<div class="row no-gutters">
+					<div class="col-xs-6">Entradas</div>
+					<div class="text-success col-xs-1 text-center">+</div>
+					<div class="text-success col-xs-1 text-center">$</div>
+					<div class="cantidad text-success col-xs-3 text-right"><?php echo number_format($totales["entradas"], 2); ?></div>
+				</div>
+				<div class="row no-gutters">
+					<div class="col-xs-6">Salidas</div>
+					<div class="text-danger col-xs-1 text-center">-</div>
+					<div class="text-danger col-xs-1 text-center">$</div>
+					<div class="cantidad text-danger col-xs-3 text-right"><?php echo number_format($totales["salidas"], 2); ?></div>
+				</div>
+				<div class="row no-gutters">
+					<div class="col-xs-6">Devoluciones</div>
+					<div class="text-danger col-xs-1 text-center">-</div>
+					<div class="text-danger col-xs-1 text-center">$</div>
+					<div class="cantidad text-danger col-xs-3 text-right"><?php echo number_format($totales["devoluciones"], 2); ?></div>
+				</div>
+				<div class="row no-gutters border border-top">
+					<div class="col-xs-6">Saldo Final</div>
+					<div class=" col-xs-1 text-center"></div>
+					<div class=" col-xs-1 text-center">$</div>
+					<div class="col-xs-3 text-right" style="border-top: solid 1px;">
+					<?php echo number_format($saldo_final, 2); ?></div>
+				</div>
+				
+				
+			
 			</div>
 			
 		</div>
@@ -422,6 +448,7 @@
 		
 		
 		<?php include('forms/modal_egresos.php'); ?>
+		<?php include('forms/form_arqueo.php'); ?>
 		
 		
 		<?php include('scripts.php'); ?>
@@ -444,6 +471,7 @@
 		<script src="js/pagos.js"></script>
 		<script src="js/numerosLetras.js"></script>
 		<script src="js/modal_egresos.js"></script>
+		<script src="js/arqueo.js"></script>
 		
 		
 	</body>
