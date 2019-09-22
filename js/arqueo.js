@@ -15,8 +15,8 @@ function guardarArqueo(event){
 	let boton = form.find(':submit');
 	let icono = boton.find('.fa');
 	let datos = form.serializeArray();
-	datos.push({"name": "id_usuarios", "value": $("#sesion_id_usuarios").val()})
-	datos.push({"name": "id_administrador", "value": $("#sesion_id_administrador").val()})
+	datos.push({"name": "id_usuarios", "value": $("#id_usuarios").val()})
+	// datos.push({"name": "id_administrador", "value": $("#sesion_id_administrador").val()})
 	let importe_desglose = $('#importe_desglose').val();
 	console.log("importe_desglose", importe_desglose);
 	console.log("datos", datos);
@@ -26,19 +26,20 @@ function guardarArqueo(event){
 		icono.toggleClass('fa-save fa-spinner fa-pulse ');
 		
 		$.ajax({
-			url: 'control/fila_insert.php',
+			url: 'funciones/fila_insert.php',
 			method: 'POST',
 			dataType: 'JSON',
 			data:{
-				tabla: 'desglose_dinero',
+				tabla: 'arqueo',
 				valores: datos
 			}
 			}).done(function(respuesta){
 			if(respuesta.estatus == 'success'){
 				alertify.success('Se ha agregado correctamente');
-				$('#modal_modal').modal('hide');
-				listar();
-				}else{
+				$('#modal_arqueo').modal('hide');
+				imprimirArqueo();
+			}
+			else{
 				alertify.error('Ocurrio un error');
 			}
 			}).always(function(){ 
@@ -58,6 +59,7 @@ function guardarArqueo(event){
 
 function sumarArqueo(){
 	console.log("sumarArqueo()");
+	
 	let importe_total = 0;
 	let $fila = $(this).closest("tr");
 	let denominacion = Number($fila.find(".cantidad").data('denomi'));
@@ -78,6 +80,7 @@ function sumarArqueo(){
 
 
 function imprimirArqueo(event){
+	console.log("imprimirArqueo()");
 	var id_registro = $(this).data("id_registro");
 	var boton = $(this);
 	var icono = boton.find("fas");
@@ -86,13 +89,13 @@ function imprimirArqueo(event){
 	icono.toggleClass("fa-print fa-spinner fa-spin");
 	
 	$.ajax({
-		url: "impresion/imprimir_desglose.php",
+		url: "impresion/imprimir_arqueo.php",
 		data:{
 			id_registro : id_registro
 		}
 		}).done(function (respuesta){
 		
-		$("#ticket").html(respuesta);
+		$("#arqueo").html(respuesta);
 		window.print();
 		}).always(function(){
 		

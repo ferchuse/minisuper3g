@@ -445,6 +445,8 @@
 		
 		<div id="ver_venta">
 		</div>
+		<div id="arqueo">
+		</div>
 		
 		
 		<?php include('forms/modal_egresos.php'); ?>

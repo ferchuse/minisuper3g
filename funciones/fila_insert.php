@@ -13,10 +13,10 @@ $str_pairs = "";
 //crea un string con los campos y sus valores
 foreach($arr_pairs as $arr_field_value){
 	if($arr_field_value["value"] == ''){
-		$str_pairs.= $arr_field_value["name"]. " = NULL,";
+		$str_pairs.= "`".$arr_field_value["name"]."`"." = NULL,";
 	}
 	else{
-		$str_pairs.= $arr_field_value["name"]. " = '" . $arr_field_value["value"] . "',";
+		$str_pairs.= "`".$arr_field_value["name"]."`". " = '" . $arr_field_value["value"] . "',";
 	}
 }
 
