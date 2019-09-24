@@ -6,6 +6,7 @@
 	$id_turnos = $_COOKIE['id_turnos'];
 	$listaProductos = $_POST['productos'];
 	$articulos_ventas = $_POST['articulos_ventas'];
+	$ganancia_venta = 0;
 	
 	
 	
@@ -62,6 +63,7 @@
 	foreach($listaProductos as $indice => $producto){
 		 
 		$ganancia_pesos = ($producto["precio"] - $producto["costo_proveedor"]) *  $producto["cantidad"];
+		$ganancia_venta+= $ganancia_pesos;
 		$respuesta["ganancia"][] = $ganancia_pesos;
 		
 		$insertarVentasDetalle = "INSERT INTO ventas_detalle SET
@@ -106,7 +108,7 @@
 		$respuesta["result_movimientos"] = $result_movimientos."-".mysqli_error($link) ;
 		
 		
-		//actualiza existencias
+		//Actualiza existencias
 		
 		$update_existencia = "UPDATE productos SET existencia_productos = existencia_productos - '{$producto["cantidad"]}'
 		WHERE id_productos = '{$producto["id_productos"]}'	"; 
