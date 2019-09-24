@@ -23,7 +23,7 @@ function onLoad(event){
 }
 
 function nuevoArqueo(event){
-	
+	$("#resumen").hide();
 	$("#form_arqueo")[0].reset();
 	$("#modal_arqueo").modal("show");
 	
@@ -31,6 +31,7 @@ function nuevoArqueo(event){
 function imprimirCorte(event){
 	$("#ticket").hide();
 	$("#resumen").removeClass("hidden-print");
+	$("#resumen").addClass("visible-print");
 	window.print();
 }
 function nuevoIngreso(){
@@ -78,7 +79,9 @@ function cambiarFecha(){
 	
 }
 function imprimirTicket(){
+	$("#arqueo").hide();
 	$("#resumen").hide();
+	$("#arqueo").addClass("hidden-print");
 	$("#resumen").addClass("hidden-print");
 	
 	console.log("btn_ticketPago");

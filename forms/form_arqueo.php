@@ -54,9 +54,13 @@
 				</div>
 				
 				<!-- Modal footer -->
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
-					<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+				<div class="modal-footer hidden-print">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">
+					<i class="fa fa-times"></i> Cancelar
+					</button>
+					<button type="submit" class="btn btn-info">
+						<i class="fa fa-print"></i> Imprimir
+					</button>
 				</div>
 			</div>
 		</div>

@@ -35,8 +35,8 @@ function guardarArqueo(event){
 			}
 			}).done(function(respuesta){
 			if(respuesta.estatus == 'success'){
-				alertify.success('Se ha agregado correctamente');
-				$('#modal_arqueo').modal('hide');
+				// alertify.success('Se ha agregado correctamente');
+				// $('#modal_arqueo').modal('hide');
 				imprimirArqueo();
 			}
 			else{
@@ -81,26 +81,31 @@ function sumarArqueo(){
 
 function imprimirArqueo(event){
 	console.log("imprimirArqueo()");
-	var id_registro = $(this).data("id_registro");
-	var boton = $(this);
-	var icono = boton.find("fas");
 	
-	boton.prop("disabled", true);
-	icono.toggleClass("fa-print fa-spinner fa-spin");
+	$("#resumen").removeClass("visible-print");
+	$("#resumen").addClass("hidden-print");
+	window.print()
 	
-	$.ajax({
-		url: "impresion/imprimir_arqueo.php",
-		data:{
-			id_registro : id_registro
-		}
-		}).done(function (respuesta){
+	// var id_registro = $(this).data("id_registro");
+	// var boton = $(this);
+	// var icono = boton.find("fas");
+	
+	// boton.prop("disabled", true);
+	// icono.toggleClass("fa-print fa-spinner fa-spin");
+	
+	// $.ajax({
+		// url: "impresion/imprimir_arqueo.php",
+		// data:{
+			// id_registro : id_registro
+		// }
+		// }).done(function (respuesta){
 		
-		$("#arqueo").html(respuesta);
-		window.print();
-		}).always(function(){
+		// $("#arqueo").html(respuesta);
+		// window.print();
+		// }).always(function(){
 		
-		boton.prop("disabled", false);
-		icono.toggleClass("fa-print fa-spinner fa-spin");
+		// boton.prop("disabled", false);
+		// icono.toggleClass("fa-print fa-spinner fa-spin");
 		
-	});
+	// });
 }	
