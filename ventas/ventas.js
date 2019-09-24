@@ -11,6 +11,11 @@ function DecimalRound(DValue, DPrecision){
 	return Math.round(DValue / DPrecision) * DPrecision;
 }
 
+
+
+console.log(DecimalRound(10.26, 2))
+console.log(DecimalRound(10.26, .5))
+
 function cargarPendientes(event){
 	console.log("cargarPendientes");
 	console.log("tabs", $("#tabs_ventas .cremeria").length);
@@ -100,7 +105,11 @@ function renderProductos(tab_index, venta){
 		<button title="Eliminar Producto" class="btn btn-danger btn_eliminar">
 		<i class="fa fa-trash"></i>
 		</button> 
-		<label><input class="mayoreo" type="checkbox">Mayoreo</label>
+		<label class="custom_checkbox">
+		Mayoreo
+		<input class="mayoreo" type="checkbox">
+		<span class="checkmark"></span>
+		</label>
 		</td>
 		</tr>`;
 		
@@ -169,11 +178,20 @@ function renderProductos(tab_index, venta){
 	
 }
 
-console.log(DecimalRound(10.26, 2))
-console.log(DecimalRound(10.26, .5))
+
+function cobrarEImprimir(evt){
+	evt.data = {"imprimir": true};
+	evt.type = "submit";
+	guardarVenta(evt).done(function(respuesta){
+		
+		imprimirTicket(respuesta.id_ventas);
+	})
+	
+}
 
 $(document).ready( function onLoad(){
 	
+	$('#imprimir').click(cobrarEImprimir);
 	
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 		e.target // newly activated tab
@@ -429,7 +447,11 @@ function agregarProducto(producto){
 		<button title="Eliminar Producto" class="btn btn-danger btn_eliminar">
 		<i class="fa fa-trash"></i>
 		</button> 
-		<label><input class="mayoreo" type="checkbox">Mayoreo</label>
+		<label class="custom_checkbox">
+		Mayoreo
+		<input class="mayoreo" type="checkbox">
+		<span class="checkmark"></span>
+		</label>
 		</td>
 		</tr>`;
 		
@@ -492,6 +514,7 @@ function guardarVenta(event){
 	// event.preventDefault();
 	console.log("guardarVenta", event.type);
 	console.log("event", event);
+	console.log("target", event.target);
 	
 	var boton = $(this).find(":submit");
 	var icono = boton.find('.fa');
@@ -503,6 +526,7 @@ function guardarVenta(event){
 		var estatus_ventas ="PAGADO" ;
 		var nombre_cliente =  $("#tabs_ventas li.active span").text();
 		event.preventDefault();
+		
 	}
 	else{
 		console.log("Pendiente");
@@ -510,6 +534,8 @@ function guardarVenta(event){
 		var nombre_cliente =  event;
 		
 	}
+	
+	
 	
 	boton.prop('disabled',true);
 	icono.toggleClass('fa-check fa-spinner fa-spin');
@@ -527,7 +553,7 @@ function guardarVenta(event){
 		})
 	});
 	
-	$.ajax({
+	return $.ajax({
 		url: 'ventas/guardar.php',
 		method: 'POST',
 		dataType: 'JSON',
@@ -550,11 +576,9 @@ function guardarVenta(event){
 			sumarImportes();
 			
 			$("#modal_pago").modal("hide");
-			//Borrar Ticket 
-			$("li.cremeria.active").remove();
-			$(".tab-pane.cremeria.active").remove();
-			$("#codigo_productos")
-			$("#tabs_ventas a").first().click();
+			
+			limpiarTicket();
+			
 			// console.log("Venta Activa", $("#tabs_ventas>li.active input").val("Mostrador"));
 			// imprimirTicket( respuesta.id_ventas)
 			
@@ -569,6 +593,16 @@ function guardarVenta(event){
 	TotalTurno();
 }
 
+function limpiarTicket(){
+	console.log("limpiarTicket()");
+	//resetea los datos de la ultima venta 
+	$("li.cremeria.active").remove(); //Quita la venta si es de cremeria
+	$(".tab-pane.cremeria.active").remove(); //Quita la venta si es de cremeria
+	
+	$("#tabs_ventas a").first().click();
+	
+	$("#codigo_productos").focus();
+}
 
 function eliminarProducto(){
 	$(this).closest("tr").remove();
@@ -613,7 +647,8 @@ function beforePrint() {
 	//Antes de Imprimir
 }
 function afterPrint() {
-	window.location.reload(true);
+	// window.location.reload(true);
+	limpiarTicket();
 }
 
 
@@ -787,11 +822,11 @@ function TotalTurno (){
 		url: "funciones/total_turno.php",
 		dataType: "JSON"
 		}).done(function (respuesta){
-			console.log(respuesta);
-			if (respuesta.total_turno > 3000){
-				alertify.warning("Límite $3000 Superado");
-			};
-		});
+		console.log(respuesta);
+		if (respuesta.total_turno > 3000){
+			alertify.warning("Límite $3000 Superado");
+		};
+	});
 }
 
 function calculaCambio(){
@@ -799,4 +834,4 @@ function calculaCambio(){
 	let pago = $("#pago").val();
 	let cambio = pago - efectivo;
 	$("#cambio").val(cambio);
-}
+}	

@@ -1,7 +1,7 @@
 <form id="form_pago">
 	<div id="modal_pago" class="modal " role="dialog">
 
-		<div class="modal-dialog modal-sm">
+		<div class="modal-dialog ">
 			<!-- Modal content -->
 			<div class="modal-content">
 				<!-- "Modal Header" -->
@@ -37,22 +37,22 @@
 							</div>
 
 							<!-- "Pago" -->
-							<div class="pago row mt-4">
+							<div class="pago row mt-4 text-right">
 								<div class="col-sm-6">
 									<label>Se Recibe: </label>
 								</div>
 								<div class="col-sm-6">
-									<input id="pago" step=".5" type="number" class="valor form-control" name="pago">
+									<input id="pago" step=".5" type="number" class="valor form-control " name="pago">
 								</div>
 							</div>
 
 							<!-- "Cambio" -->
-							<div class="cambio row mt-2">
+							<div class="cambio row mt-2 text-right">
 								<div class="col-sm-6">
 									<label>Cambio: </label>
 								</div>
 								<div class="col-sm-6">
-									<input readonly id="cambio" value="0" type="number" class="valor form-control" name="cambio">
+									<input readonly id="cambio" value="0" type="number" class="valor form-control text-right" name="cambio">
 								</div>
 							</div>
 						</div>
@@ -106,8 +106,11 @@
 					<button type="button" class="btn btn-danger" data-dismiss="modal">
 						<i class="fa fa-times"></i> Cancelar
 					</button>
-					<button type="submit" class="btn btn-success">
-						<i class="fa fa-check"></i> Aceptar
+					<button type="button" id="imprimir" class="btn btn-info">
+						<i class="fa fa-print"></i> Cobrar e Imprimir
+					</button>
+					<button type="submit" id="cobrar" class="btn btn-success">
+						<i class="fa fa-dollar-sign"></i> Solo Cobrar
 					</button>
 				</div>
 			</div>

@@ -106,7 +106,7 @@ while ($fila = mysqli_fetch_assoc($result)) {
 			</tbody>
 
 			<!-- Total -->
-			<tfoot class="total">
+			<tfoot class="">
 				<tr>
 					<td class="etiqueta text-right" colspan="3"><strong>TOTAL:</strong></td>
 					<td class="valor text-right"><?php echo "$" . $producto["total_ventas"] ?></td>
