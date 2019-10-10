@@ -26,18 +26,18 @@
 	
 	//#Inicia un nuevo turno
 	
-	$inicia_turno = "INSERT turnos SET 
-	fecha_inicio_turnos = CURDATE(),
-	hora_inicios = CURTIME()
-	";
+	// $inicia_turno = "INSERT turnos SET 
+	// fecha_inicio_turnos = CURDATE(),
+	// hora_inicios = CURTIME()
+	// ";
 	
-	if(mysqli_query($link,$inicia_turno)){
-		$respuesta['estatus'] = 'success';
-		}
-	else{
-		$respuesta['estatus'] = 'error';
-		$respuesta['mensaje'] = 'Error en Insertar Turno';
-	}
+	// if(mysqli_query($link,$inicia_turno)){
+		// $respuesta['estatus'] = 'success';
+		// }
+	// else{
+		// $respuesta['estatus'] = 'error';
+		// $respuesta['mensaje'] = 'Error en Insertar Turno';
+	// }
 	
 	
 	echo json_encode($respuesta);

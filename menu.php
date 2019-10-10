@@ -43,6 +43,9 @@
 								<a href="reportes"><i class="fas fa-chart-bar"></i> Ventas Por Día</a>
 							</li>
 							<li>
+								<a href="reportes/egresos.php"><i class="fas fa-chart-bar"></i> Egresos</a>
+							</li>
+							<li>
 								<a href="inventarios/movimientos.php"><i class="fas fa-chart-bar"></i> Movimientos</a>
 							</li>
 						</ul>
