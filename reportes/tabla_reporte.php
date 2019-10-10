@@ -138,7 +138,7 @@
 	</div>
 	
 	<!-- "Egresos" -->
-	<div class="col-sm-6">
+	<div class="col-sm-6 hidden">
 		<div class="panel panel-primary">
 			<div class="panel-heading hidden-print">
 				<h4 class="text-center">
