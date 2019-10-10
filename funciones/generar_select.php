@@ -4,8 +4,8 @@
 	
 	// $link = Conectarse();
 	 
-	function generar_select($link, $tabla, $llave_primaria, $campo_etiqueta ,$filtro = false, $disabled = false ,$required = false , $id_selected = 0, $data_indice = 0, $name = ""){
-		$consulta = "SELECT * FROM $tabla";
+	function generar_select($link, $tabla, $llave_primaria, $campo_etiqueta ,$filtro = false, $disabled = false ,$required = false , $id_selected = 0, $data_indice = 0, $name = "", $order){
+		$consulta = "SELECT * FROM $tabla ORDER BY $campo_etiqueta";
 		
 		if($name == ""){
 			$name = $llave_primaria;

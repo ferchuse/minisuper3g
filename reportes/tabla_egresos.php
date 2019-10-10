@@ -6,28 +6,43 @@
 	$fecha_final = $_GET['fecha_final'];
 	
 	
-	
-	//Ingresos
-	$resultadoVentas = mysqli_query($link,$consultaVentas);
-	$row_count = mysqli_num_rows($resultadoVentas);
-	
 	// Consulta Egresos
-	$consultar = "SELECT * FROM egresos 
-	GROUP BY 
+	$consulta = "SELECT 
+	*,
+	SUM(cantidad_egresos)  AS suma_egresos
+	FROM egresos 
+	LEFT JOIN catalogo_egresos
+	USING(id_catalogo_egresos)
 	
-	WHERE fecha_egresos BETWEEN '$fecha_inicial' AND '$fecha_final' 
+	WHERE fecha_egresos BETWEEN '$fecha_inicial' AND '$fecha_final' ";
 	
-	GROUP BY descripcion_egresos";
-	$resultados = mysqli_query($link, $consultar);
-	$totales = array();
+	if($_GET["id_catalogo_egresos"] != ''){
+		
+		$consulta .= " AND id_catalogo_egresos = '{$_GET["id_catalogo_egresos"]}'";
+	}
+	
+	$consulta .= " GROUP BY descripcion_egresos
+	
+	ORDER BY
+	{$_GET["sort"]} {$_GET["order"]}"
+	
+	;
+	$resultado = mysqli_query($link, $consulta);
+	
+	if(!$resultado){
+		
+		echo mysqli_error($link);
+	}
+	
+	$total = 0;
 	
 ?>
 <pre hidden>
-	<?php echo $consultaVentas?>
+	<?php echo $consulta?>
 </pre>
 
 <?php 
-	if($row_count < 1){
+	if(mysqli_num_rows($resultado) < 1){
 	?>
 	<br>
 	<br>
@@ -35,68 +50,49 @@
 	  <strong>No hay egresos en estas fechas</strong> 
 	</div>
 	<?php		
-		}
+	}
 	else{
 	?>
 	
 	<!-- "Egresos" -->
-	<div class="col-sm-6">
-		<div class="panel panel-primary">
-			<div class="panel-heading hidden-print">
-				<h4 class="text-center">
-					Egresos
-				</h4>
-			</div>
-			<div class="panel-body" id="panel_egresos">
-				<div class="table-responsive">
-					<h4>
-						<table class="table table-hover" id="egresos">
-							<thead>
-								<tr>
-									<th  onclick="sortTable(0)" class="text-center">Descripción</th>
-									<th onclick="sortTable(1)"  class="text-right">Cantidad</th>
-									
-								</tr>
-							</thead>
-							<tbody>
-								<?php 
-									while($row = mysqli_fetch_assoc($resultados)){
-										extract($row);
-										
-									?>
-									
-									<tr class="text-center">
-										
-										<td class=""><?php echo ($descripcion_egresos);?></td>
-										<td class=""><?php echo number_format($cantidad_egresos, 2);?></td>
-										
-									</tr>
-									
-									<?php
-										
-									}
-								?>
-							</tbody>
-							<tfoot>
-								<tr class="<?php echo $color;?>">
-									<td colspan="1" class="text-right text-danger">
-										<big><b>TOTAL:</b></big>
-									</td>
-									<td class="text-right">
-										<?php 
-											$forma2 = array_sum($totales);
-											echo "$". number_format(array_sum($totales),2);
-										?>
-									</td>
-									<td class="text-right"></td>
-								</tr>
-								
-								<?php 
-								}
-							?>
-						</tfoot>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>							
+	
+	<table class="table table-hover" id="egresos">
+		<thead>
+			<tr>		
+				<th class="text-center"><a class="sort" href="#!" data-columna="tipo_egreso">Categoría</a> </th>
+				<th class="text-center"><a class="sort" href="#!" data-columna="descripcion_egresos">Descripción</a> </th>
+				<th class="text-center"><a class="sort" href="#!" data-columna="suma_egresos">Cantidad</a> </th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php 
+				while($fila = mysqli_fetch_assoc($resultado)){
+					
+					$total+= $fila["suma_egresos"];
+				?>
+				<tr class="">
+					
+					<td class=""><?php echo $fila["tipo_egreso"];?></td>
+					<td class=""><?php echo $fila["descripcion_egresos"];?></td>
+					<td class=""><?php echo number_format($fila["suma_egresos"], 2);?></td>
+					
+				</tr>
+				
+				<?php
+					
+				}
+			?>
+		</tbody>
+		<tfoot>
+			<tr class="<?php echo $color;?>">
+				<td colspan="2" class="text-right text-danger">
+					<big><b>TOTAL:</b></big>
+				</td>
+				<td class=""><?php echo "$". number_format($total,2);?></td>
+			</tr>
+			
+			<?php 
+			}
+		?>
+	</tfoot>
+</table>

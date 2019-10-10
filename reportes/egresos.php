@@ -1,13 +1,17 @@
 <?php
 	include("../login/login_success.php");
-
+	include("../funciones/generar_select.php");
+	include("../conexi.php");
+	
+	$link = Conectarse();
+	
 	$menu_activo = "reportes";
 	
 	$dt_fecha_inicial = new DateTime("first day of this month");
 	$dt_fecha_final = new DateTime("last day of this month");
 	
-	$fa_inicial = $dt_fecha_inicial->format("Y-m-d");
-	$fa_final = $dt_fecha_final->format("Y-m-d");
+	$fecha_inicial = $dt_fecha_inicial->format("Y-m-d");
+	$fecha_final = $dt_fecha_final->format("Y-m-d");
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -27,19 +31,34 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12">
-					<h3 class="text-center">Reporte Ventas por Día</h3>
+					<h3 class="text-center">Reporte de Egresos</h3>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-sm-12">
-					<form id="form_reportes" class="form-inline">
+					<form id="form_filtros" class="form-inline">
+						
+						<input type="hidden" id="sort" name="sort" value="tipo_egreso">
+						<input type="hidden" id="order" name="order" value="ASC">
+						
+						
 						<div class="form-group">
-							<label for="fecha_inicio">Desde:</label>
-							<input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" value="<?php echo $fa_inicial;?>">
+							<label for="fecha_inicial">Desde:</label>
+							<input type="date" name="fecha_inicial" id="fecha_inicial" class="form-control" value="<?php echo $fecha_inicial;?>">
 						</div>
 						<div class="form-group">
-							<label for="fecha_fin">Hasta:</label>
-							<input type="date" name="fecha_fin" id="fecha_fin" class="form-control" value="<?php echo $fa_final;?>">
+							<label for="fecha_final">Hasta:</label>
+							<input type="date" name="fecha_final" id="fecha_final" class="form-control" value="<?php echo $fecha_final;?>">
+						</div>
+						
+						<div class="form-group hidden">
+							<label for="id_proveedores">Proveedor:</label>
+							<?php echo generar_select($link, "proveedores", "id_proveedores" , "nombre_proveedores", true, false, false)?>
+						</div>
+						
+						<div class="form-group">
+							<label for="id_catalogo_egresos">Categoria:</label>
+							<?php echo generar_select($link, "catalogo_egresos", "id_catalogo_egresos" , "tipo_egreso", true, false, false)?>
 						</div>
 						
 						<button type="submit" class="btn btn-primary" id="btn_buscar">
@@ -50,73 +69,58 @@
 			</div>
 			<hr> 
 			<div class="row">
-				<div class="col-sm-12 text-center table-responsive" id="contenedor_tabla">
+				<div class="col-sm-12 text-center table-responsive" id="tabla_reporte">
 					
 				</div>
 			</div>
 		</div >
-		<div id="ReporteTicket" class="visible-print">
-		</div>
 		
 		
 		<?php  include('../scripts_carpetas.php'); ?>
-		<script src="reportes.js"></script>
+		<script >
+			$(document).ready(onLoad);
+			
+			
+			function onLoad(){
+				$('#form_filtros').submit(function(event){
+					event.preventDefault();
+					$('#contenedor_tabla').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>');
+					var boton = $(this).find(':submit');
+					var icono = boton.find('.fa');
+					var formulario = $(this).serialize();
+					$.ajax({
+						url: "tabla_egresos.php",
+						dataType: 'HTML',
+						data: formulario
+						}).done(function(respuesta){
+						$('#tabla_reporte').html(respuesta);
+						
+						$('.sort').click(ordenarTabla);
+					});
+				});
+				
+				
+				
+			}
+			
+			function ordenarTabla() {
+				$(this).toggleClass("asc desc");
+				console.log("ordenarTabla");
+				
+				if(	$("#order").val() ==  "ASC"){
+					$("#order").val("DESC");
+				}
+				else{
+					$("#order").val("ASC");
+				}
+				
+				$("#sort").val($(this).data("columna"));
+				$('#form_filtros').submit();
+			}
+			
+			
+		</script>
 		
-		<script>
-function sortTable(n) {
-  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-  table = document.getElementById("egresos");
-  switching = true;
-  // Set the sorting direction to ascending:
-  dir = "asc";
-  /* Make a loop that will continue until
-  no switching has been done: */
-  while (switching) {
-    // Start by saying: no switching is done:
-    switching = false;
-    rows = table.rows;
-    /* Loop through all table rows (except the
-    first, which contains table headers): */
-    for (i = 1; i < (rows.length - 2); i++) {
-      // Start by saying there should be no switching:
-      shouldSwitch = false;
-      /* Get the two elements you want to compare,
-      one from current row and one from the next: */
-      x = rows[i].getElementsByTagName("TD")[n];
-      y = rows[i + 1].getElementsByTagName("TD")[n];
-      /* Check if the two rows should switch place,
-      based on the direction, asc or desc: */
-      if (dir == "asc") {
-        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-          // If so, mark as a switch and break the loop:
-          shouldSwitch = true;
-          break;
-        }
-      } else if (dir == "desc") {
-        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-          // If so, mark as a switch and break the loop:
-          shouldSwitch = true;
-          break;
-        }
-      }
-    }
-    if (shouldSwitch) {
-      /* If a switch has been marked, make the switch
-      and mark that a switch has been done: */
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-      // Each time a switch is done, increase this count by 1:
-      switchcount ++;
-    } else {
-      /* If no switching has been done AND the direction is "asc",
-      set the direction to "desc" and run the while loop again. */
-      if (switchcount == 0 && dir == "asc") {
-        dir = "desc";
-        switching = true;
-      }
-    }
-  }
-}
-</script>
+		
 	</body>
 </html>
