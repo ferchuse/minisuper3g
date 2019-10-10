@@ -41,7 +41,8 @@
 						<input type="hidden" id="sort" name="sort" value="tipo_egreso">
 						<input type="hidden" id="order" name="order" value="ASC">
 						
-						
+						<input class="buscar  form-control float-left" type="search" placeholder="Buscar">
+					
 						<div class="form-group">
 							<label for="fecha_inicial">Desde:</label>
 							<input type="date" name="fecha_inicial" id="fecha_inicial" class="form-control" value="<?php echo $fecha_inicial;?>">
@@ -82,26 +83,39 @@
 			
 			
 			function onLoad(){
-				$('#form_filtros').submit(function(event){
-					event.preventDefault();
-					$('#contenedor_tabla').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>');
-					var boton = $(this).find(':submit');
-					var icono = boton.find('.fa');
-					var formulario = $(this).serialize();
-					$.ajax({
-						url: "tabla_egresos.php",
-						dataType: 'HTML',
-						data: formulario
-						}).done(function(respuesta){
-						$('#tabla_reporte').html(respuesta);
-						
-						$('.sort').click(ordenarTabla);
-					});
-				});
+				$('#form_filtros').submit(filtrar);
 				
+				$(".buscar").keyup(buscarFila);
+				$(".buscar").change(buscarFila);
 				
 				
 			}
+			
+			function filtrar(event){
+				event.preventDefault();
+				$('#contenedor_tabla').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>');
+				var boton = $(this).find(':submit');
+				var icono = boton.find('.fa');
+				var formulario = $(this).serialize();
+				$.ajax({
+					url: "tabla_egresos.php",
+					dataType: 'HTML',
+					data: formulario
+					}).done(function(respuesta){
+					$('#tabla_reporte').html(respuesta);
+					
+					$('.sort').click(ordenarTabla);
+				});
+			}
+			
+			
+			function buscarFila(event) {
+				var value = $(this).val().toLowerCase();
+				console.log("buscando", value);
+				$("#tabla_reporte tbody tr").filter(function() {
+					$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+				});
+			}	
 			
 			function ordenarTabla() {
 				$(this).toggleClass("asc desc");
