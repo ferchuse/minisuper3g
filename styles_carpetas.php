@@ -6,3 +6,4 @@
 <link href="../lib/autocomplete.css" rel="stylesheet" >
 <link href="../css/menu.css" rel="stylesheet" >
 <link href="../css/b4-margin-padding.css" rel="stylesheet" >
+<link rel="manifest" href="../manifest.json">
