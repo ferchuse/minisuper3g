@@ -84,9 +84,9 @@
 								placeholder="Contraseña" required="" />
 							</div>
 							<div class="form-group">
-								<label for="password">Turno:</label>
-								<input type="number" readonly name="turno" class="form-control " id="turno" placeholder="" required="" />
-								<input class="hidden" id="cerrado" name="cerrado">
+								<label for="password">Ultimo Turno:</label>
+								<input type="number" readonly name="turno" class="form-control col-sm-6" id="turno" placeholder="" required="" />
+								<input class="form-control col-sm-6" readonly id="cerrado" name="cerrado">
 							</div>
 							<div class="form-group">
 								<label for="password">Efectivo Inicial:</label>
