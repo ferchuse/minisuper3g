@@ -123,7 +123,11 @@
 					}
 				?>
 				
-				
+				<li >
+					<a href="index.php">
+						<i class="fas fa-clock"></i> Turno <?php echo $_COOKIE["id_turnos"];?>
+					</a>
+				</li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<i class="fa fa-user"></i>
@@ -133,14 +137,14 @@
 						<strong class="caret"></strong>
 						<input type="hidden" id="id_usuarios" value="<?php echo isset($_COOKIE["id_usuarios"]) ? $_COOKIE["id_usuarios"] : ""; ?>">
 						
-					</a>
-					<ul class="dropdown-menu">
-						<li>
-							<a href="login/logout.php"><i class="fas fa-sign-out-alt"></i> Salir</a>
-						</li>
-					</ul>
-				</li>
-			</ul>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="login/logout.php"><i class="fas fa-sign-out-alt"></i> Salir</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
 		</div>
-	</div>
-</nav>
+	</nav>
