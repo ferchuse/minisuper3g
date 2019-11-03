@@ -445,7 +445,7 @@
 		
 		<div id="ver_venta">
 		</div>
-		<div id="arqueo">
+		<div id="arqueo" class="ticket">
 		</div>
 		
 		

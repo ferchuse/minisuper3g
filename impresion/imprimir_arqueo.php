@@ -8,7 +8,7 @@
 	
 	
 	$denominaciones = ["1000", "500", "200", "100", "50", "20", "10", "5", "2", "1", "0.5"];
-	$consulta = "SELECT * FROM desglose_dinero 
+	$consulta = "SELECT * FROM arqueo 
 	
 	LEFT JOIN usuarios USING(id_usuarios)
 	WHERE id_desglose= '{$_GET['id_registro']}'";

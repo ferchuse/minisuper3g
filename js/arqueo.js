@@ -37,7 +37,7 @@ function guardarArqueo(event){
 			if(respuesta.estatus == 'success'){
 				// alertify.success('Se ha agregado correctamente');
 				// $('#modal_arqueo').modal('hide');
-				imprimirArqueo();
+				imprimirArqueo(respuesta.nuevo_id);
 			}
 			else{
 				alertify.error('Ocurrio un error');
@@ -79,33 +79,24 @@ function sumarArqueo(){
 
 
 
-function imprimirArqueo(event){
+function imprimirArqueo(nuevo_id){
 	console.log("imprimirArqueo()");
 	
 	$("#resumen").removeClass("visible-print");
 	$("#resumen").addClass("hidden-print");
-	window.print()
 	
-	// var id_registro = $(this).data("id_registro");
-	// var boton = $(this);
-	// var icono = boton.find("fas");
-	
-	// boton.prop("disabled", true);
-	// icono.toggleClass("fa-print fa-spinner fa-spin");
-	
-	// $.ajax({
-		// url: "impresion/imprimir_arqueo.php",
-		// data:{
-			// id_registro : id_registro
-		// }
-		// }).done(function (respuesta){
+
+	$.ajax({
+		url: "impresion/imprimir_arqueo.php",
+		data:{
+			id_registro : nuevo_id
+		}
+		}).done(function (respuesta){
 		
-		// $("#arqueo").html(respuesta);
-		// window.print();
-		// }).always(function(){
+		$("#arqueo").html(respuesta);
+		window.print();
+		}).always(function(){
 		
-		// boton.prop("disabled", false);
-		// icono.toggleClass("fa-print fa-spinner fa-spin");
 		
-	// });
+	});
 }	
