@@ -1,5 +1,5 @@
 <?php 
-include ('../../../conexi.php');
+include ('../../conexi.php');
 $link = Conectarse();
 
 $respuesta = array();
@@ -20,7 +20,7 @@ if(mysqli_query($link,$consulta)){
 	$respuesta['estatus'] = "success";
 }else{
 	$respuesta['estatus'] = "error";
-	$respuesta['mensaje'] = "Error en ".mysqli_query($link);
+	$respuesta['mensaje'] = "Error en ".mysqli_error($link);
 }
 
 echo json_encode($respuesta);

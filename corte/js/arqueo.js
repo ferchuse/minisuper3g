@@ -42,6 +42,7 @@ function guardarArqueo(event){
 			}).done(function(respuesta){
 			if(respuesta.estatus == 'success'){
 				
+				$("#modal_arqueo").modal("hide");
 				imprimirArqueo(respuesta.nuevo_id);
 			}
 			else{
@@ -93,7 +94,7 @@ function imprimirArqueo(nuevo_id){
 	
 	
 	$.ajax({
-		url: "impresion/imprimir_arqueo.php",
+		url: "imprimir_arqueo.php",
 		data:{
 			id_registro : nuevo_id
 		}

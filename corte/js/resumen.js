@@ -36,7 +36,7 @@ function guardarIngreso(event, value){
 	var hora_ingresos = new Date().toString('HH:mm:ss');
 	
 	$.ajax({
-		url: 'funciones/fila_insert.php',
+		url: '../funciones/fila_insert.php',
 		method: 'POST',
 		dataType: 'JSON',
 		data:  {
@@ -51,7 +51,7 @@ function guardarIngreso(event, value){
 		}).done( function(respuesta){
 		if(respuesta.estatus == 'success'){
 			alertify.success('Guardado correctamente');
-			location.reload();
+			window.location.reload(true);
 		}
 		else{
 			alertify.error('Ha ocuurido un error');
@@ -180,7 +180,7 @@ function cerrarTurno(){
 	$.ajax({
 		'method': 'POST',
 		'dataType': 'JSON',
-		'url': 'corte/cerrar_turno.php',
+		'url': 'cerrar_turno.php',
 		'data': {
 			id_turnos:$("#id_turnos").val(),
 			saldo_final:$("#saldo_final").val(),
@@ -189,7 +189,7 @@ function cerrarTurno(){
 		}).done(function(respuesta){
 		if(respuesta.cierra_turno.estatus == "success"){
 			
-			location.href = 'login/logout.php';
+			location.href = '../login/logout.php';
 		}
 		else{
 			

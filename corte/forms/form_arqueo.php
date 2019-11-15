@@ -1,6 +1,6 @@
 <form class="was-validated " id="form_arqueo">
-	<!-- The Modal -->
-	<div id="modal_arqueo" class="modal fade" >
+
+	<div id="modal_arqueo" class="modal fade hidden-print" >
 		<div class="modal-dialog ">
 			<div class="modal-content">
 				
@@ -48,7 +48,7 @@
 					
 					<div class="form-group ">
 						<label for="">Total</label>
-						<input type="number"  tabindex="-1" min="0" class="form-control" id="importe_total"  value="0" readOnly>
+						<input type="number" name="importe" tabindex="-1" min="0" class="form-control" id="importe_total"  value="0" readOnly>
 					</div>
 					
 				</div>
