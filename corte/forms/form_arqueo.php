@@ -48,7 +48,7 @@
 					
 					<div class="form-group ">
 						<label for="">Total</label>
-						<input type="number"  tabindex="-1" min="0" class="form-control" id="importe_total"  readOnly>
+						<input type="number"  tabindex="-1" min="0" class="form-control" id="importe_total"  value="0" readOnly>
 					</div>
 					
 				</div>

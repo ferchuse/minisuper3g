@@ -1,5 +1,5 @@
 <?php 
-include ('../conexi.php');
+include ('../../../conexi.php');
 $link = Conectarse();
 
 $respuesta = array();
@@ -13,7 +13,8 @@ id_turnos='{$_COOKIE["id_turnos"]}',
 descripcion_egresos='$descripcion_egresos', 
 cantidad_egresos='$cantidad_egresos', 
 area_egresos='$area_egresos',
-fecha_egresos=CURDATE(), hora_egresos=CURTIME()";
+fecha_egresos=CURDATE(), 
+hora_egresos=CURTIME()";
 
 if(mysqli_query($link,$consulta)){
 	$respuesta['estatus'] = "success";

@@ -5,15 +5,10 @@ $(document).ready( onLoad);
 
 function onLoad(event){
 	
-	
-	
-	$('#btn_arqueo').click(nuevoArqueo);
 	$('#btn_ingreso').click(nuevoIngreso);
-	$('#btn_egreso').click(nuevoEgreso);
 	$('#fecha_ventas').change(cambiarFecha);
 	$('#btn_cerrar_turno').click(confirmaCerrarTurno );
 	$('#btn_resumen').click( imprimirCorte);
-	
 	$('.btn_ticketPago').click(imprimirTicket );
 	$('.btn_ver').click(verTicket);
 	$('.btn_cancelar').click( confirmaCancelarVenta);
@@ -22,18 +17,15 @@ function onLoad(event){
 	
 }
 
-function nuevoArqueo(event){
-	$("#resumen").hide();
-	$("#form_arqueo")[0].reset();
-	$("#modal_arqueo").modal("show");
-	
-}
+
 function imprimirCorte(event){
 	$("#ticket").hide();
 	$("#resumen").removeClass("hidden-print");
 	$("#resumen").addClass("visible-print");
 	window.print();
 }
+
+
 function nuevoIngreso(){
 	alertify.prompt("Nuevo Ingreso", "Cantidad" , 0, guardarIngreso, function(){});
 	
@@ -69,11 +61,9 @@ function guardarIngreso(event, value){
 		
 	});
 }
-function nuevoEgreso(){
-	$("#form_nuevo_egreso")[0].reset();
-	$("#modal_nuevo_egreso").modal("show");
-	
-}
+
+
+
 function cambiarFecha(){
 	$("#form_resumen").submit();
 	
@@ -90,7 +80,7 @@ function imprimirTicket(){
 	var icono = boton.find(".fa");
 	icono.toggleClass("fa-print fa-spinner fa-spin");
 	$.ajax({
-		url: "impresion/imprimir_venta.php",
+		url: "../impresion/imprimir_venta.php",
 		dataType: "HTML",
 		data:{ id_ventas:id_ventas}
 		}).done(function(respuesta){
@@ -102,7 +92,6 @@ function imprimirTicket(){
 		$('#total_text').text(NumeroALetras(total_f));
 		window.print();
 	});
-	// console.log("pago");
 }
 
 
@@ -145,41 +134,7 @@ function confirmaCancelarVenta(event) {
 	}
 }
 
-function confirmaCancelarEgreso(event) {
-	event.preventDefault();
-	var boton = $(this);
-	var id_registro = boton.data('id_egresos');
-	var fila = boton.closest('tr');
 
-	boton.prop('disabled', true);
-	icono = boton.find(".fa");
-
-	alertify.confirm()
-		.setting({
-			'reverseButtons': true,
-			'labels': { ok: "SI", cancel: 'NO' },
-			'title': "Confirmar",
-			'message': "¿Deseas Cancelar éste Egreso?",
-			'onok': cancelarEgreso
-		}).show();
-
-
-	function cancelarEgreso(evnt, value) {
-		$.ajax({
-			url: 'control/cancelar_egresos.php',
-			method: 'POST',
-			data: {
-				"estatus_egresos": 'CANCELADO',
-				"id_egresos": id_registro
-			}
-		}).done(function (respuesta) {
-			alertify.success("Se ha Cancelado el Egreso");
-			window.location.reload();
-			icono.toggleClass("fa-times fa-spinner fa-spin");
-			boton.prop('disabled', false);
-		});
-	}
-}
 
 function verTicket(){
 	

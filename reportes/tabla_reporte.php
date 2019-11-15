@@ -20,6 +20,22 @@
 	GROUP BY
 	fecha_ventas
 	) AS ventas_dia
+	
+	LEFT JOIN
+	(
+	SELECT
+	fecha_ventas,
+	COUNT(*) as num_ventas
+	FROM
+	ventas
+	WHERE
+	estatus_ventas <> 'CANCELADO'
+	AND fecha_ventas BETWEEN '{$_GET["fecha_inicio"]}'
+	AND '{$_GET["fecha_fin"]}'
+	GROUP BY
+	fecha_ventas
+	) AS t_num_ventas
+	USING(fecha_ventas)
 	LEFT JOIN 
 	(
 	SELECT
@@ -98,23 +114,29 @@
 					<table class="table table-hover">
 						<tr>
 							<th class="text-center"> Fecha</th>
+							<th class="text-right"> Num. Ventas</th>
 							<th class="text-right"> Ingresos</th>
 							<th class="text-right"> Ganancia</th>
 						</tr>
 						<?php
 							$total_ventas = 0;
 							$total_ganancia = 0;
+							$total_num_ventas = 0;
 							
 							while($row_ventas = mysqli_fetch_assoc($resultadoVentas)){
 								extract($row_ventas);
 								$total_ventas+= $ventas_dia;
 								$total_ganancia+= $ganancia_dia;
+								$total_num_ventas+= $num_ventas;
 							?>
 							<tr>
 								<td class="text-center">
 									<a href="../resumen.php?fecha_ventas=<?php echo $fecha_ventas?>">
 										<?php echo date("d/m/Y", strtotime($fecha_ventas));?>
 									</a>
+								</td>
+								<td class="text-right">
+									<?= number_format($num_ventas);?>
 								</td>
 								<td class="text-right">
 									<?php echo "$".number_format($ventas_dia,2);?>
@@ -133,10 +155,8 @@
 								<td class="text-danger">
 									<big><b>TOTAL:</b></big>
 								</td>
-								<td class="text-right">
-									<?php 
-										echo "$". number_format($total_ventas,2);
-									?>
+								<td class="text-right"><?= number_format($total_num_ventas);?>
+								<td class="text-right"><?=number_format($total_ventas,2);?>
 								</td>
 								<td  class="text-right">
 									<?php 

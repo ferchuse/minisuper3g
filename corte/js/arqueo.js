@@ -3,40 +3,45 @@ $(document).ready(function(){
 	$('#form_arqueo').on('submit', guardarArqueo);
 	
 	
+	$('#btn_arqueo').click(nuevoArqueo);
+	
 	$('.cantidad').on('keyup', sumarArqueo);
 	$('.cantidad').on('focus', function selectOnFocus(event) {$(this).select()});
 	
 });
 
+function nuevoArqueo(event){
+	$("#resumen").hide();
+	$("#form_arqueo")[0].reset();
+	$("#modal_arqueo").modal("show");
+	
+}
+
 function guardarArqueo(event){
-	console.log("guardarRegistro")
+	console.log("guardarArqueo()")
 	event.preventDefault();
+	
 	let form = $(this);
 	let boton = form.find(':submit');
 	let icono = boton.find('.fa');
 	let datos = form.serializeArray();
-	datos.push({"name": "id_usuarios", "value": $("#id_usuarios").val()})
-	// datos.push({"name": "id_administrador", "value": $("#sesion_id_administrador").val()})
-	let importe_desglose = $('#importe_desglose').val();
-	console.log("importe_desglose", importe_desglose);
-	console.log("datos", datos);
-	if(importe_desglose != ""){
+	let importe_arqueo = $('#importe_desglose').val();
+	
+	if(importe_arqueo != "" && importe_arqueo != "0"){
 		
 		boton.prop('disabled',true);
 		icono.toggleClass('fa-save fa-spinner fa-pulse ');
 		
 		$.ajax({
-			url: 'funciones/fila_insert.php',
+			url: 'consultas/guardar_arqueo.php',
 			method: 'POST',
 			dataType: 'JSON',
-			data:{
-				tabla: 'arqueo',
-				valores: datos
-			}
+			
+			data: datos
+			
 			}).done(function(respuesta){
 			if(respuesta.estatus == 'success'){
-				// alertify.success('Se ha agregado correctamente');
-				// $('#modal_arqueo').modal('hide');
+				
 				imprimirArqueo(respuesta.nuevo_id);
 			}
 			else{
@@ -65,18 +70,19 @@ function sumarArqueo(){
 	let denominacion = Number($fila.find(".cantidad").data('denomi'));
 	let cantidad = Number($fila.find(".cantidad").val());
 	let importe = cantidad * denominacion;
+	
 	$fila.find('.importe').val(importe);
-	console.log(importe);
+	
 	
 	$(".importe").each( function sumarImportes(index, item){
 		importe_total += Number($(item).val());
 	});
+	
 	let subtotal = importe_total.toFixed(2);
-	console.log(importe_total);
+	
+	
 	$("#importe_total").val(subtotal);
 }
-//============TOTAL DE DOCUMENTO DE BOLETOS=================
-
 
 
 function imprimirArqueo(nuevo_id){
@@ -85,7 +91,7 @@ function imprimirArqueo(nuevo_id){
 	$("#resumen").removeClass("visible-print");
 	$("#resumen").addClass("hidden-print");
 	
-
+	
 	$.ajax({
 		url: "impresion/imprimir_arqueo.php",
 		data:{
@@ -99,4 +105,4 @@ function imprimirArqueo(nuevo_id){
 		
 		
 	});
-}	
+}		

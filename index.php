@@ -5,9 +5,6 @@ $link = Conectarse();
 $menu_activo = "principal";
 error_reporting(0);
 
-$consulta = "SELECT * FROM productos";
-$result = mysqli_query($link, $consulta);
-$num_rows = mysqli_num_rows($result);
 ?>
 <!DOCTYPE html>
 <html lang="es">
