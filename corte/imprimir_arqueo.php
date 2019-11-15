@@ -59,7 +59,7 @@
 				<div class="col-xs-4">
 					<b >Denom.</b> 
 				</div>	 
-				<div class="col-xs-4">			
+				<div class="col-xs-3">			
 					<b >Cantidad</b> 
 				</div>
 				<div class="col-xs-4">			
@@ -71,7 +71,7 @@
 				<div class="col-xs-4">
 					<b >$<?php echo $denominacion;?>:</b> 
 				</div>	 
-				<div class="col-xs-4 text-right">			
+				<div class="col-xs-3 text-right">			
 					<?php echo number_format($filas[$denominacion]);?>
 				</div>
 				<div class="col-xs-4 text-right">			
@@ -87,12 +87,13 @@
 				<div class="col-xs-6">
 					<b >IMPORTE TOTAL:</b> 
 				</div>	 
-				<div class="col-xs-6 text-right">			
+				<div class="col-xs-5 text-right">			
 					$<?php echo number_format($filas["importe"])?>
 				</div>
 			</div>
 		</div>
-		
+		<br>
+		<hr>
 		<div style="page-break-after:always;"></div>
 		
 		
