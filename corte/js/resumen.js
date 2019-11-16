@@ -5,8 +5,8 @@ $(document).ready( onLoad);
 
 function onLoad(event){
 	
-	$('#btn_ingreso').click(nuevoIngreso);
 	$('#fecha_ventas').change(cambiarFecha);
+	$('#btn_ingreso').click(nuevoIngreso);
 	$('#btn_cerrar_turno').click(confirmaCerrarTurno );
 	$('#btn_resumen').click( imprimirCorte);
 	$('.btn_ticketPago').click(imprimirTicket );
@@ -65,6 +65,8 @@ function guardarIngreso(event, value){
 
 
 function cambiarFecha(){
+	
+	$("#id_turnos").prop("disabled", true);
 	$("#form_resumen").submit();
 	
 }
@@ -118,7 +120,7 @@ function confirmaCancelarVenta(event) {
 	
 	function cancelarVenta(evnt,value) {
 		$.ajax({
-			url: 'control/cancelar_ventas.php',
+			url: 'consultas/cancelar_ventas.php',
 			method: 'POST',
 			data:{ 
 				"estatus_ventas": 'CANCELADO',
@@ -128,8 +130,14 @@ function confirmaCancelarVenta(event) {
 			}).done(function(respuesta){
 			alertify.success("Se ha cancelado el pago"); 
 			window.location.reload();
+			
+			}).fail(function(){
+			alertify.error("Ocurrió un error");
+			
+			}).always(function(){
 			icono.toggleClass("fa-times fa-spinner fa-spin");
 			boton.prop('disabled', false);
+			
 		});
 	}
 }

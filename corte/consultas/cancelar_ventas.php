@@ -1,5 +1,5 @@
 <?php 
-	include("../conexi.php");
+	include("../../conexi.php");
 	$link = Conectarse();
 	
 	$id_usuarios = $_POST['id_usuarios'];
