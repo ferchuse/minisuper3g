@@ -1,7 +1,7 @@
 <?php
 
-include('../conexi.php');
-include('../funciones/numero_a_letras.php');
+include('../../conexi.php');
+include('../../funciones/numero_a_letras.php');
 
 $link = Conectarse();
 $consulta = "SELECT * FROM ventas
