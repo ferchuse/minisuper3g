@@ -111,11 +111,9 @@
 						</a>
 						<ul class="dropdown-menu">
 							<li>
-								<a href="usuarios.php"><i class="fa fa-user-plus "></i> Usuarios</a>
+								<a href="usuarios/"><i class="fa fa-user-plus "></i> Usuarios</a>
 							</li>
-							<li>
-								<a href="#">Versión 29-AGO-2019</a>
-							</li>
+						
 						</ul>
 					</li>
 					

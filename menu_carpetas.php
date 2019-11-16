@@ -112,10 +112,7 @@
 						</a>
 						<ul class="dropdown-menu">
 							<li>
-								<a href="../usuarios.php"><i class="fa fa-user-plus "></i> Usuarios</a>
-							</li>
-							<li>
-								<a href="#">Versión 25-JUN-2019</a>
+								<a href="../usuarios/"><i class="fa fa-user-plus "></i> Usuarios</a>
 							</li>
 						</ul>
 					</li>

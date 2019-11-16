@@ -471,7 +471,7 @@
 		<script src="js/resumen.js"></script>
 		<script src="js/pagos.js"></script>
 		<script src="js/numerosLetras.js"></script>
-		<script src="js/guardar_egreso.js"></script>
+		<script src="js/egresos.js"></script>
 		<script src="js/arqueo.js"></script>
 		
 		

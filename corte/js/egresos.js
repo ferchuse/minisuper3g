@@ -35,7 +35,7 @@ function confirmaCancelarEgreso(event) {
 	
 	function cancelarEgreso(evnt, value) {
 		$.ajax({
-			url: 'control/cancelar_egresos.php',
+			url: 'consultas/cancelar_egresos.php',
 			method: 'POST',
 			data: {
 				"estatus_egresos": 'CANCELADO',

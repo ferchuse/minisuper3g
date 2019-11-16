@@ -1,4 +1,8 @@
 <?php
+	
+	include("../conexi.php");
+	$link = Conectarse();
+	
 	if(isset($_GET["redirect_url"])){
 		
 		$redirect_url =$_GET["redirect_url"]; 
@@ -8,9 +12,6 @@
 		
 	}
 	
-	
-	include("../conexi.php");
-	$link = Conectarse();
 	
 ?>
 <!DOCTYPE html>
@@ -25,8 +26,6 @@
 		
 		<link href="../css/bootstrap.min.css" rel="stylesheet" media="all">
 		<link href="../css/alertify.min.css" rel="stylesheet" media="all"/>
-		<link href="../css/common.css" rel="stylesheet" media="all"  >
-		<link href="../css/imprimir_venta.css" rel="stylesheet" media="all">
 		<link href="../css/all.min.css" rel="stylesheet" >
 		<link href="login.css" rel="stylesheet" >
 		

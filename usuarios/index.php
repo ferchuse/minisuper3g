@@ -1,8 +1,8 @@
 <?php 
-	include('login/login_success.php');
-	include('conexi.php');
+	include('../login/login_success.php');
+	include('../conexi.php');
 	$link = Conectarse();
-	$menu_activo = "control";
+	$menu_activo = "usuarios";
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -15,14 +15,14 @@
 		
 		
     <title>Usuarios</title>
-		<?php include('styles.php'); ?>
+		<?php include('../styles_carpetas.php'); ?>
 	</head>
 	
 	<body>
 		
     <div id="wrapper">
 			<div class="container-fluid">
-				<?php include('menu.php'); ?>    
+				<?php include('../menu_carpetas.php'); ?>    
 			</div>
 			<div id="page-wrapper">
 				
@@ -31,7 +31,9 @@
 					<div class="row">
 						<div class="col-md-12">
 							<h3 class="text-center">Usuarios</h3>
-							<button class="btn btn-success" type="button" id="btn_usuario"><i class="fa fa-plus"></i> Agregar</button>
+							<button class="btn btn-success pull-right" type="button" id="btn_usuario">
+								<i class="fa fa-plus"></i> Nuevo
+							</button>
 							<hr>
 						</div>
 					</div>
@@ -41,13 +43,13 @@
 					<div class="text-center"><i class="fa fa-spinner fa-spin fa-3x"></i></div>
 				</div>
 				<div class="container">
-					<?php include("forms/usuarios.php");?>
+					<?php include("form_usuarios.php");?>
 				</div>
 				<!-- /#page-wrapper --> 
 			</div>
 			<!-- /#wrapper -->
 		</div>
-		<?php include('scripts.php');?>
-    <script src="js/usuarios.js"></script>
+		<?php include('../scripts_carpetas.php');?>
+    <script src="usuarios.js"></script>
 	</body>
 </html>
