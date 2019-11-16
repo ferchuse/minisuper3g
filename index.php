@@ -82,23 +82,25 @@ error_reporting(0);
 		</div>
 
 		<hr>
-		<ul id="tabs_ventas" class="nav nav-tabs" style="margin: 10px 0 10px 0;">
+		
+		
+		<ul id="tabs_ventas" class="nav nav-tabs" >
 			<li class="active">
 				<a data-toggle="tab" href="#tab1">
-					<span>Mostrador</span>
+					<input class="nombre_cliente" value="Cliente 1" >
 					<input type="hidden" class="id_ventas" value="">
 				</a>
 			</li>
 			<li>
 				<a data-toggle="tab" href="#tab2">
-					<span>Cliente 2</span>
+					<input  class="nombre_cliente" value="Cliente 2" >
 					<input type="hidden" class="id_ventas" value="">
 				</a>
 			</li>
 
 			<li>
 				<a data-toggle="tab" href="#tab3">
-					<span>Cliente 3</span>
+					<input  class="nombre_cliente" value="Cliente 3" >
 					<input type="hidden" class="id_ventas" value="">
 				</a>
 			</li>

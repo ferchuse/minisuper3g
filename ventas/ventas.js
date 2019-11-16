@@ -55,7 +55,7 @@ function renderPendientes(respuesta){
 			`<li class="cremeria">
 			<a data-toggle="tab" href="#tab${tab_index}">
 			
-			<span>${venta["nombre_cliente"]}</span>
+			<input class='nombre_cliente' value='${venta["nombre_cliente"]}'>
 			<input type="hidden" class="id_ventas" value="${venta["id_ventas"]}">
 			</a>
 		</li>`);
@@ -188,6 +188,7 @@ function cobrarEImprimir(evt){
 	})
 	
 }
+$(document).on('keydown', disableFunctionKeys);
 
 $(document).ready( function onLoad(){
 	
@@ -198,7 +199,6 @@ $(document).ready( function onLoad(){
 		e.relatedTarget // previous active tab
 	})
 	
-	// $('#mayoreo').change(aplicarMayoreo);
 	$('.bg-info').keydown(navegarFilas);
 	$('#btn_refresh').click(cargarPendientes);
 	
@@ -207,7 +207,11 @@ $(document).ready( function onLoad(){
 	
 	$('#form_pago').submit(guardarVenta);
 	$('#form_granel').submit(agregarGranel);
-	$('#btn_pendiente').click( function pedirNombre(event){
+	$('#btn_pendiente').click( pedirNombre);
+	
+	function pedirNombre(event){
+		let nombre_cliente =  $("#tabs_ventas li.active input").val();
+		
 		
 		if($(".tabla_venta:visible tbody tr").length == 0){
 			
@@ -215,20 +219,19 @@ $(document).ready( function onLoad(){
 			return false;
 		}
 		
-		alertify.prompt( 'Venta Pendiente', 'Nombre del Cliente', 'Mostrador'
+		alertify.prompt( 'Venta Pendiente', 'Nombre del Cliente', nombre_cliente
 			, function onAccept(evt, value) { 
 				guardarVenta(value);
-				// alertify.success('You entered: ' + value)
 				
 			}
 			, function onCancel() { 
 			alertify.error('Cancel') });
 			
-	});
+	}
+	
 	$('#form_agregar_producto').submit(function(event){
 		event.preventDefault();
 	})
-	$(document).on('keydown', disableFunctionKeys);
 	
 	alertify.set('notifier','position', 'top-right');
 	
@@ -352,6 +355,7 @@ function cobrar(){
 		alertify.error('No hay productos');
 		return false;
 	}
+	
 	$("#modal_pago").modal("show");
 	
 	$("#efectivo").val($(".total:visible").val());
@@ -520,11 +524,13 @@ function guardarVenta(event){
 	var icono = boton.find('.fa');
 	var articulos = $("#tabla_venta tbody tr").size();
 	var productos = [];
-	// Si el evento es por F12 cobrar o F4 Pendiente
+	
+	// Si el evento es por F12 cobrar o F6 Pendiente
 	if(event.type == "submit"){
 		console.log("Cobrar");
+		
 		var estatus_ventas ="PAGADO" ;
-		var nombre_cliente =  $("#tabs_ventas li.active span").text();
+		var nombre_cliente =  $("#tabs_ventas li.active a .nombre_cliente").val()
 		event.preventDefault();
 		
 	}
@@ -536,10 +542,10 @@ function guardarVenta(event){
 	}
 	
 	
-	
 	boton.prop('disabled',true);
 	icono.toggleClass('fa-check fa-spinner fa-spin');
 	
+	//Agrega los productos al array que se envia
 	$(".tabla_venta:visible tbody tr").each(function(index, item){
 		productos.push({
 			"id_productos": $(item).find(".id_productos").val(),
@@ -572,12 +578,11 @@ function guardarVenta(event){
 		if(respuesta.estatus_venta == "success"){
 			alertify.success('Venta Guardada');
 			//Resetea la venta
-			$(".tabla_venta:visible tbody tr").remove();
-			sumarImportes();
+			
 			
 			$("#modal_pago").modal("hide");
 			
-			limpiarTicket();
+			limpiarVenta();
 			
 			// console.log("Venta Activa", $("#tabs_ventas>li.active input").val("Mostrador"));
 			// imprimirTicket( respuesta.id_ventas)
@@ -593,15 +598,22 @@ function guardarVenta(event){
 	TotalTurno();
 }
 
-function limpiarTicket(){
-	console.log("limpiarTicket()");
+
+
+function limpiarVenta(){
+	console.log("limpiarVenta()");
 	//resetea los datos de la ultima venta 
+	var num_cliente = $("#tabs_ventas li.active").index() + 1;
+	$("#tabs_ventas li.active a .nombre_cliente").val("Cliente " + num_cliente);
+	$(".tabla_venta:visible tbody tr").remove(); //Quita las filas de productos
+	$(".tabla_venta:visible tbody tr").remove(); //Quita las filas de productos
 	$("li.cremeria.active").remove(); //Quita la venta si es de cremeria
 	$(".tab-pane.cremeria.active").remove(); //Quita la venta si es de cremeria
 	
 	$("#tabs_ventas a").first().click();
 	
 	$("#codigo_productos").focus();
+	sumarImportes();
 }
 
 function eliminarProducto(){

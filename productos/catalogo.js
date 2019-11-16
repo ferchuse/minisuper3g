@@ -47,20 +47,24 @@ function listaProductos() {
 		
 		$('#bodyProductos').html(tableTemplate);
 		$("#tabla_productos").stickyTableHeaders();
-		$boton.prop("disabled", false)
-		$icono.toggleClass("fa-search fa-spinner fa-spin");
 		
-		$(".seleccionar").change(contarSeleccionados)
+		$("#bodyProductos").on("change", ".seleccionar", contarSeleccionados)
+		$("#bodyProductos").on("click", ".btn_eliminar", confirmaEliminar)
+		$("#bodyProductos").on("click", ".btn_editar", cargarRegistro)
+		$("#bodyProductos").on("click", ".btn_carrito", pedirCantidad)
 		
 		$(".buscar_codigo").keyup( buscarCodigo);
 		$(".buscar_descripcion").keyup( buscarDescripcion);
-		$('.btn_eliminar').click( confirmaEliminar);
-		$('.btn_editar').click( cargarRegistro);
-		$('.btn_carrito').click(pedirCantidad);
 		
 		
-		}).fail(function(xhr, error, ernum){
+		
+		}).fail(function(xhr, textStatus, ernum){
 		alertify.error("Ocurrio un Error" + errnum);
+		
+		}).always(function(){
+		$boton.prop("disabled", false)
+		$icono.toggleClass("fa-search fa-spinner fa-spin");
+		
 		
 	});
 }
