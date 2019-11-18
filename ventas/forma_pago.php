@@ -31,8 +31,11 @@
 
 							<!-- "Efectivo" -->
 							<div class="efectivo row">
-								<div class="col-sm-12">
-									<input readonly id="efectivo" value="0" type="number" class="valor form-control" name="efectivo">
+								<div class="col-sm-6 text-right">
+									<label class="lead"> Total:</label>
+								</div>
+								<div class="col-sm-6">
+									<input readonly id="efectivo" value="0" type="number" class="valor form-control text-right" name="efectivo">
 								</div>
 							</div>
 
@@ -42,7 +45,7 @@
 									<label>Se Recibe: </label>
 								</div>
 								<div class="col-sm-6">
-									<input id="pago" step=".5" type="number" class="valor form-control " name="pago">
+									<input id="pago" step=".5" type="number" class="valor form-control text-right" name="pago">
 								</div>
 							</div>
 

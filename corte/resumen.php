@@ -17,7 +17,8 @@
 	}
 	if (isset($_GET["tipo_corte"])) {
 		$tipo_corte = $_GET["tipo_corte"];
-		} else {
+	} 
+	else 	{
 		$tipo_corte = "turno";
 	}
 	
@@ -45,7 +46,9 @@
 		";
 		
 		$consulta_egresos = "SELECT * FROM egresos LEFT JOIN catalogo_egresos USING(id_catalogo_egresos) WHERE fecha_egresos =  '$fecha_corte'";
-		} else {
+		$consulta_ingresos= "SELECT * FROM ingresos WHERE fecha_ingresos =  '$fecha_corte'";
+	} 
+	else {
 		
 		//Corte por turno
 		$consulta_ventas = "SELECT * FROM ventas LEFT JOIN usuarios USING(id_usuarios) 
@@ -59,19 +62,26 @@
 		(SELECT SUM(total_ventas) AS importe_ventas FROM ventas WHERE estatus_ventas='PAGADO' AND id_turnos = '{$_COOKIE["id_turnos"]}') AS tabla_importe
 		";
 		
-		$consulta_egresos = "SELECT * FROM egresos LEFT JOIN catalogo_egresos USING(id_catalogo_egresos)WHERE id_turnos = '{$_COOKIE["id_turnos"]}' ORDER BY hora_egresos";
+		$consulta_egresos = "SELECT * FROM egresos LEFT JOIN catalogo_egresos USING(id_catalogo_egresos) WHERE id_turnos = '{$_COOKIE["id_turnos"]}' ORDER BY hora_egresos";
+		
+		$consulta_ingresos= "SELECT * FROM ingresos WHERE id_turnos =  '{$_COOKIE["id_turnos"]}'";
 	}
 	
 	
 	$resultadoVentas = mysqli_query($link, $consulta_ventas);
 	$resultado_totales = mysqli_query($link, $consulta_totales) or die(mysqli_error($link));
 	$resultado_egresos = mysqli_query($link, $consulta_egresos) or die(mysqli_error($link));
+	$result_ingresos = mysqli_query($link, $consulta_ingresos) or die(mysqli_error($link));
 	
 	while ($fila = mysqli_fetch_assoc($resultado_totales)) {
 		$totales = $fila;
 	}
 	while ($fila = mysqli_fetch_assoc($resultado_egresos)) {
 		$lista_egresos[] = $fila;
+	}
+	
+	while ($fila = mysqli_fetch_assoc($result_ingresos)) {
+		$lista_ingresos[] = $fila;
 	}
 	
 	
@@ -168,86 +178,151 @@
 			<form class="" id="lista_egresos">
 				<div class="row">
 					<div class="col-sm-6">
-						<div class="panel panel-primary hidden-print" id="head_ingresos">
+						<div class="panel panel-info hidden-print" id="head_ingresos">
 							<div class="panel-heading text-center">
 								Ingresos
 							</div>
-							<div style="height: 350px; overflow: auto;" class="panel-body" id="panel_ingresos">
-								<div class="row text-center">
-									<div class="col-xs-1"> Turno</div>
-									<div class="col-xs-2"> Folio</div>
-									<div class="col-xs-2"> Hora</div>
-									<div class="col-xs-2"> Total</div>
-									<div class="col-xs-2"> Estatus</div>
-									<div class="col-xs-3 text-center hidden-xs"> Acciones</div>
+							
+							<ul class="nav nav-pills nav-justified">
+								<li class="active"><a data-toggle="pill" href="#home">Ventas</a></li>
+								<li class=""><a data-toggle="pill" href="#menu1">Entradas de Efectivo</a></li>
+								
+							</ul>
+							
+							<div class="tab-content">
+								<div id="home" class="tab-pane fade in active">
+									<div style="height: 350px; overflow: auto;" class="panel-body" id="panel_ventas">
+										<div class="row text-center">
+											<div class="col-xs-1"> Turno</div>
+											<div class="col-xs-2"> Folio</div>
+											<div class="col-xs-2"> Hora</div>
+											<div class="col-xs-2"> Total</div>
+											<div class="col-xs-2"> Estatus</div>
+											<div class="col-xs-3 text-center hidden-xs"> Acciones</div>
+										</div>
+										
+										<?php
+											$total = 0;
+											$tarjeta = 0;
+											$total_efectivo = 0;
+											
+											while ($row_ventas = mysqli_fetch_assoc($resultadoVentas)) {
+												extract($row_ventas);
+												switch ($estatus_ventas) {
+													
+													case 'CANCELADO':
+													$fondo = "bg-danger";
+													break;
+													
+													case 'PENDIENTE':
+													$fondo = "bg-warning";
+													break;
+													
+													case 'PAGADO':
+													$fondo = "bg-success";
+													$total_efectivo += $efectivo;
+													$total_tarjeta += $tarjeta;
+													$total += $total_ventas;
+													break;
+												}
+												
+											?>
+											<div class="row <?php echo $fondo; ?> text-center focusable" style="border-bottom: solid 1px; margin-bottom: 10px;">
+												<div class="col-xs-1 text-center"><?php echo $id_turnos; ?></div>
+												<div class="col-xs-2"><?php echo $id_ventas; ?></div>
+												<div class="col-xs-2 text-center"><?php echo date("H:i", strtotime($hora_ventas)); ?></div>
+												<div class="col-xs-2"><?php echo "$" . $total_ventas ?></div>
+												<div class="col-xs-2 text-center"><?php echo $estatus_ventas; ?></div>
+												<div class="col-xs-12 col-sm-3 text-right">
+													
+													<?php
+														if ($estatus_ventas != "PENDIENTE") {
+														?>
+														<button class="btn btn-info btn_ticketPago" title="Reimprimir Ticket" type="button" data-id_ventas="<?php echo $id_ventas; ?>">
+															<i class="fa fa-print"></i>
+														</button>
+														<button type="button" title="Ver Ticket" class="btn btn-success btn_ver" data-id_ventas="<?php echo $id_ventas; ?>">
+															<i class="fas fa-eye"></i>
+														</button>
+														
+														<?php
+														}
+													?>
+													<?php
+														if ($_COOKIE["permiso_usuarios"] == "administrador"  && $estatus_ventas != "CANCELADO") {
+														?>
+														<button class="btn btn-danger btn_cancelar " title="Cancelar Venta" type="button" data-id_ventas="<?php echo $id_ventas; ?>">
+															<i class="fa fa-times"></i>
+														</button>
+														<button class="btn btn-warning btn_devolucion hidden" title="Devolver Venta" type="button" data-id_ventas="<?php echo $id_ventas; ?>">
+															<i class="fas fa-undo"></i>
+														</button>
+														<?php
+														}
+													?>
+												</div>
+											</div>
+											<?php
+											}
+										?>
+									</div>
+									
+								</div>
+								<div id="menu1" class="tab-pane fade">
+									<div style="height: 350px; overflow: auto;" class="panel-body" id="panel_ingresos">
+										<div class="row text-center">
+											<div class="col-xs-1"> Turno</div>
+											<div class="col-xs-2"> Folio</div>
+											<div class="col-xs-2"> Hora</div>
+											<div class="col-xs-2"> Importe</div>
+											<div class="col-xs-2"> Estatus</div>
+											<div class="col-xs-3 text-center hidden-xs"> Cancelar</div>
+										</div>
+										
+										<?php
+										
+											
+											foreach ($lista_ingresos as $i => $ingreso) {
+												
+												switch ($ingreso["estatus_ingresos"]) {
+													
+													case 'CANCELADO':
+													$fondo = "bg-danger";
+													break;
+												
+													case 'ACTIVO':
+													$fondo = "bg-success";
+													break;
+												}
+												
+											?>
+											<div class="row <?php echo $fondo; ?> text-center focusable" style="border-bottom: solid 1px; margin-bottom: 10px;">
+												<div class="col-xs-1 text-center"><?= $ingreso["id_turnos"];?></div>
+												<div class="col-xs-2"><?= $ingreso["id_ingresos"]; ?></div>
+												<div class="col-xs-2 text-center"><?= $ingreso["hora_ingresos"]; ?></div>
+												<div class="col-xs-2">$<?= $ingreso["cantidad_ingresos"]; ?></div>
+												<div class="col-xs-2 text-center"><?= $ingreso["estatus_ingresos"]; ?></div>
+												<div class="col-xs-12 col-sm-3">
+												
+													<?php
+														if ($_COOKIE["permiso_usuarios"] == "administrador"  && $ingreso["estatus_ingresos"] != "CANCELADO") {
+														?>
+														<button class="btn btn-danger btn_cancelar " title="Cancelar Entrada" type="button" data-id_registro="<?= $ingreso["id_ingresos"]; ?>">
+															<i class="fa fa-times"></i>
+														</button>
+														<?php
+														}
+													?>
+												</div>
+											</div>
+											<?php
+											}
+										?>
+									</div>
 								</div>
 								
-								<?php
-									$total = 0;
-									$tarjeta = 0;
-									$total_efectivo = 0;
-									
-									while ($row_ventas = mysqli_fetch_assoc($resultadoVentas)) {
-										extract($row_ventas);
-										switch ($estatus_ventas) {
-											
-											case 'CANCELADO':
-											$fondo = "bg-danger";
-											break;
-											
-											case 'PENDIENTE':
-											$fondo = "bg-warning";
-											break;
-											
-											case 'PAGADO':
-											$fondo = "bg-success";
-											$total_efectivo += $efectivo;
-											$total_tarjeta += $tarjeta;
-											$total += $total_ventas;
-											break;
-										}
-										
-									?>
-									<div class="row <?php echo $fondo; ?> text-center focusable" style="border-bottom: solid 1px; margin-bottom: 10px;">
-										<div class="col-xs-1 text-center"><?php echo $id_turnos; ?></div>
-										<div class="col-xs-2"><?php echo $id_ventas; ?></div>
-										<div class="col-xs-2 text-center"><?php echo date("H:i", strtotime($hora_ventas)); ?></div>
-										<div class="col-xs-2"><?php echo "$" . $total_ventas ?></div>
-										<div class="col-xs-2 text-center"><?php echo $estatus_ventas; ?></div>
-										<div class="col-xs-12 col-sm-3 text-right">
-											
-											<?php
-												if ($estatus_ventas != "PENDIENTE") {
-												?>
-												<button class="btn btn-info btn_ticketPago" title="Reimprimir Ticket" type="button" data-id_ventas="<?php echo $id_ventas; ?>">
-													<i class="fa fa-print"></i>
-												</button>
-												<button type="button" title="Ver Ticket" class="btn btn-success btn_ver" data-id_ventas="<?php echo $id_ventas; ?>">
-													<i class="fas fa-eye"></i>
-												</button>
-												
-												<?php
-												}
-											?>
-											<?php
-												if ($_COOKIE["permiso_usuarios"] == "administrador"  && $estatus_ventas != "CANCELADO") {
-												?>
-												<button class="btn btn-danger btn_cancelar " title="Cancelar Venta" type="button" data-id_ventas="<?php echo $id_ventas; ?>">
-													<i class="fa fa-times"></i>
-												</button>
-												<button class="btn btn-warning btn_devolucion hidden" title="Devolver Venta" type="button" data-id_ventas="<?php echo $id_ventas; ?>">
-													<i class="fas fa-undo"></i>
-												</button>
-												<?php
-												}
-											?>
-										</div>
-									</div>
-									<?php
-									}
-									
-								?>
 							</div>
+							
 							<div class="panel-footer h4">
 								
 								<?php
@@ -433,7 +508,7 @@
 				</div>
 				
 				
-			
+				
 			</div>
 			
 		</div>

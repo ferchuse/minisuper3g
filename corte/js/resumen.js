@@ -9,10 +9,13 @@ function onLoad(event){
 	$('#btn_ingreso').click(nuevoIngreso);
 	$('#btn_cerrar_turno').click(confirmaCerrarTurno );
 	$('#btn_resumen').click( imprimirCorte);
+	
+	$('.btn_cancelar_egreso').click( confirmaCancelarEgreso);
+	
 	$('.btn_ticketPago').click(imprimirTicket );
 	$('.btn_ver').click(verTicket);
-	$('.btn_cancelar').click( confirmaCancelarVenta);
-	$('.btn_cancelar_egreso').click( confirmaCancelarEgreso);
+	$('#panel_ventas').on("click", ".btn_cancelar",  confirmaCancelarVenta);
+	$('#panel_ingresos').on("click", ".btn_cancelar",  confirmaCancelarIngreso);
 	
 	
 }
@@ -99,7 +102,7 @@ function imprimirTicket(){
 
 
 function confirmaCancelarVenta(event) {
-	event.preventDefault();
+	console.log("confirmaCancelarVenta()")
 	var boton = $(this);
 	var id_registro = boton.data('id_ventas');
 	var fila = boton.closest('tr');
@@ -124,11 +127,60 @@ function confirmaCancelarVenta(event) {
 			method: 'POST',
 			data:{ 
 				"estatus_ventas": 'CANCELADO',
-				"id_ventas": id_registro
+				"id_ventas": id_registro,
+				"motivo": value
 				
 			}
 			}).done(function(respuesta){
 			alertify.success("Se ha cancelado el pago"); 
+			window.location.reload();
+			
+			}).fail(function(){
+			alertify.error("Ocurrió un error");
+			
+			}).always(function(){
+			icono.toggleClass("fa-times fa-spinner fa-spin");
+			boton.prop('disabled', false);
+			
+		});
+	}
+}
+
+function confirmaCancelarIngreso(event) {
+	console.log("confirmaCancelarIngreso()")
+	var boton = $(this);
+	var id_registro = boton.data('id_registro');
+	var fila = boton.closest('tr');
+	
+	boton.prop('disabled', true);
+	icono = boton.find(".fa");
+	
+	
+	alertify.confirm()
+  .setting({
+    'reverseButtons': true,
+		'labels' :{ok:"SI", cancel:'NO'},
+    'title': "Confirmar" ,
+    'message': "¿Deseas cancelar esta Entrada?" ,
+    'onok':cancelarIngreso,
+    'oncancel': function(){
+			boton.prop('disabled', false);
+			
+		}
+	}).show();
+	
+	
+	function cancelarIngreso(evnt,value) {
+		$.ajax({
+			url: 'consultas/cancelar_ingresos.php',
+			method: 'POST',
+			data:{ 
+				"id_registro": id_registro,
+				"motivo": value
+				
+			}
+			}).done(function(respuesta){
+			alertify.success("Cancelado"); 
 			window.location.reload();
 			
 			}).fail(function(){
