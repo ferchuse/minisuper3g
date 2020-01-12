@@ -76,12 +76,15 @@
 					</div>
 					<div class="col-sm-2">
 						<label>
-						<input checked type="checkbox" id="entrada_inventario" value="PENDIENTE"> Entrada a Inventario 
+							<input checked type="checkbox" id="entrada_inventario" value="PENDIENTE"> Entrada a Inventario 
 						</label> 
+						
 					</div>
 					<div class="col-sm-1">
-						<label>Folio: </label> 
-						<input  id='id_compras' class="form-control" readonly value='<?php echo $_GET["id_compras"]?>'>
+						<div class="form-group">
+							<label>Folio: </label> 
+							<input  id='id_compras' class="form-control" readonly value='<?php echo $_GET["id_compras"]?>'>
+						</div>
 					</div>
 					
 				</div>
@@ -107,36 +110,36 @@
 							</tbody>
 						</table>
 					</div>
+					</div>
 				</div>
-			</div>
-			
-			<br>
-			<section id="footer">
-				<div class="row lead">
-					
-					
-					<div class="col-sm-1 col-sm-offset-6 ">
-						<strong>TOTAL:</strong>
-					</div>
-					<div class="col-sm-2 ">
-						<input readonly id="total" type="number" class="form-control input-lg text-right " value="0" name="total">
-					</div>
-					
-					<div class="col-sm-2 text-right">
-						<button class="btn btn-success btn-lg" FORM="" id="cerrar_venta">
+				
+				<br>
+				<section id="footer">
+					<div class="row lead">
+						
+						
+						<div class="col-sm-1 col-sm-offset-6 ">
+							<strong>TOTAL:</strong>
+						</div>
+						<div class="col-sm-2 ">
+							<input readonly id="total" type="number" class="form-control input-lg text-right " value="0" name="total">
+						</div>
+						
+						<div class="col-sm-2 text-right">
+							<button class="btn btn-success btn-lg" FORM="" id="cerrar_venta">
 								<i class="fas fa-save"></i> Guardar
-						</button>
+							</button>
+						</div>
 					</div>
-				</div>
-			</section>
-		</div>
-		<div id="ticket" class="visible-print">
+				</section>
+			</div>
+			<div id="ticket" class="visible-print">
+				
+			</div>
+			<?php include('../scripts_carpetas.php'); ?>
+			<?php include('../forms/modal_venta.php'); ?>
+			<?php include('../forms/modal_granel.php'); ?>
+			<script src="compras.js"></script>
 			
-		</div>
-		<?php include('../scripts_carpetas.php'); ?>
-		<?php include('../forms/modal_venta.php'); ?>
-		<?php include('../forms/modal_granel.php'); ?>
-		<script src="compras.js"></script>
-		
-	</body>
-</html>					
+		</body>
+	</html>						

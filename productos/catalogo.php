@@ -109,8 +109,8 @@
 		<?php include('../forms/existencias.php'); ?>
 		
 		<?php  include('../scripts_carpetas.php'); ?>
-		<script src="catalogo.js"></script>
-		<script src="../js/carrito.js"></script>
+		<script src="catalogo.js?<?= date("d-m-Y-H-m-s")?>"></script>
+		<script src="carrito.js?<?= date("d-m-Y-H-m-s")?>"></script>
 		<script src="https://unpkg.com/sticky-table-headers"></script>
 	</body>
 </html>
