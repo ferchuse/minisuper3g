@@ -47,9 +47,16 @@
 						</div>
 						<div class="form-group mr-2">
 							<label for="id_departamentos">Categoria:</label>
-							<?php echo generar_select($link, "departamentos", "id_departamentos", "nombre_departamentos", false, false, true)?>
+							<?php echo generar_select($link, "departamentos", "id_departamentos", "nombre_departamentos", true, false, false)?>
 						</div>
 						<input type="hidden" id="sort" name="sort" value="descripcion_productos">
+						<input type="hidden" id="id_productos" name="id_productos" value="">
+						
+						<div class="form-group">
+							<label for="fecha_fin">Producto:</label>
+							<input type="text" name="" id="descripcion_productos" class="form-control" >
+						</div>
+						
 						<button type="submit" class="btn btn-success" id="btn_buscar">
 							<i class="fa fa-search"></i> Buscar
 						</button>
@@ -72,6 +79,6 @@
 		
 		
 		<?php  include('../scripts_carpetas.php'); ?>
-		<script src="movimientos.js"></script>
+		<script src="movimientos.js?v<?= date("dmYHis")?>"></script>
 	</body>
 </html>

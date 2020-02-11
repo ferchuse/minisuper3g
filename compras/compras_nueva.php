@@ -78,7 +78,10 @@
 						<label>
 							<input checked type="checkbox" id="entrada_inventario" value="PENDIENTE"> Entrada a Inventario 
 						</label> 
-						
+						<select class="form-control" name="estatus_compras">
+							<option >PENDIENTE</option>
+							<option >FINALIZADA</option>
+						</select >
 					</div>
 					<div class="col-sm-1">
 						<div class="form-group">

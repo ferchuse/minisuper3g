@@ -1,6 +1,16 @@
 $(document).ready(function(){
 	$('#form_reportes').submit(listarRegistros );
 	
+	$("#descripcion_productos").autocomplete({
+		serviceUrl: "../control/productos_autocomplete.php",   
+		onSelect: function(eleccion){
+			$("#id_productos").val(eleccion.data.id_productos);
+			
+		},
+		autoSelectFirst	:true , 
+		showNoSuggestionNotice	:true , 
+		noSuggestionNotice	: "Sin Resultados"
+	});
 });
 
 
