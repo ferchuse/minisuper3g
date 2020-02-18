@@ -106,12 +106,46 @@ while ($fila = mysqli_fetch_assoc($result)) {
 			</tbody>
 
 			<!-- Total -->
+			<?php
+				if($fila_venta[0]["forma_pago"] == "efectivo"){
+				?>
 			<tfoot class="">
+				<tr>
+					<td class="etiqueta text-right" colspan="3"><strong>Pago Con :</strong></td>
+					<td class="valor text-right"><?php echo "$" . $producto["pagocon_ventas"] ?></td>
+				</tr>
+				<tr>
+					<td class="etiqueta text-right" colspan="3"><strong>Cambio :</strong></td>
+					<td class="valor text-right"><?php echo "$" . $producto["cambio_ventas"] ?></td>
+				</tr>
 				<tr>
 					<td class="etiqueta text-right" colspan="3"><strong>TOTAL:</strong></td>
 					<td class="valor text-right"><?php echo "$" . $producto["total_ventas"] ?></td>
 				</tr>
 			</tfoot>
+				<?php
+				}
+				else{
+				?>
+				<tfoot class="">
+					<tr>
+					<td class="etiqueta text-right" colspan="3"><strong>Subtotal:</strong></td>
+					<td class="valor text-right"><?php echo "$" . $fila_venta[0]["subtotal_ventas"] ?></td>
+				</tr>
+				<tr>
+					<td class="etiqueta text-right" colspan="3"><strong>Comision:</strong></td>
+					<td class="valor text-right"><?php echo "$" . $fila_venta[0]["comision"] ?></td>
+				</tr>
+				<tr>
+					<td class="etiqueta text-right" colspan="3"><strong>Total:</strong></td>
+					<td class="valor text-right"><?php echo "$" . $fila_venta[0]["tarjeta"] ?></td>
+				</tr>
+			</tfoot>
+				
+					<?php
+					}
+					?>
+			
 		</table>
 	</section>
 

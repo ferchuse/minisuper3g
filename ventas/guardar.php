@@ -8,8 +8,6 @@
 	$articulos_ventas = $_POST['articulos_ventas'];
 	$ganancia_venta = 0;
 	
-	
-	
 	$insertarVentas = "INSERT INTO ventas SET
 	id_ventas = '{$_POST["id_ventas"]}',
 	id_usuarios = '$id_usuarios',
@@ -20,7 +18,13 @@
 	total_ventas = '{$_POST["total_ventas"]}',
 	articulos = '{$_POST["articulos"]}',
 	estatus_ventas = '{$_POST["estatus_ventas"]}',
-	efectivo = '{$_POST["efectivo"]}'
+	efectivo = '{$_POST["efectivo"]}',
+	tarjeta = '{$_POST["tarjeta"]}',
+	comision = '{$_POST["comision"]}',
+	forma_pago = '{$_POST["forma_pago"]}',
+	subtotal_ventas = '{$_POST["subtotal"]}',
+	pagocon_ventas = '{$_POST["pagocon_ventas"]}',
+	cambio_ventas = '{$_POST["cambio_ventas"]}'
 	
 	ON DUPLICATE KEY UPDATE
 	
@@ -32,7 +36,13 @@
 	total_ventas = '{$_POST["total_ventas"]}',
 	articulos = '{$_POST["articulos"]}',
 	estatus_ventas = '{$_POST["estatus_ventas"]}',
-	efectivo = '{$_POST["efectivo"]}'
+	efectivo = '{$_POST["efectivo"]}',
+	tarjeta = '{$_POST["tarjeta"]}',
+	comision = '{$_POST["comision"]}',
+	forma_pago = '{$_POST["forma_pago"]}',
+	subtotal_ventas = '{$_POST["subtotal"]}',
+	pagocon_ventas = '{$_POST["pagocon_ventas"]}',
+	cambio_ventas = '{$_POST["cambio_ventas"]}'
 	
 	";
 	
@@ -46,11 +56,11 @@
 		
 		$id_ventas = mysqli_insert_id($link);
 		$respuesta["id_ventas"] = $id_ventas;
-		}
+	}
 	else{
-		$respuesta["estatus_venta"] = "error";
-		$respuesta["mensaje_venta"] = "Error en Insertar: $insertarVentas  ".mysqli_error($link);	
-		$respuesta["insertarVentas"] = $insertarVentas;
+	$respuesta["estatus_venta"] = "error";
+	$respuesta["mensaje_venta"] = "Error en Insertar: $insertarVentas  ".mysqli_error($link);	
+	$respuesta["insertarVentas"] = $insertarVentas;
 	}
 	
 	
@@ -61,66 +71,61 @@
 	
 	
 	foreach($listaProductos as $indice => $producto){
-		 
-		$ganancia_pesos = ($producto["precio"] - $producto["costo_proveedor"]) *  $producto["cantidad"];
-		$ganancia_venta+= $ganancia_pesos;
-		$respuesta["ganancia"][] = $ganancia_pesos;
-		
-		$insertarVentasDetalle = "INSERT INTO ventas_detalle SET
-		id_ventas = '$id_ventas',
-		id_productos = '$producto[id_productos]',
-		unidad_productos = '$producto[unidad_productos]',
-		cantidad = '$producto[cantidad]',
-		precio = '$producto[precio]',
-		importe = '$producto[importe]',
-		descripcion = '$producto[descripcion]',
-		ganancia = '$ganancia_pesos'
-		
-		";
-		
-		$exec_query = mysqli_query($link, $insertarVentasDetalle);
-		
-		if($exec_query){
-			$respuesta['estatus_detalle'] = 'success';
-			$respuesta['mensaje_detalle'] = 'Ventas Detalles guardado';
-			$id_ventasDetalle = mysqli_insert_id($link);
-			}else{
-			$respuesta['estatus_detalle'] = 'error';
-			$respuesta['mensaje_detalle'] = "Error al guardar Ventas Detalle $insertarVentasDetalle ".mysqli_error($link);
-		}
-		
-		//INSERTA movimientos
-		$exist_nueva = $producto["existencia_anterior"] - $producto["cantidad"];
-		
-		$inserta_movimientos = "INSERT INTO `almacen_movimientos` 
-		(`fecha_movimiento`, `tipo_movimiento`, `id_productos`, `cantidad`, `exist_anterior`, `exist_nueva`, `id_usuarios`, `costo`, `id_almacen`, `turno`, `referencia`, `folio`) VALUES (NOW(), 'SALIDA', 
-		'{$producto["id_productos"]}', '{$producto["cantidad"]}', '{$producto["existencia_anterior"]}', 
-		'$exist_nueva', 
-		'$id_usuarios',
-		'{$producto["precio"]}', 
-		'1', 
-		'$turno',   
-		'VENTA #$id_ventas', 
-		'$id_ventas')";
-		
-		$result_movimientos = mysqli_query( $link, $inserta_movimientos );
-		
-		$respuesta["result_movimientos"] = $result_movimientos."-".mysqli_error($link) ;
-		
-		
-		//Actualiza existencias
-		
-		$update_existencia = "UPDATE productos SET existencia_productos = existencia_productos - '{$producto["cantidad"]}'
-		WHERE id_productos = '{$producto["id_productos"]}'	"; 
-		
-		$result_existencia = mysqli_query( $link, $update_existencia );
-		
-		$respuesta["result_existencia"] = $result_existencia ;
-		
-		
-		
-		
+	
+	$ganancia_pesos = ($producto["precio"] - $producto["costo_proveedor"]) *  $producto["cantidad"];
+	$ganancia_venta+= $ganancia_pesos;
+	$respuesta["ganancia"][] = $ganancia_pesos;
+	
+	$insertarVentasDetalle = "INSERT INTO ventas_detalle SET
+	id_ventas = '$id_ventas',
+	id_productos = '$producto[id_productos]',
+	unidad_productos = '$producto[unidad_productos]',
+	cantidad = '$producto[cantidad]',
+	precio = '$producto[precio]',
+	importe = '$producto[importe]',
+	descripcion = '$producto[descripcion]',
+	ganancia = '$ganancia_pesos'
+	
+	";
+	
+	$exec_query = mysqli_query($link, $insertarVentasDetalle);
+	
+	if($exec_query){
+	$respuesta['estatus_detalle'] = 'success';
+	$respuesta['mensaje_detalle'] = 'Ventas Detalles guardado';
+	$id_ventasDetalle = mysqli_insert_id($link);
+	}else{
+	$respuesta['estatus_detalle'] = 'error';
+	$respuesta['mensaje_detalle'] = "Error al guardar Ventas Detalle $insertarVentasDetalle ".mysqli_error($link);
+	}
+	
+	//INSERTA movimientos
+	$exist_nueva = $producto["existencia_anterior"] - $producto["cantidad"];
+	
+	$inserta_movimientos = "INSERT INTO `almacen_movimientos` 
+	(`fecha_movimiento`, `tipo_movimiento`, `id_productos`, `cantidad`, `exist_anterior`, `exist_nueva`, `id_usuarios`, `costo`, `id_almacen`, `turno`, `referencia`, `folio`) VALUES (NOW(), 'SALIDA', 
+	'{$producto["id_productos"]}', '{$producto["cantidad"]}', '{$producto["existencia_anterior"]}', 
+	'$exist_nueva', 
+	'$id_usuarios',
+	'{$producto["precio"]}', 
+	'1', 
+	'$turno',   
+	'VENTA #$id_ventas', 
+	'$id_ventas')";
+	
+	$result_movimientos = mysqli_query( $link, $inserta_movimientos );
+	
+	$respuesta["result_movimientos"] = $result_movimientos."-".mysqli_error($link) ;
+	
+	//Actualiza existencias
+	
+	$update_existencia = "UPDATE productos SET existencia_productos = existencia_productos - '{$producto["cantidad"]}'
+	WHERE id_productos = '{$producto["id_productos"]}'	"; 
+	
+	$result_existencia = mysqli_query( $link, $update_existencia );
+	
+	$respuesta["result_existencia"] = $result_existencia;
 	}
 	
 	echo json_encode($respuesta);
-?>
+	?>	

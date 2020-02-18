@@ -177,34 +177,35 @@
 			<!-- "Ingresos" -->
 			<form class="" id="lista_egresos">
 				<div class="row">
-					<div class="col-sm-6">
+					<div class="col-sm-12">
 						<div class="panel panel-info hidden-print" id="head_ingresos">
-							<div class="panel-heading text-center">
-								Ingresos
-							</div>
+							
 							
 							<ul class="nav nav-pills nav-justified">
-								<li class="active"><a data-toggle="pill" href="#home">Ventas</a></li>
+								<li class="active"><a data-toggle="pill" href="#tab_ventas">Ventas</a></li>
 								<li class=""><a data-toggle="pill" href="#menu1">Entradas de Efectivo</a></li>
+								<li class=""><a data-toggle="pill" href="#tab_egresos">Egresos</a></li>
 								
 							</ul>
 							
 							<div class="tab-content">
-								<div id="home" class="tab-pane fade in active">
+								<div id="tab_ventas" class="tab-pane fade in active">
 									<div style="height: 350px; overflow: auto;" class="panel-body" id="panel_ventas">
 										<div class="row text-center">
-											<div class="col-xs-1"> Turno</div>
-											<div class="col-xs-2"> Folio</div>
-											<div class="col-xs-2"> Hora</div>
-											<div class="col-xs-2"> Total</div>
-											<div class="col-xs-2"> Estatus</div>
+											<div class="col-xs-1 "> <b>Turno </b></div>
+											<div class="col-xs-1"><b> Folio</b></div>
+											<div class="col-xs-1"> <b>Hora</b></div>
+											<div class="col-xs-1"> <b>Efectivo</b></div>
+											<div class="col-xs-1"> <b>Tarjeta</b></div>
+											<div class="col-xs-1"> <b>Total</b></div>
+											<div class="col-xs-2"> <b>Estatus</b></div>
 											<div class="col-xs-3 text-center hidden-xs"> Acciones</div>
 										</div>
 										
 										<?php
-											$total = 0;
-											$tarjeta = 0;
-											$total_efectivo = 0;
+											$suma_total = 0;
+											$suma_efectivo = 0;
+											$suma_tarjeta = 0;
 											
 											while ($row_ventas = mysqli_fetch_assoc($resultadoVentas)) {
 												extract($row_ventas);
@@ -220,18 +221,20 @@
 													
 													case 'PAGADO':
 													$fondo = "bg-success";
-													$total_efectivo += $efectivo;
-													$total_tarjeta += $tarjeta;
-													$total += $total_ventas;
+													$suma_efectivo += $row_ventas["efectivo"];
+													$suma_tarjeta += $row_ventas["tarjeta"];
+													$suma_total += $total_ventas;
 													break;
 												}
 												
 											?>
 											<div class="row <?php echo $fondo; ?> text-center focusable" style="border-bottom: solid 1px; margin-bottom: 10px;">
 												<div class="col-xs-1 text-center"><?php echo $id_turnos; ?></div>
-												<div class="col-xs-2"><?php echo $id_ventas; ?></div>
-												<div class="col-xs-2 text-center"><?php echo date("H:i", strtotime($hora_ventas)); ?></div>
-												<div class="col-xs-2"><?php echo "$" . $total_ventas ?></div>
+												<div class="col-xs-1"><?php echo $id_ventas; ?></div>
+												<div class="col-xs-1 text-center"><?php echo date("H:i", strtotime($hora_ventas)); ?></div>
+												<div class="col-xs-1"><?php echo "$" .$row_ventas["efectivo"] ?></div>
+												<div class="col-xs-1"><?php echo "$" . $row_ventas["tarjeta"] ?></div>
+												<div class="col-xs-1"><?php echo "$" . $total_ventas ?></div>
 												<div class="col-xs-2 text-center"><?php echo $estatus_ventas; ?></div>
 												<div class="col-xs-12 col-sm-3 text-right">
 													
@@ -280,7 +283,7 @@
 										</div>
 										
 										<?php
-										
+											
 											
 											foreach ($lista_ingresos as $i => $ingreso) {
 												
@@ -289,7 +292,7 @@
 													case 'CANCELADO':
 													$fondo = "bg-danger";
 													break;
-												
+													
 													case 'ACTIVO':
 													$fondo = "bg-success";
 													break;
@@ -303,7 +306,7 @@
 												<div class="col-xs-2">$<?= $ingreso["cantidad_ingresos"]; ?></div>
 												<div class="col-xs-2 text-center"><?= $ingreso["estatus_ingresos"]; ?></div>
 												<div class="col-xs-12 col-sm-3">
-												
+													
 													<?php
 														if ($_COOKIE["permiso_usuarios"] == "administrador"  && $ingreso["estatus_ingresos"] != "CANCELADO") {
 														?>
@@ -321,50 +324,113 @@
 									</div>
 								</div>
 								
+								<div id="tab_egresos" class="tab-pane fade">
+									<div class="panel panel-primary hidden-print" id="head_egresos">
+										<div class="panel-heading text-center">
+											Egresos
+										</div>
+										<div style="height: 350px; overflow: auto;" class="panel-body" id="panel_egresos">
+											
+											<div class="row text-center">
+												<div class="col-xs-1">Hora</div>
+												<div class="col-xs-3">Categoría</div>
+												<div class="col-xs-3">Descripción</div>
+												<div class="col-xs-1">Cantidad</div>
+												<div class="col-xs-2">Estatus</div>
+												<div class="col-xs-1 text-right">Acciones</div>
+											</div>
+											
+											<?php foreach ($lista_egresos as $fila_egreso) {
+												if ($fila_egreso["estatus_egresos"] == 'CANCELADO') {
+													$fondo_row = "bg-danger";
+												}
+												if ($fila_egreso["estatus_egresos"] != "CANCELADO") {
+													$fondo_row = "bg-success";
+													$egresos += $fila_egreso["cantidad_egresos"];
+												}
+											?>
+											
+											<div class="row <?php echo $fondo_row ?> text-center focusable" style="line-height:35px; margin-bottom: 5px;">
+												<div class="col-xs-1"><?php echo $fila_egreso["hora_egresos"]; ?></div>
+												<div class="col-xs-3"><?php echo $fila_egreso["tipo_egreso"]; ?></div>
+												<div class="col-xs-3"><?php echo $fila_egreso["descripcion_egresos"]; ?></div>
+												<div class="col-xs-1"><?php echo number_format($fila_egreso["cantidad_egresos"], 2); ?></div>
+												<div class="col-xs-2"><?php echo $fila_egreso["estatus_egresos"]; ?></div>
+												
+												<?php if ($fila_egreso["estatus_egresos"] != "CANCELADO") : ?>
+												<div class="col-xs-1 text-right">
+													<button class="btn btn-danger btn_cancelar_egreso" data-id_egresos="<?php echo $fila_egreso["id_egresos"]; ?>" title="Cancelar" type="button">
+														<i class="fa fa-times"></i>
+													</button>
+												</div>
+												<?php endif ?>
+												
+											</div>
+											<?php
+											}
+											?>
+											
+										</div>
+										<div class="panel-footer">
+											<h3>
+												<b>Egresos:</b>
+												<?php
+													echo "<strong>" . "$" . number_format($egresos, 2) . "</strong>";
+												?>
+											</h3>
+										</div>
+									</div>
+									
+								</div>
 							</div>
 							
 							<div class="panel-footer h4">
 								
 								<?php
-									$saldo_final = $_COOKIE["efectivo_inicial"] + $total_efectivo + $totales["entradas"] - $totales["salidas"] - $totales["devoluciones"];
+									$saldo_final = $_COOKIE["efectivo_inicial"] + $suma_total + $totales["entradas"] - $totales["salidas"] - $totales["devoluciones"];
 								?>
 								
 								<div class="row no-gutters">
-									<div class="col-xs-7">Fondo de Caja</div>
+									<div class="col-xs-3">Fondo de Caja</div>
 									<div class="col-xs-1 text-right"></div>
 									<div class="col-xs-1 text-center">$</div>
-									<div class="cantidad col-xs-3 text-right"><?php echo number_format($_COOKIE["efectivo_inicial"], 2) ?></div>
+									<div class="cantidad col-xs-1 text-right"><?php echo number_format($_COOKIE["efectivo_inicial"], 2) ?></div>
 								</div>
 								<div class="row no-gutters">
-									<div class="col-xs-7">Ventas en Efectivo</div>
+									<div class="col-xs-3">Ventas en Efectivo</div>
 									<div class="text-success col-xs-1 text-center">+</div>
 									<div class="text-success col-xs-1 text-center">$</div>
-									<div class="cantidad text-success col-xs-3 text-right"><?php echo number_format($total_efectivo, 2) ?></div>
+									<div class="cantidad text-success col-xs-1 text-right"><?php echo number_format($suma_efectivo, 2) ?></div>
 								</div>
-								
 								<div class="row no-gutters">
-									<div class="col-xs-7">Entradas</div>
+									<div class="col-xs-3">Ventas con Tarjeta</div>
 									<div class="text-success col-xs-1 text-center">+</div>
 									<div class="text-success col-xs-1 text-center">$</div>
-									<div class="cantidad text-success col-xs-3 text-right"><?php echo number_format($totales["entradas"], 2); ?></div>
+									<div class="cantidad text-success col-xs-1 text-right"><?php echo number_format($suma_tarjeta, 2) ?></div>
 								</div>
 								<div class="row no-gutters">
-									<div class="col-xs-7">Salidas</div>
-									<div class="text-danger col-xs-1 text-center">-</div>
-									<div class="text-danger col-xs-1 text-center">$</div>
-									<div class="cantidad text-danger col-xs-3 text-right"><?php echo number_format($totales["salidas"], 2); ?></div>
+									<div class="col-xs-3">Entradas</div>
+									<div class="text-success col-xs-1 text-center">+</div>
+									<div class="text-success col-xs-1 text-center">$</div>
+									<div class="cantidad text-success col-xs-1 text-right"><?php echo number_format($totales["entradas"], 2); ?></div>
 								</div>
 								<div class="row no-gutters">
-									<div class="col-xs-7">Devoluciones en Efectivo</div>
+									<div class="col-xs-3">Salidas</div>
 									<div class="text-danger col-xs-1 text-center">-</div>
 									<div class="text-danger col-xs-1 text-center">$</div>
-									<div class="cantidad text-danger col-xs-3 text-right"><?php echo number_format($totales["devoluciones"], 2); ?></div>
+									<div class="cantidad text-danger col-xs-1 text-right"><?php echo number_format($totales["salidas"], 2); ?></div>
+								</div>
+								<div class="row no-gutters">
+									<div class="col-xs-3">Devoluciones en Efectivo</div>
+									<div class="text-danger col-xs-1 text-center">-</div>
+									<div class="text-danger col-xs-1 text-center">$</div>
+									<div class="cantidad text-danger col-xs-1 text-right"><?php echo number_format($totales["devoluciones"], 2); ?></div>
 								</div>
 								<div class="row no-gutters border border-top">
-									<div class="col-xs-7"></div>
+									<div class="col-xs-3"></div>
 									<div class=" col-xs-1 text-center"></div>
 									<div class=" col-xs-1 text-center">$</div>
-									<div class="col-xs-3 text-right" style="border-top: solid 1px;">
+									<div class="col-xs-1 text-right" style="border-top: solid 1px;">
 									<?php echo number_format($saldo_final, 2); ?></div>
 								</div>
 								
@@ -373,64 +439,6 @@
 						</div>
 					</div>
 					
-					<!-- "Egresos" -->
-					<div class="col-sm-6">
-						<div class="panel panel-primary hidden-print" id="head_egresos">
-							<div class="panel-heading text-center">
-								Egresos
-							</div>
-							<div style="height: 350px; overflow: auto;" class="panel-body" id="panel_egresos">
-								
-								<div class="row text-center">
-									<div class="col-xs-1">Hora</div>
-									<div class="col-xs-3">Categoría</div>
-									<div class="col-xs-3">Descripción</div>
-									<div class="col-xs-1">Cantidad</div>
-									<div class="col-xs-2">Estatus</div>
-									<div class="col-xs-1 text-right">Acciones</div>
-								</div>
-								
-								<?php foreach ($lista_egresos as $fila_egreso) {
-									if ($fila_egreso["estatus_egresos"] == 'CANCELADO') {
-										$fondo_row = "bg-danger";
-									}
-									if ($fila_egreso["estatus_egresos"] != "CANCELADO") {
-										$fondo_row = "bg-success";
-										$egresos += $fila_egreso["cantidad_egresos"];
-									}
-								?>
-								
-								<div class="row <?php echo $fondo_row ?> text-center focusable" style="line-height:35px; margin-bottom: 5px;">
-									<div class="col-xs-1"><?php echo $fila_egreso["hora_egresos"]; ?></div>
-									<div class="col-xs-3"><?php echo $fila_egreso["tipo_egreso"]; ?></div>
-									<div class="col-xs-3"><?php echo $fila_egreso["descripcion_egresos"]; ?></div>
-									<div class="col-xs-1"><?php echo number_format($fila_egreso["cantidad_egresos"], 2); ?></div>
-									<div class="col-xs-2"><?php echo $fila_egreso["estatus_egresos"]; ?></div>
-									
-									<?php if ($fila_egreso["estatus_egresos"] != "CANCELADO") : ?>
-									<div class="col-xs-1 text-right">
-										<button class="btn btn-danger btn_cancelar_egreso" data-id_egresos="<?php echo $fila_egreso["id_egresos"]; ?>" title="Cancelar" type="button">
-											<i class="fa fa-times"></i>
-										</button>
-									</div>
-									<?php endif ?>
-									
-								</div>
-								<?php
-								}
-								?>
-								
-							</div>
-							<div class="panel-footer">
-								<h3>
-									<b>Egresos:</b>
-									<?php
-										echo "<strong>" . "$" . number_format($egresos, 2) . "</strong>";
-									?>
-								</h3>
-							</div>
-						</div>
-					</div>
 					
 					
 				</div>
@@ -478,7 +486,13 @@
 					<div class="col-xs-6">Ventas en Efectivo</div>
 					<div class="text-success col-xs-1 text-center">+</div>
 					<div class="text-success col-xs-1 text-center">$</div>
-					<div class="cantidad text-success col-xs-3 text-right"><?php echo number_format($total_efectivo, 2) ?></div>
+					<div class="cantidad text-success col-xs-3 text-right"><?php echo number_format($suma_efectivo, 2) ?></div>
+				</div>
+				<div class="row no-gutters">
+					<div class="col-xs-6">Ventas con Tarjeta</div>
+					<div class="text-success col-xs-1 text-center">+</div>
+					<div class="text-success col-xs-1 text-center">$</div>
+					<div class="cantidad text-success col-xs-3 text-right"><?php echo number_format($suma_tarjeta, 2) ?></div>
 				</div>
 				
 				<div class="row no-gutters">

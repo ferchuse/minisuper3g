@@ -23,6 +23,7 @@ function onLoad(event){
 
 function imprimirCorte(event){
 	$("#ticket").hide();
+	$("#arqueo").html("");
 	$("#resumen").removeClass("hidden-print");
 	$("#resumen").addClass("visible-print");
 	window.print();
