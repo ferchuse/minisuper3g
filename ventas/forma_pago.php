@@ -75,7 +75,7 @@
 							<!-- "Radios: Débito & Crédito" -->
 							<div class="radios_tarjeta mt-4">
 								<div class="form-check form-check-inline">
-									<input class="form-check-input comision"  checked value=".02" type="radio" name="tipo_tarjeta" id="debito">
+									<input class="form-check-input comision"  checked value=".025" type="radio" name="tipo_tarjeta" id="debito">
 									<label class="form-check-label"  for="debito">Débito</label>
 								</div>
 								<div class="form-check form-check-inline">

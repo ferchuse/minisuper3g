@@ -10,8 +10,11 @@ function calculaComision(event){
 	
 	let tarjeta = subtotal + comision;
 	
-	$("#comision").val(comision.toFixed(2));
-	$("#tarjeta").val(tarjeta.toFixed(2));
+	$("#comision").val(Math.round(comision * 100) / 100);
+	$("#tarjeta").val(Math.round(tarjeta * 100) / 100);
+	// $("#comision").val(comision.toFixed(2));
+	// $("#tarjeta").val(tarjeta.toFixed(2));
+	// $("#tarjeta").val(tarjeta.toFixed(2));
 }
 
 $('.nav-tabs a[href=#ventana_efectivo]').on('shown.bs.tab', function(){
