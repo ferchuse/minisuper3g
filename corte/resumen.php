@@ -123,25 +123,23 @@
 					Resumen del Día <?php echo date("d/m/Y", strtotime($fecha_corte)); ?>
 				</h4>
 				<div class="col-md-6 mt-3">
-					<?php if ($_COOKIE["permiso_usuarios"] == "administrador") { ?>
-						<form class="form-inline" id="form_resumen">
-							<div class="form-group">
-								<label>Fecha: </label>
-								<input type="date" class="form-control" value="<?php echo $fecha_corte; ?>" name="fecha_ventas" id="fecha_ventas">
-							</div>
-							<div class="form-group">
-								<label>Turno: </label>
-								<input type="number" class="form-control" value="<?php echo $_COOKIE["id_turnos"]; ?>" name="id_turnos" id="id_turnos" 
-								<?php echo  dame_permiso("corte/resumen.php", $link) == "Supervisor" ? "" : "readonly"; ?>>
-							</div>
-							<div class="form-group">
-								<label>Inicio Turno: </label>
-								<input readonly type="time" class="form-control" value="<?php echo $fila_turno["hora_inicios"]; ?>" id="inicio_turno">
-							</div>
-						</form>
-						<?php
-						}
-					?>
+					
+					<form class="form-inline" id="form_resumen">
+						<div class="form-group">
+							<label>Fecha: </label>
+							<input type="date" class="form-control" value="<?php echo $fecha_corte; ?>" name="fecha_ventas" id="fecha_ventas">
+						</div>
+						<div class="form-group">
+							<label>Turno: </label>
+							<input type="number" class="form-control" value="<?php echo $_COOKIE["id_turnos"]; ?>" name="id_turnos" id="id_turnos" 
+							<?php echo  dame_permiso("corte/resumen.php", $link) == "Supervisor" ? "" : "readonly"; ?>>
+						</div>
+						<div class="form-group">
+							<label>Inicio Turno: </label>
+							<input readonly type="time" class="form-control" value="<?php echo $fila_turno["hora_inicios"]; ?>" id="inicio_turno">
+						</div>
+					</form>
+					
 				</div>
 				<div class="col-md-6 text-right hidden-print mt-3">
 					<button class="btn btn-secondary" id="btn_arqueo" >
@@ -203,14 +201,14 @@
 											<div class="col-xs-3 text-center hidden-xs"> Acciones</div>
 										</div>
 										<div class="row text-center">
-											<div class="col-xs-1 "><input></div>
-											<div class="col-xs-1"><input></div>
+											<div class="col-xs-1 "><input class="form-control filter" data-col_index="0" ></div>
+											<div class="col-xs-1"><input class="form-control filter" data-col_index="1"></div>
 											<div class="col-xs-1"></div>
-											<div class="col-xs-1"> <b>Efectivo</b></div>
-											<div class="col-xs-1"> <b>Tarjeta</b></div>
-											<div class="col-xs-1"> <b>Total</b></div>
-											<div class="col-xs-2"> <b>Estatus</b></div>
-											<div class="col-xs-3 text-center hidden-xs"> Acciones</div>
+											<div class="col-xs-1"></div>
+											<div class="col-xs-1"> </div>
+											<div class="col-xs-1"></div>
+											<div class="col-xs-2"> </div>
+											<div class="col-xs-3 text-center hidden-xs"> </div>
 										</div>
 										
 										<?php
@@ -239,7 +237,7 @@
 												}
 												
 											?>
-											<div class="row <?php echo $fondo; ?> text-center focusable" style="border-bottom: solid 1px; margin-bottom: 10px;">
+											<div class="row venta <?php echo $fondo; ?> text-center focusable" style="border-bottom: solid 1px; margin-bottom: 10px;">
 												<div class="col-xs-1 text-center"><?php echo $id_turnos; ?></div>
 												<div class="col-xs-1"><?php echo $id_ventas; ?></div>
 												<div class="col-xs-1 text-center"><?php echo date("H:i", strtotime($hora_ventas)); ?></div>
@@ -568,7 +566,7 @@
 				
 			});
 		</script>
-		<script src="js/resumen.js"></script>
+		<script src="js/resumen.js?v=<?= date("d-m-Y-H-i-s")?>"></script>
 		<script src="js/pagos.js"></script>
 		<script src="js/numerosLetras.js"></script>
 		<script src="js/egresos.js"></script>

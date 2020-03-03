@@ -5,6 +5,7 @@ $(document).ready( onLoad);
 
 function onLoad(event){
 	
+	$('.filter').keyup(filtrarFilas);
 	$('#fecha_ventas').change(cambiarFecha);
 	$('#btn_ingreso').click(nuevoIngreso);
 	$('#btn_cerrar_turno').click(confirmaCerrarTurno );
@@ -20,6 +21,17 @@ function onLoad(event){
 	
 }
 
+function filtrarFilas(event) {
+	console.log("filtrarFilas()");
+	var value = $(this).val().toLowerCase();
+	var col_index = $(this).data("col_index");
+	
+	$("#tab_ventas .venta").each(function() {
+		
+		$(this).toggle($(this).find("div").eq(col_index).text().toLowerCase().indexOf(value) > -1)
+	});
+	
+}
 
 function imprimirCorte(event){
 	$("#ticket").hide();
