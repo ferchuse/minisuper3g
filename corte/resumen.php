@@ -201,8 +201,12 @@
 											<div class="col-xs-3 text-center hidden-xs"> Acciones</div>
 										</div>
 										<div class="row text-center">
-											<div class="col-xs-1 "><input class="form-control filter" data-col_index="0" ></div>
-											<div class="col-xs-1"><input class="form-control filter" data-col_index="1"></div>
+											<div class="col-xs-1 ">
+												<input type="search" class="form-control filter" data-col_index="0" >
+											</div>
+											<div class="col-xs-1">
+												<input type="search" class="form-control filter" data-col_index="1">
+											</div>
 											<div class="col-xs-1"></div>
 											<div class="col-xs-1"></div>
 											<div class="col-xs-1"> </div>
