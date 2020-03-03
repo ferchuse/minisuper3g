@@ -46,14 +46,14 @@
 						<i class="fas fa-chart-bar"></i> Reportes <strong class="caret"></strong>
 					</a>
 					<ul class="dropdown-menu">
-						<?php if(dame_permiso("reportes/index.php", $link) != "Sin Acceso"){	?>
+						<?php if(dame_permiso("../reportes/index.php", $link) != "Sin Acceso"){	?>
 							<li>
 								<a href="../reportes/index.php">Ventas Por Día</a>
 							</li>
 							<?php 
 								}
 							?> 
-							<?php if(dame_permiso("reportes/egresos.php", $link) != "Sin Acceso"){	?>
+							<?php if(dame_permiso("../reportes/egresos.php", $link) != "Sin Acceso"){	?>
 								<li>
 									<a href="../reportes/egresos.php">Egresos</a>
 								</li>

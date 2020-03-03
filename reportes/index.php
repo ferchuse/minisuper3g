@@ -1,6 +1,8 @@
 <?php
 	include("../login/login_success.php");
+	include("../conexi.php");
 
+	$link = Conectarse();
 	$menu_activo = "reportes";
 	
 	$dt_fecha_inicial = new DateTime("first day of this month");
