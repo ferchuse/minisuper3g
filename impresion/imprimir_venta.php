@@ -53,6 +53,13 @@ while ($fila = mysqli_fetch_assoc($result)) {
 						<?php echo date("h:i A", strtotime($fila_venta[0]["hora_ventas"])); ?>
 					</div>
 				</div>
+				<!-- "Turno" -->
+				<div class="hora row margin-none">
+					<span class="etiquetas col-xs-4">Turno:</span>
+					<div class="valores col-xs-8" >
+						<?php echo ($fila_venta[0]["id_turnos"]); ?>
+					</div>
+				</div>
 				<!-- "Usuario" -->
 				<div class="usuario row margin-none">
 					<span class="etiquetas col-xs-4">Usuario:</span>

@@ -1,10 +1,18 @@
 $(document).ready(function(){
+	
+		listarRegistros();
+
 	$('#btn_usuario').click(function(){
-		$('#form_nuevo_usuario')[0].reset();
-		$('#modal_nuevo_usuario').modal('show');
+		$('#form_usuario')[0].reset();
+		$('#modal_usuario').modal('show');
 	});
 	
-	var enlistaUsuarios = function(){
+
+
+	$('#form_usuario').submit(guardarRegistro );
+});
+
+function listarRegistros(){
 		$.ajax({
 			url: 'lista_usuarios.php',
 			method: 'POST',
@@ -13,37 +21,7 @@ $(document).ready(function(){
 			$('#lista_usuario').html(resultado);
 			
 			//--------EDITAR GRUPO----------
-			$('.btn_editar').click(function(){
-				$('#form_nuevo_usuario')[0].reset();
-				var boton = $(this);
-				var icono = boton.find('.fa');
-				icono.toggleClass('fa-pencil fa-spinner fa-spin fa-floppy-o');
-				boton.prop('disabled',true);
-				var id_usuarios = boton.data('id_usuarios');
-				$.ajax({
-					url: '../control/buscar_normal.php',
-					method: 'POST',
-					dataType: 'JSON',
-					data:{campo: 'id_usuarios', tabla:'usuarios', id_campo: id_usuarios}
-					}).done(function(respuesta){
-					if(respuesta.encontrado == 1){
-						console.log(respuesta['fila']);
-						$.each(respuesta["fila"], function(name, value){
-							
-							
-							if(name == 'id_usuarios'){
-								$('#new_usuarios').val(value);
-								}else{
-								$("#"+name).val(value);
-							}
-						});
-						$('#modal_nuevo_usuario').modal('show');
-					}
-					icono.toggleClass('fa-pencil fa-spinner fa-spin fa-floppy-o');
-					boton.prop('disabled',false);
-				});
-				
-			});
+			$('.btn_editar').click(cargarRegistro);
 			
 			//ELIMINAR
 			$('.btn_eliminar').click(function(){
@@ -60,7 +38,7 @@ $(document).ready(function(){
 						dataType: 'JSON',
 						data: {campo: 'id_usuarios', tabla:'usuarios', id_campo: id_usuarios}
 						}).done(function(respuesta){
-					
+						
 						if(respuesta.estatus == "success"){
 							fila.fadeOut(1000);
 							alertify.success('Se ha eliminado');
@@ -71,7 +49,7 @@ $(document).ready(function(){
 						
 						alertify.error("Ocurrió un Error:" + errorThrown);
 						}).always(function(){
-							boton.prop('disabled',false);
+						boton.prop('disabled',false);
 						icono.toggleClass("fa-trash fa-spinner fa-spin fa-floppy-o");
 						
 					});
@@ -82,34 +60,87 @@ $(document).ready(function(){
 				});
 			});	
 		});
-	};
-	enlistaUsuarios();
-	//GUARDAR
-	$('#form_nuevo_usuario').submit(function(event){
-		event.preventDefault();
-		var formulario = $(this);
-		var boton = $(this).find(":submit");
-		var icono = boton.find('.fa');
-		icono.toggleClass('fa-save fa-spinner fa-spin fa-floppy-o');
-		boton.prop('disabled',true);
-		$.ajax({
-			url: '../control/guardar_normal.php',
-			method: 'POST',
-			datatype: 'JSON',
-			data: {tabla: 'usuarios',
-				datos: formulario.serializeArray()
+	}
+
+
+function guardarRegistro(event){
+	console.log("guardarRegistro")
+	event.preventDefault();
+	let datos = $(this).serialize();
+	let boton = $(this).find(":submit");
+	let icono = boton.find(".fas");
+	
+	boton.prop("disabled", true);
+	icono.toggleClass("fa-save fa-spinner fa-spin");
+	
+	$.ajax({
+		url: 'consultas/guardar_usuarios.php',
+		dataType: 'JSON',
+		method: 'POST',
+		data: datos
+		
+	}).done(
+	function(respuesta){
+		
+		if(respuesta.estatus == "success"){
+			alertify.success('Se ha agregado correctamente');
+			$('#form_usuario')[0].reset();
+			$('#modal_usuario').modal("hide");
+			listarRegistros();
+			}else{
+			console.log(respuesta.mensaje);
+		}
+		}).always(function(){
+		
+		boton.prop("disabled", false);
+		icono.toggleClass("fa-save fa-spinner fa-spin");
+		
+		
+	}); 
+}
+
+
+//FUNCION DE Cargar datos
+function cargarRegistro() {
+	console.log("cargarRegistro()");
+	var $boton = $(this);
+	var id_registro= $(this).data("id_registro");
+	$("#form_usuario")[0].reset();
+	$boton.prop("disabled", true);
+	
+	$.ajax({
+		url: 'consultas/cargar_permisos.php',
+		method: 'GET',
+		data: {
+			id_usuarios: id_registro
+		}
+		}).done(function(respuesta){
+		console.log("imprime registros")
+		$boton.prop("disabled", false);
+		// console.table(respuesta.data.permisos);
+		
+		//Imprime Datos del Usuario
+		$.each(respuesta.data.usuarios, function(name , value){
+			$("#form_usuario").find("#"+ name).val(value);
+			// console.log("name", name)
+			if(name == "id_usuarios"){
+				$("#edicion_id_usuarios").val(value);
 			}
-			}).done(function(respuesta){
-			if(respuesta.estatus == 'success'){
-				alertify.success('Se ha agregado correctamente');
-				$('#modal_nuevo_usuario').modal('hide');
-				icono.toggleClass('fa-save fa-spinner fa-spin fa-floppy-o');
-				enlistaUsuarios();
-				boton.prop('disabled',false);
-				}else{
-				alertify.error('Ha ocuurido un error');
-				console.log(respuesta.mensaje);
-			}
+			
 		});
+		
+		//Imprime permisos
+		if(respuesta.data.permisos){
+			$.each(respuesta.data.permisos, function(index , permiso){
+				$input_paginas = $('input[value="'+permiso.id_paginas+'"].id_paginas');
+				
+				$input_paginas.closest("tr").find('input[value="'+permiso.permiso+'"]').prop("checked", true);
+				
+			});
+			
+		}
+		
+		$("#modal_usuario").modal("show");
+		
 	});
-});
+}

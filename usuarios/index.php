@@ -50,6 +50,6 @@
 			<!-- /#wrapper -->
 		</div>
 		<?php include('../scripts_carpetas.php');?>
-    <script src="usuarios.js"></script>
+    <script src="usuarios.js?v=<?= date("d-m-Y-h-i-s")?>"></script>
 	</body>
 </html>

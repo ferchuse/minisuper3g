@@ -30,7 +30,7 @@
 	
 	
 	
-	if ($tipo_corte == "dia") {
+	if ($tipo_corte == "dia" || isset($_GET["fecha_ventas"])) {
 		//Corte por dia
 		$consulta_ventas = "SELECT * FROM ventas LEFT JOIN usuarios USING(id_usuarios) 
 		WHERE fecha_ventas = '$fecha_corte' ORDER BY id_ventas DESC
@@ -131,7 +131,8 @@
 							</div>
 							<div class="form-group">
 								<label>Turno: </label>
-								<input type="number" class="form-control" value="<?php echo $_COOKIE["id_turnos"]; ?>" name="id_turnos" id="id_turnos" <?php echo $_COOKIE["permiso_usuarios"] == "administrador" ? "" : "readonly"; ?>>
+								<input type="number" class="form-control" value="<?php echo $_COOKIE["id_turnos"]; ?>" name="id_turnos" id="id_turnos" 
+								<?php echo  dame_permiso("corte/resumen.php", $link) == "Supervisor" ? "" : "readonly"; ?>>
 							</div>
 							<div class="form-group">
 								<label>Inicio Turno: </label>
@@ -201,6 +202,16 @@
 											<div class="col-xs-2"> <b>Estatus</b></div>
 											<div class="col-xs-3 text-center hidden-xs"> Acciones</div>
 										</div>
+										<div class="row text-center">
+											<div class="col-xs-1 "><input></div>
+											<div class="col-xs-1"><input></div>
+											<div class="col-xs-1"></div>
+											<div class="col-xs-1"> <b>Efectivo</b></div>
+											<div class="col-xs-1"> <b>Tarjeta</b></div>
+											<div class="col-xs-1"> <b>Total</b></div>
+											<div class="col-xs-2"> <b>Estatus</b></div>
+											<div class="col-xs-3 text-center hidden-xs"> Acciones</div>
+										</div>
 										
 										<?php
 											$suma_total = 0;
@@ -252,7 +263,7 @@
 														}
 													?>
 													<?php
-														if ($_COOKIE["permiso_usuarios"] == "administrador"  && $estatus_ventas != "CANCELADO") {
+														if (dame_permiso("corte/resumen.php", $link) == "Supervisor" && $estatus_ventas != "CANCELADO") {
 														?>
 														<button class="btn btn-danger btn_cancelar " title="Cancelar Venta" type="button" data-id_ventas="<?php echo $id_ventas; ?>">
 															<i class="fa fa-times"></i>
@@ -308,7 +319,7 @@
 												<div class="col-xs-12 col-sm-3">
 													
 													<?php
-														if ($_COOKIE["permiso_usuarios"] == "administrador"  && $ingreso["estatus_ingresos"] != "CANCELADO") {
+														if (dame_permiso("corte/resumen.php", $link) == "Supervisor"  && $ingreso["estatus_ingresos"] != "CANCELADO") {
 														?>
 														<button class="btn btn-danger btn_cancelar " title="Cancelar Entrada" type="button" data-id_registro="<?= $ingreso["id_ingresos"]; ?>">
 															<i class="fa fa-times"></i>
@@ -357,7 +368,7 @@
 												<div class="col-xs-1"><?php echo number_format($fila_egreso["cantidad_egresos"], 2); ?></div>
 												<div class="col-xs-2"><?php echo $fila_egreso["estatus_egresos"]; ?></div>
 												
-												<?php if ($fila_egreso["estatus_egresos"] != "CANCELADO") : ?>
+												<?php if (dame_permiso("corte/resumen.php", $link) == "Supervisor" && $fila_egreso["estatus_egresos"] != "CANCELADO") : ?>
 												<div class="col-xs-1 text-right">
 													<button class="btn btn-danger btn_cancelar_egreso" data-id_egresos="<?php echo $fila_egreso["id_egresos"]; ?>" title="Cancelar" type="button">
 														<i class="fa fa-times"></i>
