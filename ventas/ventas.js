@@ -356,6 +356,7 @@ function cobrar(){
 		return false;
 	}
 	
+	resetFormPago();
 	$("#modal_pago").modal("show");
 	
 	$("#efectivo").val($(".total:visible").val());
@@ -363,6 +364,24 @@ function cobrar(){
 	$("#pago").val($("#efectivo").val());
 	$("#pago").focus();
 	calculaCambio();
+}
+
+
+function resetFormPago(){
+	
+	$("#div_efectivo").removeClass("hidden")
+	$("#div_tarjeta").addClass("hidden")
+	
+	$("#form_pago")[0].reset();
+	// $("#forma_pago").val("efectivo");
+	
+	$("#efectivo").prop("readonly", true)
+	$("#efectivo").val($("#subtotal").val())
+	
+	$("#tarjeta").val(0)
+	$("#comision").val(0)
+	
+	
 }
 
 function calcularGranel(event){
@@ -526,15 +545,10 @@ function guardarVenta(event){
 	var boton = $(this).find(":submit");
 	var icono = boton.find('.fa');
 	var articulos = $("#tabla_venta tbody tr").size();
-	if($("#forma_pago").val() == "tarjeta"){
-		
-		total = $("#tarjeta").val();
-		
-	}
-	else{
-		total = $("#efectivo").val();
-		
-	}
+	
+	total = Number($("#efectivo").val()) + Number($("#tarjeta").val());
+	
+	
 	console.log("total",total)
 	var productos = [];
 	
@@ -564,11 +578,11 @@ function guardarVenta(event){
 			"id_productos": $(item).find(".id_productos").val(),
 			"cantidad": $(item).find(".cantidad").val(),
 			"precio": $(item).find(".precio").val(),
-			"descripcion": $(item).find(".descripcion").val(),
-			"importe": $(item).find(".importe").val(),
-			"existencia_anterior": $(item).find(".existencia_anterior").val(),
-			"costo_proveedor": $(item).find(".costo_proveedor").val()
-			
+		"descripcion": $(item).find(".descripcion").val(),
+		"importe": $(item).find(".importe").val(),
+		"existencia_anterior": $(item).find(".existencia_anterior").val(),
+		"costo_proveedor": $(item).find(".costo_proveedor").val()
+		
 		})
 	});
 	
@@ -716,69 +730,69 @@ function disableFunctionKeys(e) {
 	}
 	
 	if(e.key == 'F11'){
-	console.log("F11");
-	$("#mayoreo").click();
+		console.log("F11");
+		$("#mayoreo").click();
 	}
 	
 	if(e.key == 'Escape'){
-	
-	console.log("ESC");
-	
-	$("#codigo_producto").focus()
+		
+		console.log("ESC");
+		
+		$("#codigo_producto").focus()
 	}
 	// $input_activo = $(this);
-	};
-	
-	function aplicarMayoreoGeneral(){
+};
+
+function aplicarMayoreoGeneral(){
 	var $precio;
 	console.log("aplicarMayoreo");
 	
 	$(".tabla_venta:visible tbody tr").each(function(index, item){
-	if($("#mayoreo").prop("checked")){
-	$precio =  $(item).find(".precio_mayoreo").val();
-	}
-	else{
-	$precio =  $(item).find(".precio_menudeo").val();
-	}
-	$(item).find(".precio").val($precio);
+		if($("#mayoreo").prop("checked")){
+			$precio =  $(item).find(".precio_mayoreo").val();
+		}
+		else{
+			$precio =  $(item).find(".precio_menudeo").val();
+		}
+		$(item).find(".precio").val($precio);
 	});
 	
 	sumarImportes();
-	}
-	function aplicarMayoreoProducto(){
+}
+function aplicarMayoreoProducto(){
 	var $precio;
 	var fila =  $(this).closest("tr");
 	console.log("aplicarMayoreoProducto");
 	
 	
 	if($(this).prop("checked")){
-	$precio = fila.find(".precio_mayoreo").val();
+		$precio = fila.find(".precio_mayoreo").val();
 	}
 	else{
-	$precio =  fila.find(".precio_menudeo").val();
+		$precio =  fila.find(".precio_menudeo").val();
 	}
 	fila.find(".precio").val($precio);
 	
 	
 	sumarImportes();
-	}
-	
-	//Funciona a llamar si ha terminado de imprimir
-	if (window.matchMedia) {
+}
+
+//Funciona a llamar si ha terminado de imprimir
+if (window.matchMedia) {
 	var mediaQueryList = window.matchMedia('print');
 	mediaQueryList.addListener(function(mql) {
-	if (mql.matches) {
-	beforePrint();
-	} 
-	else {
-	afterPrint();
-	}
+		if (mql.matches) {
+			beforePrint();
+		} 
+		else {
+			afterPrint();
+		}
 	});
-	}
-	
-	// window.onbeforeprint = beforePrint;
-	//window.onafterprint = afterPrint;
-	function buscarDescripcion(){
+}
+
+// window.onbeforeprint = beforePrint;
+//window.onafterprint = afterPrint;
+function buscarDescripcion(){
 	var indice = $(this).data("indice");
 	var valor_filtro = $(this).val();
 	
@@ -787,19 +801,19 @@ function disableFunctionKeys(e) {
 	$("#cantidad_productos").text(num_rows);
 	
 	if(num_rows == 0){
-	$('#mensaje').html("<div class='alert alert-warning text-center'><strong>No se ha encontrado.</strong></div>");
-	}else{
-	$('#mensaje').html('');
+		$('#mensaje').html("<div class='alert alert-warning text-center'><strong>No se ha encontrado.</strong></div>");
+		}else{
+		$('#mensaje').html('');
 	}
-	}
-	
-	function resetFondo(){
+}
+
+function resetFondo(){
 	
 	$("#tabla_venta tbody tr").removeClass("bg-info");
 	
-	}
-	
-	function navegarFilas(e){
+}
+
+function navegarFilas(e){
 	var $table = $(this);
 	var $active = $('input:focus,select:focus',$table);
 	var $next = null;
@@ -807,65 +821,65 @@ function disableFunctionKeys(e) {
 	var position = parseInt( $active.closest('td').index()) + 1;
 	console.log('position :',position);
 	switch(e.keyCode){
-	case 37: // <Left>
-	$next = $active.parent('td').prev().find(focusableQuery);   
-	break;
-	case 38: // <Up>                    
-	$next = $active
-	.closest('tr')
-	.prev()                
-	.find('td:nth-child(' + position + ')')
-	.find(focusableQuery)
-	;
-	
-	break;
-	case 39: // <Right>
-	$next = $active.closest('td').next().find(focusableQuery);            
-	break;
-	case 40: // <Down>
-	$next = $active
-	.closest('tr')
-	.next()                
-	.find('td:nth-child(' + position + ')')
-	.find(focusableQuery)
-	;
-	break;
+		case 37: // <Left>
+		$next = $active.parent('td').prev().find(focusableQuery);   
+		break;
+		case 38: // <Up>                    
+		$next = $active
+		.closest('tr')
+		.prev()                
+		.find('td:nth-child(' + position + ')')
+		.find(focusableQuery)
+		;
+		
+		break;
+		case 39: // <Right>
+		$next = $active.closest('td').next().find(focusableQuery);            
+		break;
+		case 40: // <Down>
+		$next = $active
+		.closest('tr')
+		.next()                
+		.find('td:nth-child(' + position + ')')
+		.find(focusableQuery)
+		;
+		break;
 	}    
 	if($next && $next.length)
 	{        
-	$next.focus();
+		$next.focus();
 	}
-	}									
-	
-	//--- Calcular Cambio: Pestaña "Efectivo"
-	$("#pago").keyup(calculaCambio);
-	
-	//--- Calcular Comisión: Pestaña "Tarjeta" (PENDIENTE)
-	function CalcularComision (){
+}									
+
+//--- Calcular Cambio: Pestaña "Efectivo"
+$("#pago").keyup(calculaCambio);
+
+//--- Calcular Comisión: Pestaña "Tarjeta" (PENDIENTE)
+function CalcularComision (){
 	// $("#tarjeta").val();
 	let debito = $("#debito").val();
 	let credito = $("#credito").val();
 	alert(this.value);
 	// let cambio = efectivo - total;
 	// $("#cambio").val(cambio);
-	};
-	
-	function TotalTurno (){
+};
+
+function TotalTurno (){
 	console.log();
 	$.ajax({
-	url: "funciones/total_turno.php",
-	dataType: "JSON"
-	}).done(function (respuesta){
-	console.log(respuesta);
-	if (respuesta.total_turno > 3000){
-	alertify.warning("Límite $3000 Superado");
-	};
+		url: "funciones/total_turno.php",
+		dataType: "JSON"
+		}).done(function (respuesta){
+		console.log(respuesta);
+		if (respuesta.total_turno > 3000){
+			alertify.warning("Límite $3000 Superado");
+		};
 	});
-	}
-	
-	function calculaCambio(){
+}
+
+function calculaCambio(){
 	let efectivo = $("#efectivo").val();
 	let pago = $("#pago").val();
 	let cambio = pago - efectivo;
 	$("#cambio").val(cambio);
-	}								
+	}									

@@ -1,4 +1,4 @@
-<form id="form_pago">
+<form id="form_pago" class="was-validated">
 	<div id="modal_pago" class="modal hidden-print " role="dialog" >
 		
 		<div class="modal-dialog ">
@@ -12,101 +12,95 @@
 				
 				<!-- "Modal Body" -->
 				<div class="modal-body">
-					<!-- "Pestañas" -->
 					
-					<input id="forma_pago" hidden name="forma_pago" value="efectivo">
-					<ul class="nav nav-tabs">
-						<li class="active"><a data-toggle="tab"  href="#ventana_efectivo">Efectivo</a></li>
-						<li class=""><a data-toggle="tab" href="#ventana_tarjeta">Tarjeta</a></li>
-					</ul>
+					<div class="row">
+						<div class="col-sm-6 text-right">
+							<label class="lead"> Forma de Pago:</label>
+						</div>
+						<div class="col-sm-4">
+							<select class="form-control" id="forma_pago" name="forma_pago" >
+								<option value="efectivo">Efectivo</option>
+								<option value="tarjeta">Tarjeta</option>
+								<option value="mixto">Mixto</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6 text-right">
+							<label class="lead"> Total Venta:</label>
+						</div>
+						<div class="col-sm-4">
+							<input readonly id="subtotal" value="0" type="number" class="form-control lead text-right" name="subtotal">
+						</div>
+					</div>
 					
-					<!-- "Ventanas" -->
-					<div class="tab-content mt-4">
-						<!-- "Ventana: Efectivo" -->
-						<div id="ventana_efectivo" class="tab-pane fade in active">
-							<!-- "Total" -->
-							<div hidden class="total row">
-								<div class="col-sm-12">
-									<input readonly id="total_pago" value="0" type="number" class="valor form-control" name="total_pago">
-									
-								</div>
+					
+					<div class="well" id="div_efectivo">
+						<div class="row">
+							<div class="col-sm-6 text-right">
+								<label class="lead"> <i class="fas fa-cash"></i> Efectivo:</label>
 							</div>
-							
-							<!-- "Efectivo" -->
-							<div class="efectivo row">
-								<div class="col-sm-6 text-right">
-									<label class="lead"> Total:</label>
-								</div>
-								<div class="col-sm-6">
-									<input readonly id="efectivo" value="0" type="number" class="valor form-control text-right" name="efectivo">
-								</div>
+							<div class="col-sm-4">
+								<input readonly id="efectivo" min="0" value="0" type="number" class="lead form-control text-right" name="efectivo">
 							</div>
-							
-							<!-- "Pago" -->
-							<div class="pago row mt-4 text-right">
-								<div class="col-sm-6">
-									<label>Se Recibe: </label>
-								</div>
-								<div class="col-sm-6">
-									<input id="pago" step=".5" type="number" class="valor form-control text-right" name="pago">
-								</div>
+						</div>
+						<div class="row text-right">
+							<div class="col-sm-6">
+								<label class="lead">Se Recibe: </label>
 							</div>
-							
-							<!-- "Cambio" -->
-							<div class="cambio row mt-2 text-right">
-								<div class="col-sm-6">
-									<label>Cambio: </label>
-								</div>
-								<div class="col-sm-6">
-									<input readonly id="cambio" value="0" type="number" class="valor form-control text-right" name="cambio">
+							<div class="col-sm-4">
+								<input id="pago" step=".5" type="number" class="valor form-control text-right" name="pago">
+							</div>
+						</div>
+						<div class="cambio row text-right">
+							<div class="col-sm-6">
+								<label class="lead">Cambio: </label>
+							</div>
+							<div class="col-sm-4">
+								<input readonly id="cambio" value="0" min="0" type="number" class="form-control text-right" name="cambio">
+							</div>
+						</div>
+					</div>
+					
+					
+					<div class="well hidden"  id="div_tarjeta">
+						<div class="row">
+							<div class="col-sm-6 text-right">
+								<label class="lead"> Tipo de Tarjeta:</label>
+							</div>
+							<div class="col-sm-6">
+								<div class="radios_tarjeta ">
+									<div class="form-check form-check-inline">
+										<input required checked class="form-check-input tipo_tarjeta" value=".025" type="radio" name="tipo_tarjeta" id="debito">
+										<label class="form-check-label"  for="debito">Débito</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<input required class="form-check-input tipo_tarjeta"  value=".03" type="radio" name="tipo_tarjeta" id="credito">
+										<label class="form-check-label" for="credito">Crédito</label>
+									</div>
 								</div>
 							</div>
 						</div>
 						
-						<!-- "Ventana: Tarjeta" -->
-						<div id="ventana_tarjeta" class="tarjeta tab-pane fade">
-							<!-- "Total" -->
-							<div class="total row">
-								<div class="col-sm-12">
-									<input readonly id="subtotal" value="0" type="number" class="valor form-control" name="subtotal">
-								</div>
+						<div class="row  text-right">
+							<div class="col-sm-6">
+								<label class="lead">Comisión: </label>
 							</div>
-							
-							<!-- "Radios: Débito & Crédito" -->
-							<div class="radios_tarjeta mt-4">
-								<div class="form-check form-check-inline">
-									<input class="form-check-input comision"  checked value=".025" type="radio" name="tipo_tarjeta" id="debito">
-									<label class="form-check-label"  for="debito">Débito</label>
-								</div>
-								<div class="form-check form-check-inline">
-									<input class="form-check-input comision"  value=".03" type="radio" name="tipo_tarjeta" id="credito">
-									<label class="form-check-label" for="credito">Crédito</label>
-								</div>
+							<div class="col-sm-4">
+								<input readonly id="comision" value="0" type="number" class="valor form-control" name="comision">
 							</div>
-							
-							<!-- "Porcentaje Comisión" -->
-							
-							
-							<!-- "Comisión" -->
-							<div class="comision row mt-2">
-								<div class="col-sm-6">
-									<label>Comisión: </label>
-								</div>
-								<div class="col-sm-6">
-									<input readonly id="comision" value="0" type="number" class="valor form-control" name="comision">
-								</div>
+						</div>
+						
+						<div class="row  text-right">
+							<div class="col-sm-6">
+								<label class="lead">Cobrar en Terminal: </label>
 							</div>
-							
-							<div class="porcentaje row mt-4">
-								<div class="col-sm-6">
-									<label>Total: </label>
-								</div>
-								<div class="col-sm-6">
-									<input readonly id="tarjeta" value="0" type="number" class="valor form-control" name="tarjeta">
-								</div>
+							<div class="col-sm-4">
+								<input readonly id="tarjeta" value="0" type="number" class="valor form-control" name="tarjeta" min="0">
 							</div>
 						</div>
 					</div>
+					
 				</div>
 				
 				<!-- "Modal Footer" -->
@@ -120,10 +114,10 @@
 					<button type="submit" id="cobrar" class="btn btn-success">
 						<i class="fa fa-dollar-sign"></i> Solo Cobrar
 					</button>
-					</div>
-					</div>
-					</div>
-					
-					</div>
-					</div>
-					</form>					
+				</div>
+			</div>
+		</div>
+		
+	</div>
+</div>
+</form>					

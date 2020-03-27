@@ -1,21 +1,21 @@
 <?php
-
-include('../conexi.php');
-include('../funciones/numero_a_letras.php');
-$nombre_empresa = "MINISUPER 3G";
-
-$link = Conectarse();
-$consulta = "SELECT * FROM ventas
+	
+	include('../conexi.php');
+	include('../funciones/numero_a_letras.php');
+	$nombre_empresa = "MINISUPER 3G";
+	
+	$link = Conectarse();
+	$consulta = "SELECT * FROM ventas
 	LEFT JOIN ventas_detalle USING (id_ventas)
 	LEFT JOIN usuarios USING (id_usuarios)
 	WHERE id_ventas={$_GET["id_ventas"]}";
-
-$result = mysqli_query($link, $consulta);
-
-while ($fila = mysqli_fetch_assoc($result)) {
-	$fila_venta[] = $fila;
-}
-
+	
+	$result = mysqli_query($link, $consulta);
+	
+	while ($fila = mysqli_fetch_assoc($result)) {
+		$fila_venta[] = $fila;
+	}
+	
 ?>
 
 <!-- "Ticket" -->
@@ -27,7 +27,7 @@ while ($fila = mysqli_fetch_assoc($result)) {
 			<!-- "Nombre" -->
 			<p class="nombre col-xs-12"><?php echo $nombre_empresa; ?></p>
 		</div>
-
+		
 		<!-- "Venta" -->
 		<div class="venta row">
 			<!-- "Datos" -->
@@ -77,7 +77,7 @@ while ($fila = mysqli_fetch_assoc($result)) {
 			</div>
 		</div>
 	</section>
-
+	
 	<!-- "Cuerpo" Ticket -->
 	<section class="cuerpo">
 		<!-- "Lista" -->
@@ -94,68 +94,99 @@ while ($fila = mysqli_fetch_assoc($result)) {
 					<td class="importe text-right">Importe</td>
 				</tr>
 			</thead>
-
+			
 			<!-- Productos -->
 			<tbody class="productos">
 				<?php foreach ($fila_venta as $i => $producto) { ?>
-
-				<tr class="valores uno">
-					<td class="cantidad text-left"><?php echo $producto["cantidad"]; ?></td>
-					<td class="descripcion" colspan="3"><?php echo $producto["descripcion"]; ?></td>
-				</tr>
-				<tr class="valores dos">
-					<td class="empty"></td>
-					<td class="precio" colspan="2"><?php echo "$" . $producto["precio"]; ?></td>
-					<td class="importe text-right"><?php echo "$" . $producto["importe"]; ?></td>
-				</tr>
-
+					
+					<tr class="valores uno">
+						<td class="cantidad text-left"><?php echo $producto["cantidad"]; ?></td>
+						<td class="descripcion" colspan="3"><?php echo $producto["descripcion"]; ?></td>
+					</tr>
+					<tr class="valores dos">
+						<td class="empty"></td>
+						<td class="precio" colspan="2"><?php echo "$" . $producto["precio"]; ?></td>
+						<td class="importe text-right"><?php echo "$" . $producto["importe"]; ?></td>
+					</tr>
+					
 				<?php } ?>
 			</tbody>
-
-			<!-- Total -->
-			<?php
-				if($fila_venta[0]["forma_pago"] == "efectivo"){
-				?>
 			<tfoot class="">
-				<tr>
-					<td class="etiqueta text-right" colspan="3"><strong>Pago Con :</strong></td>
-					<td class="valor text-right"><?php echo "$" . $producto["pagocon_ventas"] ?></td>
-				</tr>
-				<tr>
-					<td class="etiqueta text-right" colspan="3"><strong>Cambio :</strong></td>
-					<td class="valor text-right"><?php echo "$" . $producto["cambio_ventas"] ?></td>
-				</tr>
-				<tr>
-					<td class="etiqueta text-right" colspan="3"><strong>TOTAL:</strong></td>
-					<td class="valor text-right"><?php echo "$" . $producto["total_ventas"] ?></td>
-				</tr>
-			</tfoot>
-				<?php
-				}
-				else{
-				?>
-				<tfoot class="">
-					<tr>
-					<td class="etiqueta text-right" colspan="3"><strong>Subtotal:</strong></td>
-					<td class="valor text-right"><?php echo "$" . $fila_venta[0]["subtotal_ventas"] ?></td>
-				</tr>
-				<tr>
-					<td class="etiqueta text-right" colspan="3"><strong>Comision:</strong></td>
-					<td class="valor text-right"><?php echo "$" . $fila_venta[0]["comision"] ?></td>
-				</tr>
-				<tr>
-					<td class="etiqueta text-right" colspan="3"><strong>Total:</strong></td>
-					<td class="valor text-right"><?php echo "$" . $fila_venta[0]["tarjeta"] ?></td>
-				</tr>
-			</tfoot>
 				
+				<?php
+					if($fila_venta[0]["forma_pago"] == "efectivo"){
+					?>
+					<tr>
+						<td class="etiqueta text-right" colspan="3"><strong>Total:</strong></td>
+						<td class="valor text-right"><?php echo "$" . $producto["total_ventas"] ?></td>
+					</tr>
+					<tr>
+						<td class="etiqueta text-right" colspan="3"><strong>Pago Con :</strong></td>
+						<td class="valor text-right"><?php echo "$" . $producto["pagocon_ventas"] ?></td>
+					</tr>
+					<tr>
+						<td class="etiqueta text-right" colspan="3"><strong>Cambio :</strong></td>
+						<td class="valor text-right"><?php echo "$" . $producto["cambio_ventas"] ?></td>
+					</tr>
+					
+					
 					<?php
 					}
+					elseif($fila_venta[0]["forma_pago"] == "tarjeta"){
 					?>
+					
+					<tr>
+						<td class="etiqueta text-right" colspan="3"><strong>Subtotal:</strong></td>
+						<td class="valor text-right"><?php echo "$" . $fila_venta[0]["subtotal_ventas"] ?></td>
+					</tr>
+					<tr>
+						<td class="etiqueta text-right" colspan="3"><strong>Comision:</strong></td>
+						<td class="valor text-right"><?php echo "$" . $fila_venta[0]["comision"] ?></td>
+					</tr>
+					<tr>
+						<td class="etiqueta text-right" colspan="3"><strong>Total:</strong></td>
+						<td class="valor text-right"><?php echo "$" . $fila_venta[0]["tarjeta"] ?></td>
+					</tr>
+					
+					<?php
+					}
+					else{ ?>
+					
+					
+					<tr>
+						<td class="etiqueta text-right" colspan="3"><strong>Efectivo :</strong></td>
+						<td class="valor text-right"><?php echo "$" . $producto["efectivo"] ?></td>
+					</tr>
+					<tr>
+						<td class="etiqueta text-right" colspan="3"><strong>Pago Con :</strong></td>
+						<td class="valor text-right"><?php echo "$" . $producto["pagocon_ventas"] ?></td>
+					</tr>
+					<tr>
+						<td class=" text-right" colspan="3"><strong>Cambio :</strong></td>
+						<td class=" text-right"><?php echo "$" . $producto["cambio_ventas"] ?></td>
+					</tr>
+					
+					
+					<tr>
+						<td class=" text-right" colspan="3"><strong>Tarjeta:</strong></td>
+						<td class=" text-right"><?php echo "$" . $fila_venta[0]["tarjeta"] ?></td>
+					</tr>
+					
+					<hr>
+					<tr>
+						<td class=" text-right" colspan="3"><strong>Total:</strong></td>
+						<td class=" text-right"><?php echo "$" . $fila_venta[0]["total_ventas"] ?></td>
+					</tr>
+					
+					
+					<?php
+					}
+				?>
+			</tfoot>
 			
 		</table>
 	</section>
-
+	
 	<!-- "Pie" Ticket -->
 	<section class="pie">
 		<!-- Total En "Letras" -->
