@@ -36,7 +36,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					<form id="form_reportes" class="form-inline">
+					<form id="form_reportes" class="form-inline" autocomplete="off">
 						<div class="form-group">
 							<label for="fecha_inicio">Desde:</label>
 							<input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" value="<?php echo $fa_inicial;?>">
@@ -54,7 +54,7 @@
 						
 						<div class="form-group">
 							<label for="fecha_fin">Producto:</label>
-							<input type="text" name="" id="descripcion_productos" class="form-control" >
+							<input type="text" style="width: 300px;" name="" id="descripcion_productos" class="form-control" >
 						</div>
 						
 						<button type="submit" class="btn btn-success" id="btn_buscar">
@@ -71,9 +71,8 @@
 			<div class="row text-center table-responsive" id="contenedor_tabla">
 				
 			</div>
-			<hr>
-			<div id="ReporteTicket" class="visible-print">
-			</div>
+		
+			<?php  include('modal_salidas.php'); ?>
 			
 		</div >
 		

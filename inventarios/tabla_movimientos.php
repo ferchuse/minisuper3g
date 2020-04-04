@@ -50,11 +50,13 @@
 	id_productos,
 	SUM(cantidad) AS salidas
 	FROM
-	almacen_movimientos
+	ventas
+	LEFT JOIN ventas_detalle USING (id_ventas)
+	
 	WHERE
-	DATE(fecha_movimiento) BETWEEN '{$_POST['fecha_inicio']}'
+	DATE(fecha_ventas) BETWEEN '{$_POST['fecha_inicio']}'
 	AND '{$_POST['fecha_fin']}'
-	AND tipo_movimiento = 'SALIDA'
+	AND estatus_ventas= 'PAGADO'
 	GROUP BY id_productos
 	) AS t_salidas USING (id_productos)
 	WHERE 1";
@@ -185,7 +187,11 @@
 								
 								<td><?php echo $fila_movimientos["descripcion_productos"];?></td>
 								<td><?php echo $fila_movimientos["entradas"] == '0.000' ? "-" : $fila_movimientos["entradas"] ;?></td>
-								<td><?php echo $fila_movimientos["salidas"] == '0.000' ? "-" : $fila_movimientos["salidas"] ;?></td>
+								<td>
+									<a href="#" class="salidas" data-id_productos="<?php echo $fila_movimientos["id_productos"];?>" title="Ver Detalle de Salidas">
+										<?php echo $fila_movimientos["salidas"] == '0.000' ? "-" : $fila_movimientos["salidas"] ;?>
+									</a>
+								</td>
 								
 							</tr>
 							<?php
@@ -209,93 +215,93 @@
 				<h4 class="text-center">
 					Entradas
 				</h4>
-			</div>
-			<div class="card-body" >
-				<div class="table-responsive">
-					
-					<table class="table table-hover">
-						<tr>
-							<th class="text-center">Fecha</th>
-							<th class="text-center">Folio</th>
-							<th class="text-center">Código</th>
-							<th class="text-center">Cantidad</th>                                                         
-						</tr>
-						<?php 
-							$total = 0;
-							foreach($entradas AS $i => $fila_entradas){
-								$total+=$fila_entradas["cantidad"];
+				</div>
+				<div class="card-body" >
+					<div class="table-responsive">
+						
+						<table class="table table-hover">
+							<tr>
+								<th class="text-center">Fecha</th>
+								<th class="text-center">Folio</th>
+								<th class="text-center">Código</th>
+								<th class="text-center">Cantidad</th>                                                         
+							</tr>
+							<?php 
+								$total = 0;
+								foreach($entradas AS $i => $fila_entradas){
+									$total+=$fila_entradas["cantidad"];
+								?>
+								<tr class="text-center">
+									<td><?php echo date("d/m/Y", strtotime($fila_entradas["fecha_movimiento"]));?></td>
+									<td><?php echo $fila_entradas["folio"];?></td>
+									<td><?php echo $fila_entradas["codigo_productos"];?></td>
+									<td><?php echo $fila_entradas["cantidad"];?></td>
+									
+								</tr>
+								<?php
+									
+								}
+								
 							?>
-							<tr class="text-center">
-								<td><?php echo date("d/m/Y", strtotime($fila_entradas["fecha_movimiento"]));?></td>
-								<td><?php echo $fila_entradas["folio"];?></td>
-								<td><?php echo $fila_entradas["codigo_productos"];?></td>
-								<td><?php echo $fila_entradas["cantidad"];?></td>
-								
+							<tfoot> 
+								<tr class="text-center h3">
+									<td colspan="2"><b>TOTAL</b></td>
+									<td><b><?php echo $total;?></b></td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		<div class="col-sm-4 hidden">
+			<div class="card ">
+				<div class="card-header bg-danger text-white">
+					<h4 class="text-center">
+						Salidas
+					</h4>
+				</div>
+				<div class="card-body" >
+					<div class="table-responsive">
+						<table class="table table-hover">
+							<tr>
+								<th class="text-center">Fecha</th>
+								<th class="text-center">Código</th>
+								<th class="text-center">Cantidad</th>                                                         
 							</tr>
-							<?php
+							<?php 
+								$total = 0;
+								foreach($salidas AS $i => $fila_salidas){
+									$total+=$fila_salidas["cantidad"];
+								?>
+								<tr class="text-center">
+									<td><?php echo date("d/m/Y", strtotime($fila_salidas["fecha_movimiento"]));?></td>
+									<td><?php echo $fila_salidas["codigo_productos"];?></td>
+									<td><?php echo $fila_salidas["cantidad"];?></td>
+								</tr>
+								<?php
+									
+								}
 								
-							}
-							
-						?>
-						<tfoot> 
-							<tr class="text-center h3">
-								<td colspan="2"><b>TOTAL</b></td>
-								<td><b><?php echo $total;?></b></td>
-							</tr>
-						</tfoot>
-					</table>
+							?>
+							<tfoot> 
+								<tr class="text-center h3">
+									<td colspan="2"><b>TOTAL</b></td>
+									<td><b><?php echo $total;?></b></td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	
-	
-	
-	<div class="col-sm-4 hidden">
-		<div class="card ">
-			<div class="card-header bg-danger text-white">
-				<h4 class="text-center">
-					Salidas
-				</h4>
-			</div>
-			<div class="card-body" >
-				<div class="table-responsive">
-					<table class="table table-hover">
-						<tr>
-							<th class="text-center">Fecha</th>
-							<th class="text-center">Código</th>
-							<th class="text-center">Cantidad</th>                                                         
-						</tr>
-						<?php 
-							$total = 0;
-							foreach($salidas AS $i => $fila_salidas){
-								$total+=$fila_salidas["cantidad"];
-							?>
-							<tr class="text-center">
-								<td><?php echo date("d/m/Y", strtotime($fila_salidas["fecha_movimiento"]));?></td>
-								<td><?php echo $fila_salidas["codigo_productos"];?></td>
-								<td><?php echo $fila_salidas["cantidad"];?></td>
-							</tr>
-							<?php
-								
-							}
-							
-						?>
-						<tfoot> 
-							<tr class="text-center h3">
-								<td colspan="2"><b>TOTAL</b></td>
-								<td><b><?php echo $total;?></b></td>
-							</tr>
-						</tfoot>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<?php 
-}
+	<?php 
+	}
 ?>
 
 
