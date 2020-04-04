@@ -51,41 +51,45 @@
 	?>
 	
 	
-				<h4 class="text-center">
-					<?php echo $salidas[0]["descripcion"];?></td>
-				</h4>
-		
-				<div class="table-responsive">
-					<table class="table table-hover">
-						<tr>
-							<th class="text-center">#</th>
-							<th class="text-center">Folio</th>
-							<th class="text-center">Cantidad</th>                                                         
-						</tr>
-						<?php 
-							$total = 0;
-							foreach($salidas AS $i => $fila_salidas){
-								$total+=$fila_salidas["cantidad"];
-							?>
-							<tr class="text-center">
-								<td><?= ($i + 1);?></td>
-								<td><?= ($fila_salidas["id_ventas"]);?></td>
-								<td><?php echo $fila_salidas["cantidad"];?></td>
-							</tr>
-							<?php
-								
-							}
-							
-						?>
-						<tfoot> 
-							<tr class="text-center h3">
-								<td ><b>TOTAL</b></td>
-								<td ></td>
-								<td><b><?php echo $total;?></b></td>
-							</tr>
-						</tfoot>
-					</table>
-				</div>
+	<h4 class="text-center">
+	<?php echo $salidas[0]["descripcion"];?></td>
+</h4>
+
+<div class="table-responsive">
+	<table class="table table-hover">
+		<tr>
+			<th class="text-center">#</th>
+			<th class="text-center">Folio</th>
+			<th class="text-center">Cantidad</th>                                                         
+		</tr>
+		<?php 
+			$total = 0;
+			foreach($salidas AS $i => $fila_salidas){
+				$total+=$fila_salidas["cantidad"];
+			?>
+			<tr class="text-center">
+				<td><?= ($i + 1);?></td>
+				<td>
+					<a href="#" class="id_ventas" data-id_ventas="<?php echo $fila_salidas["id_ventas"];?>" title="Ver Detalle de Venta">
+						<?php echo $fila_salidas["id_ventas"] ;?>
+					</a>
+				</td>
+				<td><?php echo $fila_salidas["cantidad"];?></td>
+			</tr>
+			<?php
+				
+			}
+			
+		?>
+		<tfoot> 
+			<tr class="text-center h3">
+				<td ><b>TOTAL</b></td>
+				<td ></td>
+				<td><b><?php echo $total;?></b></td>
+			</tr>
+		</tfoot>
+	</table>
+</div>
 
 <?php 
 }

@@ -72,9 +72,14 @@
 				
 			</div>
 		
-			<?php  include('modal_salidas.php'); ?>
 			
 		</div >
+		
+		
+		<?php  include('modal_salidas.php'); ?>
+			
+		<div id="ver_venta">
+		</div>
 		
 		
 		<?php  include('../scripts_carpetas.php'); ?>
