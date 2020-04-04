@@ -60,6 +60,7 @@
 		<tr>
 			<th class="text-center">#</th>
 			<th class="text-center">Folio</th>
+			<th class="text-center">Fecha</th>
 			<th class="text-center">Cantidad</th>                                                         
 		</tr>
 		<?php 
@@ -74,6 +75,7 @@
 						<?php echo $fila_salidas["id_ventas"] ;?>
 					</a>
 				</td>
+				<td><?= date("d/m/Y", strtotime($fila_salidas["fecha_ventas"]))." " .$fila_salidas["hora_ventas"] ?></td>
 				<td><?php echo $fila_salidas["cantidad"];?></td>
 			</tr>
 			<?php
@@ -84,6 +86,7 @@
 		<tfoot> 
 			<tr class="text-center h3">
 				<td ><b>TOTAL</b></td>
+				<td ></td>
 				<td ></td>
 				<td><b><?php echo $total;?></b></td>
 			</tr>
