@@ -60,7 +60,7 @@
 	}
 	
 	
-	$respuesta.= "\n\n\nTOTAL: $" .$fila_venta[0]["total_ventas"]."\n".chr(10).chr(13);
+	$respuesta.= "\nTOTAL: $" .$fila_venta[0]["total_ventas"]."\n".chr(10).chr(13);
 	$respuesta.= NumeroALetras::convertir($fila_venta[0]["total_ventas"], "pesos", "centavos").chr(10).chr(13).chr(10).chr(13);
 	$respuesta.= "GRACIAS POR SU COMPRA";
 	$respuesta.= "\x1b"."d".chr(1); // Blank line
