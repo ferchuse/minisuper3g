@@ -264,7 +264,7 @@
 				.focus();
 			});
 		</script>
-		
+		<script src="lib/pos_print/websocket-printer.js" > </script>
 		<script src="ventas/ventas.js?v=<?= date("d-m-Y-H-i-s")?>"></script>
 		<script src="ventas/comision.js?v=<?= date("d-m-Y-H-i-s")?>"></script>
 		
