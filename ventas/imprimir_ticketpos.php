@@ -38,22 +38,22 @@
 	if($fila_venta[0]["forma_pago"] == "efectivo"){
 		$respuesta.="Total:     $ ". $producto["total_ventas"]."\n";
 		$respuesta.="Pago Con:  $ ". $producto["pagocon_ventas"]."\n";
-		$respuesta.="Cambio:  ". $producto["cambio_ventas"]."\n";
+		$respuesta.="Cambio:    $ ". $producto["cambio_ventas"]."\n";
 		
 	}
 	elseif($fila_venta[0]["forma_pago"] == "tarjeta"){
 		
-		$respuesta.="Subtotal:  $". $fila_venta[0]["subtotal_ventas"]."\n";
-		$respuesta.="Comision:  $".$fila_venta[0]["comision"]."\n";
-		$respuesta.="Total:     $".$fila_venta[0]["tarjeta"]."\n";
+		$respuesta.="Subtotal:  $ ". $fila_venta[0]["subtotal_ventas"]."\n";
+		$respuesta.="Comision:  $ ".$fila_venta[0]["comision"]."\n";
+		$respuesta.="Total:     $ ".$fila_venta[0]["tarjeta"]."\n";
 		
 	}
 	else{ 
-		$respuesta.="Efectivo:  $". $producto["efectivo"]."\n";
-		$respuesta.="Pago Con:  $". $producto["pagocon_ventas"]."\n";
-		$respuesta.="Cambio:    $". $producto["cambio_ventas"]."\n";
-		$respuesta.="Tarjeta:   $". $fila_venta[0]["tarjeta"]."\n";
-		$respuesta.="Total:     $".  $fila_venta[0]["total_ventas"]."\n";
+		$respuesta.="Efectivo:  $ ". $producto["efectivo"]."\n";
+		$respuesta.="Pago Con:  $ ". $producto["pagocon_ventas"]."\n";
+		$respuesta.="Cambio:    $ ". $producto["cambio_ventas"]."\n";
+		$respuesta.="Tarjeta:   $ ". $fila_venta[0]["tarjeta"]."\n";
+		$respuesta.="Total:     $ ".  $fila_venta[0]["total_ventas"]."\n";
 		
 		
 		
