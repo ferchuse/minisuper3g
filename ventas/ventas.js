@@ -1,4 +1,4 @@
-var printService = new WebSocketPrinter();
+
 var producto_elegido ;
 
 function round(value, step) {
@@ -578,11 +578,11 @@ function guardarVenta(event){
 			"id_productos": $(item).find(".id_productos").val(),
 			"cantidad": $(item).find(".cantidad").val(),
 			"precio": $(item).find(".precio").val(),
-			"descripcion": $(item).find(".descripcion").val(),
-			"importe": $(item).find(".importe").val(),
-			"existencia_anterior": $(item).find(".existencia_anterior").val(),
-			"costo_proveedor": $(item).find(".costo_proveedor").val()
-			
+		"descripcion": $(item).find(".descripcion").val(),
+		"importe": $(item).find(".importe").val(),
+		"existencia_anterior": $(item).find(".existencia_anterior").val(),
+		"costo_proveedor": $(item).find(".costo_proveedor").val()
+		
 		})
 	});
 	
@@ -669,21 +669,23 @@ $("input").focus(function(){
 
 
 function imprimirTicket(id_ventas){
-	console.log("imprimirESCPOS()");
+	console.log("imprimirTicket()");
+	
 	
 	$.ajax({
-		url: "ventas/imprimir_ticketpos.php" ,
+		url: "impresion/imprimir_venta.php",
 		data:{
-			"id_ventas" : id_ventas
+			id_ventas : id_ventas
 		}
 		}).done(function (respuesta){
 		
-		printService.submit({
-			'type': 'LABEL',
-			'raw_content': respuesta
-		});
+		$("#ticket").html(respuesta); 
+		window.print();
 		}).always(function(){
-	
+		
+		// boton.prop("disabled", false);
+		// icono.toggleClass("fa-print fa-spinner fa-spin");
+		
 	});
 }
 
@@ -880,4 +882,4 @@ function calculaCambio(){
 	let pago = $("#pago").val();
 	let cambio = pago - efectivo;
 	$("#cambio").val(cambio);
-}									
+	}									
