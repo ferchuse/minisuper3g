@@ -12,7 +12,7 @@
 	$result = mysqli_query($link, $consulta);
 	
 	while ($fila = mysqli_fetch_assoc($result)) {
-    $fila_venta[] = $fila;
+		$fila_venta[] = $fila;
 	}
 	
 	$respuesta = "";
@@ -34,6 +34,32 @@
 		."\n        $".$producto["precio"]."      $" . $producto["importe"].chr(10).chr(13) ;
 		
 	}
+	
+	if($fila_venta[0]["forma_pago"] == "efectivo"){
+		$respuesta.="Total:  ". $producto["total_ventas"]."\n";
+		$respuesta.="Pago Con:  ". $producto["pagocon_ventas"]."\n";
+		$respuesta.="Cambio:  ". $producto["cambio_ventas"]."\n";
+		
+	}
+	elseif($fila_venta[0]["forma_pago"] == "tarjeta"){
+		
+		$respuesta.="Subtotal:  ". $fila_venta[0]["subtotal_ventas"]."\n";
+		$respuesta.="Comision:  ".$fila_venta[0]["comision"]."\n";
+		$respuesta.="Total:  ".$fila_venta[0]["tarjeta"]."\n";
+		
+	}
+	else{ 
+		$respuesta.="Efectivo:  ". $producto["efectivo"]."\n";
+		$respuesta.="Pago Con:  ". $producto["pagocon_ventas"]."\n";
+		$respuesta.="Cambio:  ". $producto["cambio_ventas"]."\n";
+		$respuesta.="Tarjeta:  ". $fila_venta[0]["tarjeta"]."\n";
+		$respuesta.="Tarjeta:  ".  $fila_venta[0]["total_ventas"]."\n";
+		
+		
+		
+	}
+	
+	
 	$respuesta.= "\n\n\nTOTAL: $" .$fila_venta[0]["total_ventas"]."\n".chr(10).chr(13);
 	$respuesta.= NumeroALetras::convertir($fila_venta[0]["total_ventas"], "pesos", "centavos").chr(10).chr(13).chr(10).chr(13);
 	$respuesta.= "GRACIAS POR SU COMPRA";
@@ -46,5 +72,5 @@
 	echo base64_encode ( $respuesta );
 	exit(0);
 	
-?>
-
+	?>
+	

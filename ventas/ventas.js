@@ -188,6 +188,8 @@ function cobrarEImprimir(evt){
 	})
 	
 }
+
+
 $(document).on('keydown', disableFunctionKeys);
 
 $(document).ready( function onLoad(){
@@ -205,7 +207,7 @@ $(document).ready( function onLoad(){
 	$("#btn_refresh").click();
 	
 	
-	$('#form_pago').submit(guardarVenta);
+	$('#form_pago').submit(cobrarEImprimir);
 	$('#form_granel').submit(agregarGranel);
 	$('#btn_pendiente').click( pedirNombre);
 	
