@@ -108,8 +108,8 @@
 					<button type="button" class="btn btn-danger" data-dismiss="modal">
 						<i class="fa fa-times"></i> Cancelar
 					</button>
-					<button type="submit" id="imprimir" class="btn btn-info">
-						<i class="fa fa-print"></i> Cobrar e Imprimir
+					<button type="submit" id="cobrar" class="btn btn-success">
+						<i class="fa fa-dollar-sign"></i> Cobrar
 					</button>
 				</div>
 			</div>

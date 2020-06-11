@@ -182,9 +182,37 @@ function renderProductos(tab_index, venta){
 function cobrarEImprimir(evt){
 	evt.data = {"imprimir": true};
 	evt.type = "submit";
+	
+	var boton = $(this).find(":submit");
+	var icono = boton.find(".fas");
+	
+	boton.prop('disabled',true);
+	icono.toggleClass('fa-dollar-sign fa-spinner fa-spin');
+	
 	guardarVenta(evt).done(function(respuesta){
 		
-		imprimirTicket(respuesta.id_ventas);
+		var ultimo_folio = respuesta.id_ventas
+		
+		
+		alertify.confirm()
+		.setting({
+			'reverseButtons': true,
+			'labels' :{ok:"SI", cancel:'NO'},
+			'title': "Confirmar" ,
+			'message': "<i class='fas fa-print'></i> ¿Deseas Imprimir esta venta?" ,
+			'onok':function(evt, value){
+				
+				imprimirTicket(ultimo_folio);
+			}
+		}).show();
+		
+		
+		}).always(function(){
+		
+		boton.prop('disabled',false);
+		icono.toggleClass('fa-dollar-sign fa-spinner fa-spin');
+		
+		
 	})
 	
 }
@@ -685,7 +713,7 @@ function imprimirTicket(id_ventas){
 			'raw_content': respuesta
 		});
 		}).always(function(){
-	
+		
 	});
 }
 
