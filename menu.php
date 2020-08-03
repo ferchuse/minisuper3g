@@ -114,10 +114,10 @@
 							}
 						?> 
 						<?php
-						if(dame_permiso("proveedores.php", $link) != "Sin Acceso"){	?>
-							<li>
-								<a href="proveedores.php"><i class="fas fa-file-alt"></i> Proveedores</a>
-							</li>
+							if(dame_permiso("proveedores.php", $link) != "Sin Acceso"){	?>
+							<a href="proveedores/index.php">
+								<i class="fas fa-truck"></i> Proveedores
+							</a>
 							<?php 
 							}
 						?> 

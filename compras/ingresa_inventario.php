@@ -6,8 +6,7 @@
 	$id_turnos = $_POST['id_turnos'];
 	$listaProductos = $_POST['productos'];
 	
-	$estatus_compras = $_POST["entrada_inventario"] == "true" ? "FINALIZADA" :  "PENDIENTE";
-	
+	 $estatus_compras = $_POST["entrada_inventario"] == "true" ? "FINALIZADA" :  "PENDIENTE";
 	
 	$insertar = "INSERT INTO compras SET
 	id_compras = '{$_POST["id_compras"]}',
@@ -87,7 +86,10 @@
 			$respuesta['mensaje_detalle'] = "Error al guardar Ventas Detalle $insertarVentasDetalle ".mysqli_error($link);
 		}
 		
-			$cambia_costo = "UPDATE productos 
+		// INSERTA movimientos
+		// $exist_nueva = $producto["existencia_anterior"] + $producto["cantidad"];
+		
+		$cambia_costo = "UPDATE productos 
 		SET costo_proveedor = {$producto["precio"]}
 		
 		WHERE id_productos = {$producto["id_productos"]}
@@ -97,18 +99,9 @@
 		
 		$respuesta["result_costo"] = $result_costo."-".mysqli_error($link) ;
 		
+		
 		//actualiza existencias solo si se activa casilla de entrada a inventarios
-		
-		
-		if($_POST["entrada_inventario"] == "true"){
-			$update_existencia = "UPDATE productos SET existencia_productos = existencia_productos + '{$producto["cantidad"]}'
-			WHERE id_productos = '{$producto["id_productos"]}'	"; 
-			
-			$result_existencia = mysqli_query( $link, $update_existencia );
-			
-			$respuesta["result_existencia"] = $result_existencia ;
-		}
-		
+	
 		
 	}
 	
