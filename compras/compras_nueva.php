@@ -63,15 +63,22 @@
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
-							<label for="buscar_producto">Producto:</label>
+							<label for="buscar_producto">Producto:</label> 
+							
+							<button type="button" class="btn btn-sm btn-success " id="btn_nuevo_producto">
+								<i class="fa fa-plus"></i> Nuevo
+							</button>
 							<input id="buscar_producto" autofocus  type="text" class="form-control" size="50">
 						</div>
 					</div>
 					<div class="col-sm-1 ">
 						
 					</div>
-					<div class="col-sm-2 ">
+					<div class="col-sm-3 ">
 						<label>Proveedor</label> 
+						<button  type="button" class="btn btn-sm btn-success hidden" id="btn_nuevo_proveedor">
+							<i class="fa fa-plus"></i> Nuevo
+						</button>
 						<?php echo generar_select($link, "proveedores", "id_proveedores", "nombre_proveedores");?>
 					</div>
 					<div class="col-sm-2">
@@ -86,7 +93,7 @@
 							<input type="checkbox" id="entrada_inventario" value="PENDIENTE"> Entrada a Inventario 
 						</label> 
 					</div>
-					<div class="col-sm-1">
+					<div class="col-sm-1" hidden>
 						<div class="form-group">
 							<label>Folio: </label> 
 							<input  id='id_compras' class="form-control" readonly value='<?php echo $_GET["id_compras"]?>'>
@@ -103,7 +110,7 @@
 							<thead class="bg-success">
 								<tr>
 									<th class="text-center">Cantidad</th>
-									<th class="text-center">Unidad</th>
+									<th class="text-center">Piezas </br> Por Paquete</th>
 									<th class="text-center">Descripcion del Producto</th>
 									<th hidden class="text-center">Costo</th>
 									<th hidden class="text-center">Piezas/KG</th>
@@ -145,9 +152,10 @@
 			
 		</div>
 		<?php include('../scripts_carpetas.php'); ?>
+		<?php include('modal_productos.php'); ?>
 		<?php include('../forms/modal_venta.php'); ?>
 		<?php include('../forms/modal_granel.php'); ?>
-		<script src="compras.js"></script>
+		<script src="compras.js?v=<?= date("YmdHis")?>"></script>
 		
 	</body>
 </html>						

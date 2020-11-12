@@ -87,7 +87,7 @@
 			$respuesta['mensaje_detalle'] = "Error al guardar Ventas Detalle $insertarVentasDetalle ".mysqli_error($link);
 		}
 		
-			$cambia_costo = "UPDATE productos 
+		$cambia_costo = "UPDATE productos 
 		SET costo_proveedor = {$producto["precio"]}
 		
 		WHERE id_productos = {$producto["id_productos"]}
