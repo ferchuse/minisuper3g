@@ -45,6 +45,7 @@
 	AND tipo_movimiento = 'ENTRADA'
 	GROUP BY id_productos
 	) AS t_entradas USING (id_productos)
+	
 	LEFT JOIN (
 	SELECT
 	id_productos,

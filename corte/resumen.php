@@ -103,7 +103,7 @@
 		<link href="../css/imprimir_venta.css" rel="stylesheet" >
 		<link href="../css/menu.css" rel="stylesheet" >
 		<link href="../css/b4-margin-padding.css" rel="stylesheet" >
-		
+		<link rel="manifest" href="../manifest.json">
 	</head>
 	
 	<body>

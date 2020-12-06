@@ -180,14 +180,15 @@ function renderProductos(tab_index, venta){
 
 
 function cobrarEImprimir(evt){
+	console.log("cobrarEImprimir()")
 	evt.data = {"imprimir": true};
 	evt.type = "submit";
 	
-	var boton = $(this).find(":submit");
+	
 	var icono = boton.find(".fas");
 	
-	boton.prop('disabled',true);
-	icono.toggleClass('fa-dollar-sign fa-spinner fa-spin');
+	$("#imprimir").prop('disabled',true);
+	$("#imprimir").find(".fas").toggleClass('fa-print fa-spinner fa-spin');
 	
 	guardarVenta(evt).done(function(respuesta){
 		
@@ -209,8 +210,8 @@ function cobrarEImprimir(evt){
 		
 		}).always(function(){
 		
-		boton.prop('disabled',false);
-		icono.toggleClass('fa-dollar-sign fa-spinner fa-spin');
+		$("#imprimir").prop('disabled',false);
+		$("#imprimir").find(".fas").toggleClass('fa-print fa-spinner fa-spin');
 		
 		
 	})
@@ -565,10 +566,10 @@ function sumarImportes(){
 
 function guardarVenta(event){
 	// event.preventDefault();
+	
 	console.log("guardarVenta", event.type);
 	console.log("event", event);
 	console.log("target", event.target);
-	console.log("tarjeta", $("#tarjeta").val());
 	
 	
 	var total = 0;
