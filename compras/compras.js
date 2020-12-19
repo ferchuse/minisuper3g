@@ -60,8 +60,6 @@ $(document).ready(function(){
 			
 			for(let producto of respuesta.productos ){
 				
-				
-				
 				agregarProducto(producto);
 			}
 			console.log("compras_detalle", respuesta)
@@ -97,7 +95,7 @@ $(document).ready(function(){
 	$("#modal_granel").on("shown.bs.modal", function () { 
 		$("#cantidad").focus();
 	});
-	
+	$('#piezas').keyup(modificarPrecio );
 	$('#costo_mayoreo').keyup(modificarPrecio );
 	$('#ganancia_menudeo_porc').keyup(calculaPrecioVenta );
 	$('#precio_menudeo').keyup(calculaGanancia );
@@ -132,8 +130,32 @@ $(document).ready(function(){
 		noSuggestionNotice	: "Sin Resultados"
 	});
 	
-	
+	$("#cantidad").on("keyup", calcularGranel)
+	$("#importe").on("keyup", calcularGranel);
+	$('#form_granel').submit(agregarGranel);
 });
+
+
+function calcularGranel(event){
+	let precio = Number($("#precio").val());
+	let cantidad = Number($("#cantidad").val());
+	console.log("target",event.target.id)
+	
+	let importe = precio * cantidad;
+	
+	if(event.target.id == 'cantidad'){ 
+		
+		$("#importe").val(importe.toFixed(2))
+	}
+	else{
+		importe = Number($("#importe").val());
+		cantidad = importe / precio;
+		
+		$("#cantidad").val(cantidad.toFixed(3))
+		
+	}
+	console.log("importe",importe )
+}
 
 
 function modificarPrecio() {
@@ -192,6 +214,15 @@ function calculaPrecioVenta() {
 	
 }
 
+function agregarGranel(event){
+	event.preventDefault();
+	
+	producto_elegido.cantidad = $("#cantidad").val();
+	$("#modal_granel").modal("hide");
+	agregarProducto(producto_elegido);
+	
+	$("#buscar_producto").focus();
+}
 
 
 function agregarProducto(producto){
@@ -231,7 +262,7 @@ function agregarProducto(producto){
 		<input hidden class="precio_mayoreo" value='${producto['precio_mayoreo']}'>
 		<input type="number"  step="any" class="cantidad form-control text-right"  value='${producto['cantidad']}'>
 		</td>
-		<td class="text-center">${producto['piezas']}</td> 
+		<td class="text-center piezas">${producto['piezas']}</td> 
 		<td class="text-center">${producto['descripcion_productos']}</td>
 		<td class="col-sm-1">
 		<input  type="number" readonly class='precio form-control' value='${producto['costo_proveedor']}'> 
@@ -269,7 +300,7 @@ function agregarProducto(producto){
 	}
 	$("#buscar_producto").val("");
 	
-	alertify.success("Producto Agregado")
+	// alertify.success("Producto Agregado")
 	
 	sumarImportes();
 	
@@ -357,8 +388,8 @@ function loadProveedores() {
 		
 		}).done(function(respuesta){
 		let proveedores =`<option value="">
-			Seleccione...
-			</option>`;
+		Seleccione...
+		</option>`;
 		
 		$.each(respuesta.filas, function(index, fila){
 			proveedores += `
@@ -548,7 +579,9 @@ function guardarProducto(event) {
 					$("#tabla_venta tbody tr").eq($("#partida").val()).find(".precio").val(campo.value);
 					break;
 					
-					
+					case "piezas":
+					$("#tabla_venta tbody tr").eq($("#partida").val()).find(".piezas").text(campo.value);
+					break;
 				}
 				
 			})

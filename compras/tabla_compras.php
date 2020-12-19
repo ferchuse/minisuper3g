@@ -71,6 +71,7 @@
 									<th class="text-center"> Folio</th>
 									<th class="text-center"> Fecha</th>
 									<th class="text-center"> Proveedor</th>
+									<th class="text-center"> Estatus</th>
 									<th class="text-center"> Importe Total</th>
 									<th class="text-center"> Acciones</th>
 								</tr>
@@ -104,6 +105,11 @@
 										<td class="text-center">
 											<?php
 												echo $nombre_proveedores;
+											?>
+										</td>	
+										<td class="text-center">
+											<?php
+												echo $estatus_compras;
 											?>
 										</td>
 										<td class="text-center">
