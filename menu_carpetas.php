@@ -24,7 +24,7 @@
 					<li class="<?php echo $menu_activo == "principal" ? "active" : ''; ?>">
 						<a href="../index.php">
 							<i class="fas fa-dollar-sign"></i> Ventas
-						</a>
+							</a>
 					</li>					
 					<?php 
 					}
@@ -34,6 +34,7 @@
 					<li class="<?php echo $menu_activo == "pedidos" ? "active" : ''; ?>">
 						<a href="../pedidos/index.php">
 							<i class="fas fa-truck"></i> Pedidos
+							<span id="cantidad_pedidos" class="badge badge-danger">0</span>
 						</a>
 					</li>					
 					<?php 
@@ -50,67 +51,76 @@
 					}
 				?> 
 				
+				<?php if(dame_permiso("reportes/index.php", $link) != "Sin Acceso"){	?>
+					<li class="dropdown <?php echo $menu_activo == "reportes" ? "active" : ''; ?>">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="fas fa-chart-bar"></i> Reportes <strong class="caret"></strong>
+						</a>
+						<ul class="dropdown-menu">
+							<?php if(dame_permiso("reportes/index.php", $link) != "Sin Acceso"){	?>
+								<li>
+									<a href="../reportes/index.php">Ventas Por Día</a>
+								</li>
+								<?php 
+								}
+							?> 
+							<?php if(dame_permiso("reportes/egresos.php", $link) != "Sin Acceso"){	?>
+								<li>
+									<a href="../reportes/egresos.php">Egresos</a>
+								</li>
+								<?php 
+								}
+							?> 
+							<?php if(dame_permiso("inventarios/movimientos.php", $link) != "Sin Acceso"){	?>
+								<li>
+									<a href="../inventarios/movimientos.php"> Movimientos</a>
+								</li>
+								<?php 
+								}
+							?> 
+						</ul>
+					</li>
+					<?php 
+					}
+				?> 
 				
-				<li class="dropdown <?php echo $menu_activo == "reportes" ? "active" : ''; ?>">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<i class="fas fa-chart-bar"></i> Reportes <strong class="caret"></strong>
-					</a>
-					<ul class="dropdown-menu">
-						<?php if(dame_permiso("../reportes/index.php", $link) != "Sin Acceso"){	?>
-							<li>
-								<a href="../reportes/index.php">Ventas Por Día</a>
-							</li>
-							<?php 
-							}
-						?> 
-						<?php if(dame_permiso("../reportes/egresos.php", $link) != "Sin Acceso"){	?>
-							<li>
-								<a href="../reportes/egresos.php">Egresos</a>
-							</li>
-							<?php 
-							}
-						?> 
-						<?php if(dame_permiso("inventarios/movimientos.php", $link) != "Sin Acceso"){	?>
-							<li>
-								<a href="../inventarios/movimientos.php"> Movimientos</a>
-							</li>
-							<?php 
-							}
-						?> 
-					</ul>
-				</li>
-				
-				<li class="dropdown <?php echo $menu_activo == "productos" ? "active" : ''; ?>">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<i class="fas fa-list"></i> Productos <strong class="caret"></strong>
-					</a>
-					<ul class="dropdown-menu">
-						<?php if(dame_permiso("productos/editar.php?accion=nuevo", $link) != "Sin Acceso"){	?>
-							<li>
-								<a href="../productos/editar.php?accion=nuevo">
-								<i class="fas fa-plus"></i> Nuevo</a>
-							</li>
-							<?php 
-							}
-						?> 
-						<?php if(dame_permiso("productos/editar.php?accion=editar", $link) != "Sin Acceso"){	?>
-							<li>
-								<a href="../productos/editar.php?accion=editar">
-								<i class="fas fa-edit"></i> Editar</a>
-							</li>
-							<?php 
-							}
-						?> 
-						<?php if(dame_permiso("productos/catalogo.php", $link) != "Sin Acceso"){	?>
-							<li>
-								<a href="../productos/catalogo.php">
-								<i class="fas fa-file-alt"></i> Catálogo</a>
-							</li>
-							<?php 
-							}
-						?> 
-					</ul>
-				</li>
+				<?php if(dame_permiso("productos/catalogo.php", $link) != "Sin Acceso"){	?>
+					
+					<li class="dropdown <?php echo $menu_activo == "productos" ? "active" : ''; ?>">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="fas fa-list"></i> Productos <strong class="caret"></strong>
+						</a>
+						<ul class="dropdown-menu">
+							<?php if(dame_permiso("productos/editar.php?accion=nuevo", $link) != "Sin Acceso"){	?>
+								<li>
+									<a href="../productos/editar.php?accion=nuevo">
+									<i class="fas fa-plus"></i> Nuevo</a>
+								</li>
+								<?php 
+								}
+							?> 
+							<?php if(dame_permiso("productos/editar.php?accion=editar", $link) != "Sin Acceso"){	?>
+								<li>
+									<a href="../productos/editar.php?accion=editar">
+									<i class="fas fa-edit"></i> Editar</a>
+								</li>
+								<?php 
+								}
+							?> 
+							<?php if(dame_permiso("productos/catalogo.php", $link) != "Sin Acceso"){	?>
+								<li>
+									<a href="../productos/catalogo.php">
+									<i class="fas fa-file-alt"></i> Catálogo</a>
+								</li>
+								<?php 
+								}
+							?> 
+						</ul>
+					</li>
+					
+					<?php 
+					}
+				?> 
 				<li class="dropdown <?php echo $menu_activo == "catalogos" ? "active" : ''; ?>">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<i class="fas fa-file-alt"></i> Catálogos <strong class="caret"></strong>
@@ -119,11 +129,11 @@
 						<?php if(dame_permiso("departamentos.php", $link) != "Sin Acceso"){	?>
 							<li>
 								<a href="../departamentos.php"><i class="fas fa-file-alt"></i> Departamentos</a>
-							</li>
-							<?php 
-							}
-						?> 
-						<?php
+								</li>
+								<?php 
+								}
+							?> 
+							<?php
 							if(dame_permiso("proveedores.php", $link) != "Sin Acceso"){	?>
 							<a href="../proveedores/index.php">
 								<i class="fas fa-truck"></i> Proveedores

@@ -11,6 +11,7 @@
 	
 		estatus_usuarios = '{$_POST['estatus_usuarios']}' , 
 		nombre_usuarios = '{$_POST['nombre_usuarios']}' , 
+		permiso_usuarios = '{$_POST['permiso_usuarios']}' , 
 		nombre_completo_usuarios = '{$_POST['nombre_completo_usuarios']}' , 
 		pass_usuarios ='{$_POST['pass_usuarios']}'
 	
@@ -37,6 +38,7 @@
 	
 		estatus_usuarios = '{$_POST['estatus_usuarios']}' , 
 		nombre_usuarios = '{$_POST['nombre_usuarios']}' , 
+		permiso_usuarios = '{$_POST['permiso_usuarios']}' , 
 		nombre_completo_usuarios = '{$_POST['nombre_completo_usuarios']}' , 
 		pass_usuarios = '{$_POST['pass_usuarios']}'
 		WHERE id_usuarios = '{$_POST['id_usuarios']}'

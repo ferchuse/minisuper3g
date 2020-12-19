@@ -45,6 +45,16 @@
 								<option value="Inactivo">Inactivo</option>
 							</select>
 							
+							<label >Perfil:</label>
+							
+							
+							<select class="form-control" id="permiso_usuarios" name="permiso_usuarios" required>
+								<option value="">Seleccione</option>
+								<option selected value="administrador">Administrador</option>
+								<option selected value="repartidor">Repartidor</option>
+								<option selected value="caja">Caja</option>
+							</select>
+							
 						</div>
 					</div>
 					
