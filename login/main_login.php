@@ -30,7 +30,7 @@
 		<link href="login.css" rel="stylesheet" >
 		
 		<?php include("../scripts_carpetas.php")?>
-    <script type="text/javascript" src="login.js"></script>
+    <script type="text/javascript" src="login.js?v=123123"></script>
 		
 	</head>
 	
