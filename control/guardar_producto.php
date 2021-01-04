@@ -30,6 +30,8 @@
 	ganancia_menudeo_porc = '$ganancia_menudeo_porc',
 	min_productos = '{$_POST["min_productos"]}',
 	precio_menudeo = '$precio_menudeo',
+	activo = '{$_POST["activo"]}',
+	piezas = '{$_POST["piezas"]}',
 	id_departamentos = '{$_POST["id_departamentos"]}',
 	existencia_productos = '$existencia_productos'
 	
@@ -40,6 +42,8 @@
 	costo_proveedor = '$costo_proveedor',
 	unidad_productos = '$unidad_productos',
 	precio_mayoreo = '$precio_mayoreo',
+	activo = '{$_POST["activo"]}',
+	piezas = '{$_POST["piezas"]}',
 	ganancia_menudeo_porc = '$ganancia_menudeo_porc',
 	min_productos = '{$_POST["min_productos"]}',
 	precio_menudeo = '$precio_menudeo',
