@@ -10,7 +10,10 @@ if($_GET["id_departamentos"] != '') {
 if($_GET["existencia"] != '') {        
     $consulta.= " AND existencia_productos < min_productos";
 } 
-//comentario X
+if($_GET["activo"] != '') {        
+    $consulta.= " AND activo = '{$_GET["activo"]}'";
+} 
+
 
 $consulta.= "  ORDER BY descripcion_productos LIMIT 1000";
 $result = mysqli_query($link,$consulta);

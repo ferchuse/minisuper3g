@@ -119,6 +119,7 @@ function cargarProducto(producto) {
 	
 	$.each(producto, function(name, value){
 		$("#" + name).val(value);
+		$("#form_productos").find("#ultimo_" + name).val(value);
 	});
 	$("#form").removeClass("hidden");
 }
@@ -189,7 +190,7 @@ function guardarProducto(event) {
 			alertify.success('Se ha guardado correctamente');
 			$('#form_productos')[0].reset();
 			if($("#accion").val() == "editar"){
-				$("#form").addClass("hidden");
+				// $("#form").addClass("hidden");
 				$("#buscar_producto").focus();
 			}
 			else{
