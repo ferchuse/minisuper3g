@@ -27,15 +27,6 @@
 								<label required for="id_departamentos">Departamento:</label>
 								<?php echo generar_select($link, "departamentos", "id_departamentos", "nombre_departamentos")?>
 							</div>
-							<div class="form-group">
-								<label required for="unidad_productos">Activo:</label>
-								<select  class="form-control" id="activo" name="activo">
-									<option value="">Elije...</option>
-									<option selected value="SI">SI</option>
-									<option value="NO">NO</option>
-								</select>
-							</div>
-							
 						</div>
 						
 						
@@ -71,7 +62,7 @@
 									<div class="form-group ">
 										<label for="precio_mayoreo">Ultimo Precio Mayoreo:</label>
 										
-										<input readonly placeholder="" type="number"  step=".01" class="form-control" id="ultimo_precio_mayoreo" name="ultimo_precio_mayoreo">
+										<input readonly placeholder="" type="number"  step=".01" class="form-control" id="precio_mayoreo" name="precio_mayoreo">
 									</div> 
 								</div> 
 								<div class="col-md-6">
@@ -106,13 +97,13 @@
 									<div class="form-group ">
 										<label for="precio_mayoreo">Precio Mayoreo:</label>
 										
-										<input placeholder="" type="number"  class="form-control" id="precio_mayoreo" name="precio_mayoreo">
+										<input placeholder="" type="number"  step=".01" class="form-control" id="precio_mayoreo" name="precio_mayoreo">
 									</div> 
 								</div> 
 							</div>
 							<div class="form-group ">
 								<label for="existencia_productos">Existencia en Piezas:</label>
-								<input placeholder="Cantidad de productos en existencia" type="number"  step="any" class="form-control" id="existencia_productos" name="existencia_productos">
+								<input placeholder="Cantidad de productos en existencia" type="number" min="0" step="any" class="form-control" id="existencia_productos" name="existencia_productos">
 							</div>
 							<div class="form-group ">
 								<label for="min_productos">Minimo:</label>

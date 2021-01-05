@@ -48,14 +48,6 @@
 								<option value="minimo">DEBAJO DEL MINIMO</option>
 							</select>
 						</div>
-						<div class="form-group">
-							<label for="fecha_fin">Estatus:</label>
-							<select  class="form-control"  name="activo">
-								<option value="">TODOS</option>
-								<option SELECTED value="SI">ACTIVOS</option>
-								<option value="NO">INACTIVOS</option>
-							</select>
-						</div>
 						
 						<button type="submit" class="btn btn-primary" id="btn_buscar">
 							<i class="fa fa-search"></i> Buscar
