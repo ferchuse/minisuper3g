@@ -104,7 +104,7 @@
 					<div class="form-group ">
 						<label for="precio_mayoreo">Precio Mayoreo:</label>
 						
-						<input placeholder="" type="number"  class="form-control" id="precio_mayoreo" name="precio_mayoreo">
+						<input placeholder="" type="number"  class="form-control" step="any"  id="precio_mayoreo" name="precio_mayoreo">
 					</div> 
 				</div> 
 			</div>
