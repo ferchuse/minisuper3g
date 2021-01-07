@@ -34,7 +34,7 @@
 		
 		$respuesta.=   "\x1b"."@";
 		$respuesta.= "\x1b"."E".chr(1); // Bold
-		$respuesta.= "Arqueo      ". date("d/m/Y"). "\n";
+		$respuesta.= "        Arqueo    \n";
 		$respuesta.= "Fecha:     ".date("d/m/Y", strtotime($filas["fecha_arqueo"]))."\n";
 		$respuesta.= "Hora:      ".$filas["hora_arqueo"]."\n";
 		$respuesta.= "Usuario:  " . $_COOKIE["nombre_usuarios"]."\n";
