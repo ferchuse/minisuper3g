@@ -34,6 +34,7 @@ function filtrarFilas(event) {
 	
 }
 function imprimirCorte(event){
+	console.log("imprimirCorte()")
 	// $("#ticket").hide();
 	// $("#resumen").removeClass("hidden-print");
 	// $("#resumen").addClass("visible-print");
