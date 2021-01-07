@@ -33,13 +33,16 @@ function filtrarFilas(event) {
 	});
 	
 }
-
 function imprimirCorte(event){
-	$("#ticket").hide();
-	$("#arqueo").html("");
-	$("#resumen").removeClass("hidden-print");
-	$("#resumen").addClass("visible-print");
-	window.print();
+	// $("#ticket").hide();
+	// $("#resumen").removeClass("hidden-print");
+	// $("#resumen").addClass("visible-print");
+	// window.print();
+	
+	printService.submit({
+		'type': 'LABEL',
+		'raw_content': $("#corte_b64").val()
+	});
 }
 
 
