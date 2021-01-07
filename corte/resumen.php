@@ -104,6 +104,7 @@
 		<link href="../css/menu.css" rel="stylesheet" >
 		<link href="../css/b4-margin-padding.css" rel="stylesheet" >
 		<link rel="manifest" href="../manifest.json">
+		
 	</head>
 	
 	<body>
@@ -552,7 +553,7 @@
 		
 		<?php include('forms/modal_egresos.php'); ?>
 		<?php include('forms/form_arqueo.php'); ?>
-		
+		<?php include('imprimir_corte.php'); ?>
 		
 		<?php include('../scripts_carpetas.php'); ?>
 		
