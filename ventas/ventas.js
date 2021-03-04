@@ -22,6 +22,7 @@ function cargarPendientes(event){
 	console.log("content", $(".tab-content .cremeria").length);
 	
 	$.ajax({
+		 cache: false,
 		url: "funciones/ventas_pendientes.php",
 		dataType: "JSON"
 	})
