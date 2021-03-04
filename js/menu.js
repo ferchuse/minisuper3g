@@ -17,3 +17,4 @@ async function registerSW() {
   }
 }
 
+$.ajaxSetup({ cache: false });
