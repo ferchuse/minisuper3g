@@ -6,12 +6,8 @@
 	$link=Conectarse();
 	
 	$respuesta  =array() ;
-	$query=$_GET["query"]; 
-	$tabla= "productos"; 
-	$campo= "descripcion_productos"; 
 	
-	
-	$consulta = "SELECT * FROM $tabla WHERE $campo LIKE '%$query%' ORDER BY $campo LIMIT 50 ";
+	$consulta = "SELECT * FROM productos WHERE id_productos = '{$_GET["id_productos"]}' ";
 	$result= mysqli_query($link,$consulta);
 	if($result){
 		while($fila=mysqli_fetch_assoc($result)){
@@ -26,7 +22,7 @@
 				$fila["precios"] = $precios;
 			}
 			
-			$respuesta ["suggestions"][]  = ["value" => $fila[$campo], "data" => $fila ];
+			$respuesta ["data"]  = $fila ;
 		}
 	}
 	else $respuesta["result"] = "Error". mysqli_error($link);
@@ -37,4 +33,3 @@
 	
 	
 ?>	
-

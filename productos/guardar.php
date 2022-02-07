@@ -37,17 +37,59 @@
 	min_productos = '{$_POST["min_productos"]}',
 	id_departamentos = '{$_POST["id_departamentos"]}',
 	existencia_productos = '{$_POST["existencia_productos"]}'
-	
 	;
-	
 	";
+	
+	$respuesta['consulta']["guardarProductos"] = $guardarProductos;
+	
+	
+	
 	if(mysqli_query($link,$guardarProductos)){
 		$respuesta['estatus'] = "success";
 		$id_producto = mysqli_insert_id($link);
-		}else{
-		$respuesta['estatus'] = "error";
+	}
+	else{
+		$respuesta['estatus']= "error";
 		$respuesta['mensaje'] = "Error en ".$guardarProductos.mysqli_error($link);
 	}
+	
+	
+	
+	foreach($_POST["id_precio"] as $i => $id_precio){
+		$guardar_precios = "INSERT INTO precios_productos SET 
+		id_precio = '{$_POST["id_precio"][$i]}',
+		id_productos = '{$_POST["id_productos"]}',
+		porc_ganancia = '{$_POST["porc_ganancia"][$i]}',
+		precio = '{$_POST["precio"][$i]}'
+		
+		
+		
+		ON DUPLICATE KEY UPDATE 
+		
+		id_precio = '{$_POST["id_precio"][$i]}',
+		id_productos = '{$_POST["id_productos"]}',
+		porc_ganancia = '{$_POST["porc_ganancia"][$i]}',
+		precio = '{$_POST["precio"][$i]}'
+		
+		;
+		
+		";
+		
+		
+		$respuesta['consulta']["guardar_precios"][] = $guardar_precios;
+	
+		if(mysqli_query($link,$guardar_precios)){
+			$respuesta['estatus']["guardar_precios"] = "success";
+			
+		}
+		else{
+			$respuesta['estatus']["guardar_precios"] = "error";
+			$respuesta['mensaje']["guardar_precios"] = "Error en ".$guardar_precios.mysqli_error($link);
+		}
+		
+	}
+	
+	
 	
 	
 	
