@@ -22,7 +22,7 @@ function cargarPendientes(event){
 	console.log("content", $(".tab-content .cremeria").length);
 	
 	$.ajax({
-		 cache: false,
+		cache: false,
 		url: "funciones/ventas_pendientes.php",
 		dataType: "JSON"
 	})
@@ -271,7 +271,7 @@ $(document).ready( function onLoad(){
 	
 	//Autocomplete Productos https://github.com/devbridge/jQuery-Autocomplete
 	$("#buscar_producto").autocomplete({
-		serviceUrl: "control/productos_autocomplete.php",   
+		serviceUrl: "productos/productos_autocomplete.php",   
 		onSelect: function alSeleccionarProducto(eleccion){
 			console.log("Elegiste: ",eleccion);
 			if(eleccion.data.unidad_productos == 'KG'){
@@ -497,15 +497,31 @@ function agregarProducto(producto){
 		<td class="col-sm-1">	
 		<input class="existencia_anterior form-control" readonly  value='${producto['existencia_productos']}'> 
 		</td>
-		<td class="text-center">
+		<td class="text-left">
 		<button title="Eliminar Producto" class="btn btn-danger btn_eliminar">
 		<i class="fa fa-trash"></i>
-		</button> 
-		<label class="custom_checkbox">
-		Mayoreo
-		<input class="mayoreo" type="checkbox">
-		<span class="checkmark"></span>
-		</label>
+		</button> `;
+		
+		
+		
+		$.each(producto.precios , function(index, item){
+			
+			
+			$fila_producto += `
+			<br>
+			<label>
+			<input class="tipo_precio" type="radio" name="precios" value="${item.precio}">
+			${item.nombre_precio}
+			
+			</label>
+			
+			`;
+			
+			
+		});
+		
+		$fila_producto += 
+		`
 		</td>
 		</tr>`;
 		
@@ -514,7 +530,7 @@ function agregarProducto(producto){
 		$(".tabla_venta:visible tbody").append($fila_producto);
 		
 		//Asigna Callbacks de eventos
-		$(".mayoreo").change(aplicarMayoreoProducto);
+		$(".tipo_precio").change(cambiarTipoPrecio);
 		$(".cantidad").keyup(sumarImportes);
 		$(".cantidad").change(sumarImportes);
 		$("input").focus(function(){
@@ -785,6 +801,16 @@ function aplicarMayoreoGeneral(){
 		}
 		$(item).find(".precio").val($precio);
 	});
+	
+	sumarImportes();
+}
+function cambiarTipoPrecio(){
+	console.log("cambiarTipoPrecio()");
+	var precio = $(this).val();
+	var fila =  $(this).closest("tr");
+	
+	fila.find(".precio").val(precio);
+	
 	
 	sumarImportes();
 }
