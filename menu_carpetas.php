@@ -14,7 +14,7 @@
 				<span class="icon-bar"></span>
 			</button>
 			<a class="navbar-brand" href="#">
-				<img src="../img/logo_menu.png" class="logo">
+				<img src="../img/logo_menu.png" class="logo img-responsive">
 			</a>
 		</div>
 		
@@ -31,7 +31,7 @@
 				?> 
 				
 				<?php if(dame_permiso("pedidos/index.php", $link) != "Sin Acceso"){	?> 
-					<li class="<?php echo $menu_activo == "pedidos" ? "active" : ''; ?>">
+					<li  class="hidden <?php echo $menu_activo == "pedidos" ? "active" : ''; ?>">
 						<a href="../pedidos/index.php">
 							<i class="fas fa-truck"></i> Pedidos
 							<span id="cantidad_pedidos" class="badge badge-danger">0</span>
@@ -135,9 +135,11 @@
 							?> 
 							<?php
 							if(dame_permiso("proveedores.php", $link) != "Sin Acceso"){	?>
+							<li>
 							<a href="../proveedores/index.php">
 								<i class="fas fa-truck"></i> Proveedores
 							</a>
+							</li>
 							<?php 
 							}
 						?> 
