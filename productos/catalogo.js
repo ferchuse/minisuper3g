@@ -9,6 +9,10 @@ $(document).ready(function () {
 	
 	$('#piezas').keyup(modificarPrecio );
 	$('#costo_mayoreo').keyup(modificarPrecio );
+	$('#existencia_cajas').keyup(calculaExistencia );
+	$('#existencia_productos').keyup(calculaExistencia );
+	$('#piezas').keyup(calculaExistencia );
+	
 	
 	listaProductos();
 	
@@ -171,6 +175,37 @@ $(document).ready(function () {
 });
 
 
+function calculaExistencia(event) {
+	console.log("calculaExistencia()")
+	console.log(event.target.id)
+	
+	
+	var existencia_cajas = Number($("#existencia_cajas").val());
+	var existencia_piezas = Number($("#existencia_productos").val());
+	var piezas = Number($('#piezas').val());
+	
+	console.log(existencia_cajas)
+	console.log(existencia_piezas)
+	console.log(piezas)
+	
+	if(event){
+		if(event.target.id == "existencia_cajas"){
+			existencia_piezas = existencia_cajas * piezas;
+			$("#existencia_productos").val(existencia_piezas)
+		}
+		else{
+			existencia_cajas = existencia_piezas / piezas
+			$("#existencia_cajas").val(existencia_cajas.toFixed(1))
+			
+		}
+	}
+	else{
+		existencia_cajas = existencia_piezas / piezas
+		$("#existencia_cajas").val(existencia_cajas.toFixed(1))
+		
+	}
+}
+
 function modificarPrecio() {
 	console.log("modificarPrecio()");
 	var costo_mayoreo = Number($("#costo_mayoreo").val());
@@ -225,9 +260,9 @@ function listaProductos() {
 			<td class="text-center">${value.existencia_productos} </td>                
 			<td class="text-center">
 			<input form='form_imprimir_precios' name="id_productos[]" class="seleccionar" type="checkbox" value="${value.id_productos}">
-			<button class="btn btn-warning btn_editar" data-id_producto="${value.id_productos}">
+			<a href="editar.php?id_productos=${value.id_productos}" class="btn btn-warning" target="_blank">
 			<i class="fa fa-edit"></i>
-			</button>
+			</a>
 			<button class="btn btn-danger btn_eliminar" data-id_producto="${value.id_productos}">
 			<i class="fa fa-trash"></i>
 			</button>
@@ -320,6 +355,7 @@ function cargarRegistro() {
 			});
 			$('h3.modal-title').text('Editar Producto');
 			$('#modal_productos').modal('show');
+			calculaExistencia();
 		}
 		icono.toggleClass('fa-pencil fa-spinner fa-spin');
 		boton.prop('disabled', false);
