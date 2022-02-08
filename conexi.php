@@ -12,8 +12,8 @@ function Conectarse()
 	}
 	else{
 		$db="minisuper3g";
-		$usuario="sistemas";
-		$pass="Glifom3dia";
+		$usuario="root";
+		$pass="";
 		$set_local = "SET time_zone = '-05:00'";
 		$set_names = "SET NAMES 'utf8'";
 	}
