@@ -223,6 +223,8 @@ $(document).on('keydown', disableFunctionKeys);
 
 $(document).ready( function onLoad(){
 	
+	
+	
 	$('#imprimir').click(cobrarEImprimir);
 	
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
@@ -274,27 +276,56 @@ $(document).ready( function onLoad(){
 		serviceUrl: "productos/productos_autocomplete.php",   
 		onSelect: function alSeleccionarProducto(eleccion){
 			console.log("Elegiste: ",eleccion);
+			//Mostrar Modal Granel
+			producto_elegido = eleccion.data;
+			
 			if(eleccion.data.unidad_productos == 'KG'){
-				$("#precio_mayoreo").val(eleccion.data.precio_mayoreo);
-				$("#precio_menudeo").val(eleccion.data.precio_menudeo);
-				if($("#mayoreo").prop("checked")){
-					precio = eleccion.data.precio_mayoreo;
-				}
-				else{
-					precio = eleccion.data.precio_menudeo;
+				var precios_granel_html = "";
+				
+				$.each(eleccion.data.precios, function(index, item){
 					
-				}
+					
+					precios_granel_html += `
+					<br>
+					<label>
+					<input class="precio_granel" type="radio" name="precios" value="${item.precio}">
+					${item.nombre_precio}
+					
+					</label>
+					
+					`;
+				});
+				
+				$("#precios_granel").html(precios_granel_html);
+				
+				
+				$(".precio_granel").change(cambiarPrecioGranel);
+				
+				// $("#precio_mayoreo").val(eleccion.data.precio_mayoreo);
+				// $("#precio_menudeo").val(eleccion.data.precio_menudeo);
+				// if($("#mayoreo").prop("checked")){
+				// precio = eleccion.data.precio_mayoreo;
+				// }
+				// else{
+				// precio = eleccion.data.precio_menudeo;
+				
+				// }
 				
 				$("#cantidad").val(1);
-				$("#precio").val(precio);
-				$("#importe").val(eleccion.data.precio_menudeo * 1);
-				producto_elegido = eleccion.data;
+				
+				$(".precio_granel").eq(0).click();
+				// $("#precio").val(precio);
+				
+				// $("#importe").val(eleccion.data.precio_menudeo * 1);
+				// producto_elegido = eleccion.data;
 				
 				$("#modal_granel").modal("show");
 				$("#buscar_producto").val("");
 			}
 			else{
-				agregarProducto(eleccion.data)
+			
+				producto_elegido.precio_elegido = 0;
+				agregarProducto(producto_elegido)
 				
 				
 			}
@@ -440,6 +471,7 @@ function agregarGranel(event){
 	event.preventDefault();
 	
 	producto_elegido.cantidad = $("#cantidad").val();
+	// producto_elegido.precio_elegido = $(".precios_granel").();
 	$("#modal_granel").modal("hide");
 	agregarProducto(producto_elegido);
 	
@@ -506,11 +538,17 @@ function agregarProducto(producto){
 		
 		$.each(producto.precios , function(index, item){
 			
+			let checked = "";
+			
+			if(producto_elegido.precio_elegido == index){
+				checked = " checked ";	
+			}
+			
 			
 			$fila_producto += `
 			<br>
 			<label>
-			<input class="tipo_precio" type="radio" name="precios" value="${item.precio}">
+			<input class="tipo_precio" ${checked} type="radio" name="precios" value="${item.precio}">
 			${item.nombre_precio}
 			
 			</label>
@@ -525,9 +563,19 @@ function agregarProducto(producto){
 		</td>
 		</tr>`;
 		
+		
+		$()
+		
 		resetFondo();
 		
 		$(".tabla_venta:visible tbody").append($fila_producto);
+		
+		//Activa el precio elegido
+		$(".tabla_venta:visible tbody tr").last().find(".tipo_precio").eq(producto_elegido.precio_elegido).click();
+		
+		
+		
+		
 		
 		//Asigna Callbacks de eventos
 		$(".tipo_precio").change(cambiarTipoPrecio);
@@ -814,22 +862,42 @@ function cambiarTipoPrecio(){
 	
 	sumarImportes();
 }
+
+function cambiarPrecioGranel(){
+	console.log("cambiarPrecioGranel()");
+	var precio = $(this).val();
+	var fila =  $(this).closest(".row");
+	
+	$("#precio").val(precio);
+	
+	let cantidad = Number($("#cantidad").val());
+	
+	let importe = precio * cantidad;
+	
+	producto_elegido.precio_elegido = $(".precio_granel").index($(".precio_granel:checked"));
+	// console.log("elegistre precio",	$(".precio_granel").index($(".precio_granel:checked")));
+	
+	$("#importe").val(importe.toFixed(2))
+	
+	
+}
+
 function aplicarMayoreoProducto(){
-	var $precio;
-	var fila =  $(this).closest("tr");
-	console.log("aplicarMayoreoProducto");
-	
-	
-	if($(this).prop("checked")){
-		$precio = fila.find(".precio_mayoreo").val();
-	}
-	else{
-		$precio =  fila.find(".precio_menudeo").val();
-	}
-	fila.find(".precio").val($precio);
-	
-	
-	sumarImportes();
+var $precio;
+var fila =  $(this).closest("tr");
+console.log("aplicarMayoreoProducto");
+
+
+if($(this).prop("checked")){
+	$precio = fila.find(".precio_mayoreo").val();
+}
+else{
+	$precio =  fila.find(".precio_menudeo").val();
+}
+fila.find(".precio").val($precio);
+
+
+sumarImportes();
 }
 
 //Funciona a llamar si ha terminado de imprimir
@@ -937,4 +1005,4 @@ function calculaCambio(){
 	let pago = $("#pago").val();
 	let cambio = pago - efectivo;
 	$("#cambio").val(cambio);
-}									
+}										

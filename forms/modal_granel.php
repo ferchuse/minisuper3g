@@ -10,14 +10,15 @@
 				</div>
 				<div class="modal-body">
 					
-					<div class="form-group hidden">
-						<label for="">100 gramos:</label> $<span id="ciengramos"></span><br>
-						<label for="">1/4 Kilo:</label> $<span id="cuartogramos"></span><br>
-						<label for="">1/2 Kilo:</label> $<span id="mediogramos"></span>
-					</div>
-					<div class="form-group col-sm-12">
-						<label for="precio">1 Kg:</label>
-						<input class="form-control" name="precio" id="precio" readonly>
+					
+					<div class="row">
+						<div class="form-group col-sm-6">
+							<label for="precio">1 Kg:</label>
+							<input class="form-control" name="precio" id="precio" readonly>
+						</div>
+						<div class="form-group col-sm-6" id="precios_granel">
+							
+						</div>
 					</div>
 					<div class="form-group col-sm-6">
 						<label for="unidad_granel">Peso:</label>
