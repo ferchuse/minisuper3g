@@ -19,7 +19,10 @@ function onLoad(event){
 	$('#panel_ventas').on("click", ".btn_cancelar",  confirmaCancelarVenta);
 	$('#panel_ingresos').on("click", ".btn_cancelar",  confirmaCancelarIngreso);
 	
-	
+	setTimeout(function(){
+		
+		window.location.reload();
+	}, 10000)
 }
 
 function filtrarFilas(event) {
