@@ -85,7 +85,6 @@
 		importe = '$producto[importe]',
 		descripcion = '$producto[descripcion]',
 		ganancia = '$ganancia_pesos'
-		
 		";
 		
 		$exec_query = mysqli_query($link, $insertarVentasDetalle);
@@ -100,22 +99,22 @@
 		}
 		
 		//INSERTA movimientos
-		$exist_nueva = $producto["existencia_anterior"] - $producto["cantidad"];
+		// $exist_nueva = $producto["existencia_anterior"] - $producto["cantidad"];
 		
-		$inserta_movimientos = "INSERT INTO `almacen_movimientos` 
-		(`fecha_movimiento`, `tipo_movimiento`, `id_productos`, `cantidad`, `exist_anterior`, `exist_nueva`, `id_usuarios`, `costo`, `id_almacen`, `turno`, `referencia`, `folio`) VALUES (NOW(), 'SALIDA', 
-		'{$producto["id_productos"]}', '{$producto["cantidad"]}', '{$producto["existencia_anterior"]}', 
-		'$exist_nueva', 
-		'$id_usuarios',
-		'{$producto["precio"]}', 
-		'1', 
-		'$turno',   
-		'VENTA #$id_ventas', 
-		'$id_ventas')";
+		// $inserta_movimientos = "INSERT INTO `almacen_movimientos` 
+		// (`fecha_movimiento`, `tipo_movimiento`, `id_productos`, `cantidad`, `exist_anterior`, `exist_nueva`, `id_usuarios`, `costo`, `id_almacen`, `turno`, `referencia`, `folio`) VALUES (NOW(), 'SALIDA', 
+		// '{$producto["id_productos"]}', '{$producto["cantidad"]}', '{$producto["existencia_anterior"]}', 
+		// '$exist_nueva', 
+		// '$id_usuarios',
+		// '{$producto["precio"]}', 
+		// '1', 
+		// '$turno',   
+		// 'VENTA #$id_ventas', 
+		// '$id_ventas')";
 		
-		$result_movimientos = mysqli_query( $link, $inserta_movimientos );
+		// $result_movimientos = mysqli_query( $link, $inserta_movimientos );
 		
-		$respuesta["result_movimientos"] = $result_movimientos."-".mysqli_error($link) ;
+		// $respuesta["result_movimientos"] = $result_movimientos."-".mysqli_error($link) ;
 		
 		//Actualiza existencias
 		
@@ -125,7 +124,22 @@
 		$result_existencia = mysqli_query( $link, $update_existencia );
 		
 		$respuesta["result_existencia"] = $result_existencia;
+		
+		$insertarVentasDetalle =addslashes($insertarVentasDetalle);
+		
+		$insert_consultas = "INSERT INTO consultas_sincronizar SET fecha_consulta = NOW(), consulta = '$insertarVentasDetalle' ";
+		$exec_query = mysqli_query($link,$insert_consultas);
+		
+		
+		
 	}
+	
+	$insertarVenta =addslashes($insertarVenta);
+	
+	$insert_consultas = "INSERT INTO consultas_sincronizar SET fecha_consulta = NOW(), consulta = '$insertarVenta' ";
+	$exec_query = mysqli_query($link,$insert_consultas);
+	
+	
 	
 	echo json_encode($respuesta);
 ?>	

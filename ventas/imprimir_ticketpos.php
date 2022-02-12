@@ -19,7 +19,7 @@
 	$respuesta.=   "\x1b"."@";
 	$respuesta.= "\x1b"."E".chr(1); // Bold
 	$respuesta.= "!";
-	$respuesta.=  "MINISUPER 3G\n";
+	$respuesta.=  "CREMERIA 3G\n";
 	$respuesta.=  "\x1b"."E".chr(0); // Not Bold
 	$respuesta.=  "\x1b"."@" .chr(10).chr(13);
 	$respuesta.= "Folio:   ". $fila_venta[0]["id_ventas"]. "\n";

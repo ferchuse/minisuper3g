@@ -1,6 +1,215 @@
 var printService = new WebSocketPrinter();
 var producto_elegido ;
 
+
+$(document).on('keydown', disableFunctionKeys);
+
+$(document).ready( function onLoad(){
+	
+	
+	
+	$('#imprimir').click(cobrarEImprimir);
+	
+	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+		e.target // newly activated tab
+		e.relatedTarget // previous active tab
+	})
+	
+	$('.bg-info').keydown(navegarFilas);
+	$('#btn_refresh').click(cargarPendientes);
+	
+	$("#btn_refresh").click();
+	
+	
+	$('#form_pago').submit(cobrarEImprimir);
+	$('#form_granel').submit(agregarGranel);
+	$('#btn_pendiente').click( pedirNombre);
+	
+	function pedirNombre(event){
+		let nombre_cliente =  $("#tabs_ventas li.active input").val();
+		
+		
+		if($(".tabla_venta:visible tbody tr").length == 0){
+			
+			alertify.error('No hay productos');
+			return false;
+		}
+		
+		alertify.prompt( 'Venta Pendiente', 'Nombre del Cliente', nombre_cliente
+			, function onAccept(evt, value) { 
+				guardarVenta(value);
+				
+			}
+			, function onCancel() { 
+			alertify.error('Cancel') });
+			
+	}
+	
+	$('#form_agregar_producto').submit(function(event){
+		event.preventDefault();
+	})
+	
+	alertify.set('notifier','position', 'top-right');
+	
+	
+	$(".buscar").keyup( buscarDescripcion);
+	
+	//Autocomplete Productos https://github.com/devbridge/jQuery-Autocomplete
+	$("#buscar_producto").autocomplete({
+		serviceUrl: "productos/productos_autocomplete.php",   
+		noCache: true, 
+		onSelect: function alSeleccionarProducto(eleccion){
+			console.log("Elegiste: ",eleccion);
+			//Mostrar Modal Granel
+			producto_elegido = eleccion.data;
+			
+			if(producto_elegido.unidad_productos == 'KG'){
+				$("#precios_granel").html("");
+				var precios_granel_html = "";
+				
+				$.each(eleccion.data.precios, function(index, item){
+					
+					
+					precios_granel_html += `
+					<br>
+					<label>
+					<input class="precio_granel" type="radio" name="precios" value="${item.precio}">
+					${item.nombre_precio}
+					
+					</label>
+					
+					`;
+				});
+				
+				$("#precios_granel").html(precios_granel_html);
+				
+				
+				$(".precio_granel").change(cambiarPrecioGranel).click(cambiarPrecioGranel);
+				
+				
+				
+				$("#cantidad").val(1);
+				
+				$(".precio_granel").eq(0).click();
+				
+				
+				$("#modal_granel").modal("show");
+				$("#buscar_producto").val("");
+			}
+			//Venta por pieza
+			else{
+				
+				producto_elegido.precio_elegido = 0;
+				agregarProducto(producto_elegido)
+				
+			}
+			$('#form_agregar_producto')[0].reset();	
+		},
+		autoSelectFirst	:true , 
+		showNoSuggestionNotice	:true , 
+		noSuggestionNotice	: "Sin Resultados"
+	});
+	
+	
+	$('#codigo_producto').keypress( function buscarCodigo(event){
+		if(event.which == 13){
+			if($(this).val() == ""){
+				alertify.error("Escribe un Código");
+				return;
+			}
+			console.log("buscarCodigo()");
+			var input = $(this);
+			// input.prop('disabled',true);
+			input.toggleClass('ui-autocomplete-loading');
+			var codigo_productos = $(this).val();
+			$.ajax({
+				url: "productos/get_product_by_code.php",
+				dataType: "JSON",
+				method: 'GET',
+				data: {"codigo_productos": codigo_productos}
+				}).done(function terminabuscarCodigo(respuesta){
+				
+				if(respuesta.data){
+					console.log("Producto Encontrado");
+					producto_elegido = respuesta.data;
+					
+					if(producto_elegido.unidad_productos == 'KG'){
+						$("#precios_granel").html("");
+						var precios_granel_html = "";
+						
+						$.each(eleccion.data.precios, function(index, item){
+							
+							
+							precios_granel_html += `
+							<br>
+							<label>
+							<input class="precio_granel" type="radio" name="precios" value="${item.precio}">
+							${item.nombre_precio}
+							
+							</label>
+							
+							`;
+						});
+						
+						$("#precios_granel").html(precios_granel_html);
+						
+						
+						$(".precio_granel").change(cambiarPrecioGranel).click(cambiarPrecioGranel);
+						
+						
+						
+						$("#cantidad").val(1);
+						
+						$(".precio_granel").eq(0).click();
+						
+						
+						$("#modal_granel").modal("show");
+						$("#buscar_producto").val("");
+					}
+					//Venta por pieza
+					else{
+						
+						producto_elegido.precio_elegido = 0;
+						agregarProducto(producto_elegido)
+						
+					}
+					$('#form_agregar_producto')[0].reset();		
+				}
+				else{
+					alertify.error('Código no Encontrado');
+				}
+				
+				}).always(function(){
+				
+				input.toggleClass('ui-autocomplete-loading');
+				input.prop('disabled',false);
+				input.focus();
+			});
+		} 
+	});
+	
+	$("#modal_granel").on("shown.bs.modal", function alMostrarGranel() { 
+		$("#cantidad").focus();
+	});
+	$("#modal_pago").on("shown.bs.modal", function alMostrarPago() { 
+		$("#efectivo").focus();
+	});
+	
+	$("#cantidad").on("keyup", calcularGranel)
+	$("#importe").on("keyup", calcularGranel);
+	
+	$("input").focus( function selecciona_input(){
+		
+		$(this).select();
+	});
+	
+	
+	$('#cerrar_venta').click( cobrar);
+	
+	$("#codigo_producto").focus();
+}); 
+
+
 function round(value, step) {
 	step || (step = 1.0);
 	var inv = 1.0 / step;
@@ -106,11 +315,7 @@ function renderProductos(tab_index, venta){
 		<button title="Eliminar Producto" class="btn btn-danger btn_eliminar">
 		<i class="fa fa-trash"></i>
 		</button> 
-		<label class="custom_checkbox">
-		Mayoreo
-		<input class="mayoreo" type="checkbox">
-		<span class="checkmark"></span>
-		</label>
+		
 		</td>
 		</tr>`;
 		
@@ -218,197 +423,6 @@ function cobrarEImprimir(evt){
 	
 }
 
-
-$(document).on('keydown', disableFunctionKeys);
-
-$(document).ready( function onLoad(){
-	
-	
-	
-	$('#imprimir').click(cobrarEImprimir);
-	
-	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-		e.target // newly activated tab
-		e.relatedTarget // previous active tab
-	})
-	
-	$('.bg-info').keydown(navegarFilas);
-	$('#btn_refresh').click(cargarPendientes);
-	
-	$("#btn_refresh").click();
-	
-	
-	$('#form_pago').submit(cobrarEImprimir);
-	$('#form_granel').submit(agregarGranel);
-	$('#btn_pendiente').click( pedirNombre);
-	
-	function pedirNombre(event){
-		let nombre_cliente =  $("#tabs_ventas li.active input").val();
-		
-		
-		if($(".tabla_venta:visible tbody tr").length == 0){
-			
-			alertify.error('No hay productos');
-			return false;
-		}
-		
-		alertify.prompt( 'Venta Pendiente', 'Nombre del Cliente', nombre_cliente
-			, function onAccept(evt, value) { 
-				guardarVenta(value);
-				
-			}
-			, function onCancel() { 
-			alertify.error('Cancel') });
-			
-	}
-	
-	$('#form_agregar_producto').submit(function(event){
-		event.preventDefault();
-	})
-	
-	alertify.set('notifier','position', 'top-right');
-	
-	
-	$(".buscar").keyup( buscarDescripcion);
-	
-	//Autocomplete Productos https://github.com/devbridge/jQuery-Autocomplete
-	$("#buscar_producto").autocomplete({
-		serviceUrl: "productos/productos_autocomplete.php",   
-		onSelect: function alSeleccionarProducto(eleccion){
-			console.log("Elegiste: ",eleccion);
-			//Mostrar Modal Granel
-			producto_elegido = eleccion.data;
-			
-			if(eleccion.data.unidad_productos == 'KG'){
-				var precios_granel_html = "";
-				
-				$.each(eleccion.data.precios, function(index, item){
-					
-					
-					precios_granel_html += `
-					<br>
-					<label>
-					<input class="precio_granel" type="radio" name="precios" value="${item.precio}">
-					${item.nombre_precio}
-					
-					</label>
-					
-					`;
-				});
-				
-				$("#precios_granel").html(precios_granel_html);
-				
-				
-				$(".precio_granel").change(cambiarPrecioGranel);
-				
-				// $("#precio_mayoreo").val(eleccion.data.precio_mayoreo);
-				// $("#precio_menudeo").val(eleccion.data.precio_menudeo);
-				// if($("#mayoreo").prop("checked")){
-				// precio = eleccion.data.precio_mayoreo;
-				// }
-				// else{
-				// precio = eleccion.data.precio_menudeo;
-				
-				// }
-				
-				$("#cantidad").val(1);
-				
-				$(".precio_granel").eq(0).click();
-				// $("#precio").val(precio);
-				
-				// $("#importe").val(eleccion.data.precio_menudeo * 1);
-				// producto_elegido = eleccion.data;
-				
-				$("#modal_granel").modal("show");
-				$("#buscar_producto").val("");
-			}
-			else{
-			
-				producto_elegido.precio_elegido = 0;
-				agregarProducto(producto_elegido)
-				
-				
-			}
-		},
-		autoSelectFirst	:true , 
-		showNoSuggestionNotice	:true , 
-		noSuggestionNotice	: "Sin Resultados"
-	});
-	
-	
-	$('#codigo_producto').keypress( function buscarCodigo(event){
-		if(event.which == 13){
-			if($(this).val() == ""){
-				alertify.error("Escribe un Código");
-				return;
-			}
-			console.log("buscarCodigo()");
-			var input = $(this);
-			// input.prop('disabled',true);
-			input.toggleClass('ui-autocomplete-loading');
-			var codigoProducto = $(this).val();
-			$.ajax({
-				url: "control/buscar_normal.php",
-				dataType: "JSON",
-				method: 'POST',
-				data: {tabla:'productos', campo:'codigo_productos', id_campo: codigoProducto}
-				}).done(function terminabuscarCodigo(respuesta){
-				
-				if(respuesta.numero_filas >= 1){
-					console.log("Producto Encontrado");
-					producto_elegido = respuesta.fila;
-					
-					if(producto_elegido.unidad_productos == 'PZA'){//Si el producto se vende por pieza
-						
-						producto_elegido.importe= producto_elegido.precioventa_menudeo_productos;
-						producto_elegido.cantidad=1 ;
-						agregarProducto(producto_elegido);
-						$("#codigo_producto").focus();
-						
-					}
-					else if(producto_elegido.unidad_productos == 'KG'){ //Si el producto se vende a granel
-						$('#modal_granel').modal('show');
-						
-						$('#unidad_granel').val(1);
-						$('#costo_granel').val(producto_elegido.precio_menudeo);
-						$('#costoventa_granel').text('$ '+ producto_elegido.precioventa_menudeo_productos);
-						
-					}
-					$('#form_agregar_producto')[0].reset();		
-				}
-				else{
-					alertify.error('Código no Encontrado');
-				}
-				
-				}).always(function(){
-				
-				input.toggleClass('ui-autocomplete-loading');
-				input.prop('disabled',false);
-				input.focus();
-			});
-		} 
-	});
-	
-	$("#modal_granel").on("shown.bs.modal", function alMostrarGranel() { 
-		$("#cantidad").focus();
-	});
-	$("#modal_pago").on("shown.bs.modal", function alMostrarPago() { 
-		$("#efectivo").focus();
-	});
-	
-	$("#cantidad").on("keyup", calcularGranel)
-	$("#importe").on("keyup", calcularGranel);
-	
-	$("input").focus( function selecciona_input(){
-		
-		$(this).select();
-	});
-	
-	
-	$('#cerrar_venta').click( cobrar);
-	
-	$("#codigo_producto").focus();
-}); 
 
 function cobrar(){
 	
@@ -534,7 +548,7 @@ function agregarProducto(producto){
 		<i class="fa fa-trash"></i>
 		</button> `;
 		
-		
+		console.log("producto.precios", producto.precios)
 		
 		$.each(producto.precios , function(index, item){
 			
@@ -571,14 +585,12 @@ function agregarProducto(producto){
 		$(".tabla_venta:visible tbody").append($fila_producto);
 		
 		//Activa el precio elegido
-		$(".tabla_venta:visible tbody tr").last().find(".tipo_precio").eq(producto_elegido.precio_elegido).click();
-		
 		
 		
 		
 		
 		//Asigna Callbacks de eventos
-		$(".tipo_precio").change(cambiarTipoPrecio);
+		$(".tipo_precio").change(cambiarTipoPrecio).click(cambiarTipoPrecio);
 		$(".cantidad").keyup(sumarImportes);
 		$(".cantidad").change(sumarImportes);
 		$("input").focus(function(){
@@ -586,6 +598,12 @@ function agregarProducto(producto){
 		});
 		$(".btn_eliminar").click(eliminarProducto);
 		$("#buscar_producto").val("");
+		
+		
+		console.log("precio_elegido", producto_elegido.precio_elegido);
+		$(".tabla_venta:visible tbody tr").last().find(".tipo_precio").eq(producto_elegido.precio_elegido).click();
+		
+		
 		
 	}
 	
@@ -883,21 +901,21 @@ function cambiarPrecioGranel(){
 }
 
 function aplicarMayoreoProducto(){
-var $precio;
-var fila =  $(this).closest("tr");
-console.log("aplicarMayoreoProducto");
-
-
-if($(this).prop("checked")){
-	$precio = fila.find(".precio_mayoreo").val();
-}
-else{
-	$precio =  fila.find(".precio_menudeo").val();
-}
-fila.find(".precio").val($precio);
-
-
-sumarImportes();
+	var $precio;
+	var fila =  $(this).closest("tr");
+	console.log("aplicarMayoreoProducto");
+	
+	
+	if($(this).prop("checked")){
+		$precio = fila.find(".precio_mayoreo").val();
+	}
+	else{
+		$precio =  fila.find(".precio_menudeo").val();
+	}
+	fila.find(".precio").val($precio);
+	
+	
+	sumarImportes();
 }
 
 //Funciona a llamar si ha terminado de imprimir
