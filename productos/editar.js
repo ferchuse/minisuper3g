@@ -25,7 +25,8 @@ $(document).ready( function onLoad(){
 	
 	
 	$("#descripcion_productos").autocomplete({
-		serviceUrl: "productos_autocomplete.php",   
+		serviceUrl: "productos_autocomplete.php",  
+		noCache: true, 
 		onSelect: function(eleccion){
 			console.log("Elegiste: ",eleccion);
 			cargarProducto(eleccion.data);
@@ -172,44 +173,41 @@ function buscarProducto(){
 		input.prop('disabled',false);
 		input.focus();
 	});
-	
-	
 }
 
 function buscarCodigo(event){
 	if(event.which == 13){
 		console.log("buscarCodigo()");
 		var input = $(this);
-		var codigoProducto = $(this).val();
+		var codigo_productos = $(this).val();
 		
 		input.prop('disabled',true);
 		// input.toggleClass('ui-autocomplete-loading');
 		$.ajax({
-			url: "../control/buscar_normal.php",
+			url: "get_product_by_code.php",
 			dataType: "JSON",
-		method: 'POST',
-		data: {tabla:'productos', campo:'codigo_productos', id_campo: codigoProducto}
-		}).done(function (respuesta){
-		
-		if(respuesta.numero_filas >= 1){
-			console.log("Producto Encontrado");
-			cargarProducto(respuesta.fila);
+			data: { codigo_productos: codigo_productos}
+			}).done(function (respuesta){
 			
-			// $('#form_agregar_producto')[0].reset();		
-		}
-		else{
-			alertify.error('Código no Encontrado');
-		}
-		
-		
-		}).always(function(){
-		
-		// input.toggleClass('ui-autocomplete-loading');
-		input.prop('disabled',false);
-		input.focus();
+			if(respuesta.data ){
+				console.log("Producto Encontrado");
+				cargarProducto(respuesta.data);
+				
+						
+			}
+			else{
+				alertify.error('Código no Encontrado');
+			}
+			
+			
+			}).always(function(){
+			
+			// input.toggleClass('ui-autocomplete-loading');
+			input.prop('disabled',false);
+			input.focus();
 		});
-		
-}
+		return false;
+	}
 }
 
 function cargarProducto(producto) {
@@ -295,7 +293,7 @@ function guardarProducto(event) {
 		console.log(respuesta);
 		if (respuesta.estatus == "success") {
 			alertify.success('Se ha guardado correctamente');
-			$('#form_productos')[0].reset();
+			
 			if($("#accion").val() == "editar"){
 				// $("#form").addClass("hidden");
 				$("#buscar_producto").focus();
@@ -304,6 +302,7 @@ function guardarProducto(event) {
 				$("#codigo_productos").focus();
 			}
 			$('#form_productos')[0].reset();
+			$('#id_productos').val("");
 			
 		} 
 		else {

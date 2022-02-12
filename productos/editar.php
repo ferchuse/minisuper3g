@@ -1,4 +1,7 @@
 <?php
+	header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+	header("Cache-Control: post-check=0, pre-check=0", false);
+	header("Pragma: no-cache");
 	include("../login/login_success.php");
 	include("../conexi.php");
 	include("../funciones/generar_select.php");
@@ -6,7 +9,7 @@
 	$menu_activo = "productos";
 	
 	$consulta_cat_precios = "SELECT *  FROM cat_precios";
-		
+	
 	$result_cat_precios = mysqli_query($link,$consulta_cat_precios) or  die("Error en $consulta_cat_precios" . mysqli_error($link));
 	
 	
@@ -39,7 +42,7 @@
 		
 		
 		<div class="container-fluid">
-		
+			
 			
 			<div id="form" class="<?php echo $form;?>">
 				<?php include('form_productos.php'); ?>

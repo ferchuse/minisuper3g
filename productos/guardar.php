@@ -1,4 +1,7 @@
 <?php
+	header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+	header("Cache-Control: post-check=0, pre-check=0", false);
+	header("Pragma: no-cache");
 	header("Content-Type: application/json");
 	include ("../conexi.php");
 	$link = Conectarse();
@@ -13,6 +16,7 @@
 	costo_mayoreo = '{$_POST["costo_mayoreo"]}',
 	piezas = '{$_POST["piezas"]}',
 	unidad_productos = '{$_POST["unidad_productos"]}',
+	unidad_compra = '{$_POST["unidad_compra"]}',
 	precio_mayoreo = '{$_POST["precio_mayoreo"]}',
 	precio_menudeo = '{$_POST["precio_menudeo"]}',
 	activo = '{$_POST["activo"]}',
@@ -30,6 +34,7 @@
 	costo_mayoreo = '{$_POST["costo_mayoreo"]}',
 	piezas = '{$_POST["piezas"]}',
 	unidad_productos = '{$_POST["unidad_productos"]}',
+	unidad_compra = '{$_POST["unidad_compra"]}',
 	precio_mayoreo = '{$_POST["precio_mayoreo"]}',
 	precio_menudeo = '{$_POST["precio_menudeo"]}',
 	activo = '{$_POST["activo"]}',
@@ -46,7 +51,14 @@
 	
 	if(mysqli_query($link,$guardarProductos)){
 		$respuesta['estatus'] = "success";
-		$id_producto = mysqli_insert_id($link);
+		
+		
+		if($_POST["id_productos"] != ''){
+			$id_productos = $_POST["id_productos"];
+		}
+		else{
+			$id_productos = mysqli_insert_id($link);
+		}
 	}
 	else{
 		$respuesta['estatus']= "error";
@@ -55,10 +67,11 @@
 	
 	
 	
+	
 	foreach($_POST["id_precio"] as $i => $id_precio){
 		$guardar_precios = "INSERT INTO precios_productos SET 
 		id_precio = '{$_POST["id_precio"][$i]}',
-		id_productos = '{$_POST["id_productos"]}',
+		id_productos = '{$id_productos}',
 		porc_ganancia = '{$_POST["porc_ganancia"][$i]}',
 		precio = '{$_POST["precio"][$i]}'
 		
@@ -76,15 +89,15 @@
 		";
 		
 		
-		$respuesta['consulta']["guardar_precios"][] = $guardar_precios;
-	
+		$respuesta['guardar_precios']["consulta"] = $guardar_precios;
+		
 		if(mysqli_query($link,$guardar_precios)){
-			$respuesta['estatus']["guardar_precios"] = "success";
+			$respuesta['guardar_precios']["estatus"] = "success";
 			
 		}
 		else{
-			$respuesta['estatus']["guardar_precios"] = "error";
-			$respuesta['mensaje']["guardar_precios"] = "Error en ".$guardar_precios.mysqli_error($link);
+			$respuesta['guardar_precios']["estatus"] = "error";
+			$respuesta['guardar_precios']["mensaje"] = "Error en ".$guardar_precios.mysqli_error($link);
 		}
 		
 	}

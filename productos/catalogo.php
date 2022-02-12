@@ -7,21 +7,21 @@
 ?>
 <!DOCTYPE html>
 <html lang="es">
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 		<style>
 			#respuesta_rep{
 			color: red;
 			}
 		</style>
-		<title>Productos</title>
+    <title>Productos</title>
 		
 		<?php include("../styles_carpetas.php");?>
 		
 	</head>
-	<body>
+  <body>
 		
 		<?php include("../menu_carpetas.php");?>
 		
@@ -113,34 +113,7 @@
 		</div>
 		<form id="form_imprimir_precios" action="../impresion/imprimir_precios.php">
 		</form>
-		
-		<form id="form_productos" autocomplete="off" class="is-validated">
-			<div id="modal_productos" class="modal fade" role="dialog">
-				<div class="modal-dialog modal-lg">
-					
-					<!-- Modal content-->
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h3 class="modal-title text-center">Editar Producto</h3>
-						</div>
-						<div class="modal-body">
-							
-							
-							<?php include('form_productos.php'); ?>
-							
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
-							<button type="submit" class="btn btn-success" id="btn_formAlta">
-								<i class="fa fa-save"></i> Guardar
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</form>
-		
+		<?php include('../forms/productos.php'); ?>
 		<?php include('../forms/existencias.php'); ?>
 		
 		<?php  include('../scripts_carpetas.php'); ?>
