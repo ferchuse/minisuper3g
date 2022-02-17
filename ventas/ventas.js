@@ -82,14 +82,8 @@ $(document).ready( function onLoad(){
 				});
 				
 				$("#precios_granel").html(precios_granel_html);
-				
-				
 				$(".precio_granel").change(cambiarPrecioGranel).click(cambiarPrecioGranel);
-				
-				
-				
 				$("#cantidad").val(1);
-				
 				$(".precio_granel").eq(0).click();
 				
 				
@@ -169,6 +163,7 @@ $(document).ready( function onLoad(){
 					//Venta por pieza
 					else{
 						
+						producto_elegido.cantidad = 1;
 						producto_elegido.precio_elegido = 0;
 						agregarProducto(producto_elegido)
 						
